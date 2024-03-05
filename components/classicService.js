@@ -8,7 +8,7 @@ export default function classicService() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const {name} = route.params;
+    const { name, carModels, carPrices  } = route.params;
     const [dateOfBirth, setDateOfBirth] = useState(new Date()); // Set initial date to current date
     const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
 
@@ -56,7 +56,9 @@ export default function classicService() {
                 />
                     )}
                   <View style={styles.priceTag}>
-                      <Text style={styles.priceText}>Rs. 2999</Text>
+                      <Text style={styles.priceText}>
+                      Rs. {carPrices.length > 0 ? carPrices[0].Service_cost : 'N/A'}
+                      </Text>
                   </View>
                   <View style={styles.bottomTextContainer}>
                       <Text style={styles.serviceText}>Classic Service</Text>

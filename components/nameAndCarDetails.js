@@ -1,23 +1,72 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
+import supabase from '../supabaseConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function nameAndCarDetails() {
 
     const navigation = useNavigation();
     const [name, setName] = useState('');
+    const [carModels, setCarModels] = useState([{ name: '', id: null }]); // Initial state with one empty car model object
+    const [suggestions, setSuggestions] = useState([{ name: '', id: null }]); // New state for holding suggestions
+
+
     const [agreeToTerms, setAgreeToTerms] = useState(false);
     
     const handleBack = () => {
           navigation.navigate('phoneNoAuth');
     };
     
-    const navigateHome = () => {
+    const navigateHome = async () => {
         if(name.length != 0) {
-            navigation.navigate('homeScreen',{name: name});
+          try {
+            const userData = { name, carModels };
+            await AsyncStorage.setItem('userData', JSON.stringify(userData));
+            console.log('User data saved to AsyncStorage:', userData);
+          } catch (error) {
+            console.error('Error saving user data to AsyncStorage:', error);
+          }
+            navigation.navigate('homeScreen',{name: name, carModels: carModels});
+            console.log(carModels);
         }
     }
+
+    const handleCarModelChange = async (index, value) => {
+      const updatedCarModels = [...carModels];
+      updatedCarModels[index] = { ...updatedCarModels[index], name: value }; // Update only the name part
+      setCarModels(updatedCarModels);
+  
+      if (value.length > 1) { // Perform search if user has typed at least 2 characters
+        try {
+          const { data, error } = await supabase
+            .from('distinct_modelinfo')
+            .select('Car_Model_Fullname, Id')
+            .ilike('Car_Model_Fullname', `%${value}%`); // Search for similar car models
+          if (error) {
+            console.error('Error fetching car models:', error.message);
+          } else {
+            setSuggestions(data.map(item => ({
+              name: item.Car_Model_Fullname,
+              id: item.Id
+          })));
+        }
+        } catch (error) {
+          console.error('Error fetching car models:', error.message);
+        }
+      } else {
+        setSuggestions([]); // Clear suggestions if input is cleared or too short
+      }
+    };
+
+    const selectSuggestion = (index, suggestion) => {
+      const updatedCarModels = [...carModels];
+      updatedCarModels[index] = suggestion;
+      setCarModels(updatedCarModels);
+      setSuggestions([]); // Clear suggestions after selection
+    };
 
     return (
         
@@ -42,13 +91,25 @@ export default function nameAndCarDetails() {
         <Text style={styles.subHeaderText}>
           Please select your car models
         </Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setName}
-          value={name}
-          placeholder="Name"
-          keyboardType="name-phone-pad"
-        />
+        {carModels.map((carModel, index) => (
+        <View key={index} style={styles.carModelContainer}>
+         <TextInput
+            style={styles.input} // Ensure this style matches other input fields
+            placeholder={`Car Model ${index + 1}`}
+            value={carModel.name}
+            onChangeText={(value) => handleCarModelChange(index, value)}
+          />
+          {suggestions.length > 0 && (
+            <ScrollView style={styles.suggestionsContainer}>
+              {suggestions.map((suggestion, sIndex) => (
+                <TouchableOpacity key={sIndex} onPress={() => selectSuggestion(index, suggestion)}>
+                  <Text style={styles.suggestion}>{suggestion.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          )}
+        </View>
+      ))}
         
         <View style={styles.buttonContainer}>
             <TouchableOpacity style={[styles.customButton, name.length != 0 ? {} : styles.disabledButton]} onPress={navigateHome}>

@@ -1,14 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 export default function splashScreen() {
-
     const navigation = useNavigation();
-    const handleSplash = () => {
-        navigation.navigate('phoneNoAuth');
-    }
+    const handleSplash = async() => {
+      try {
+        const userDataString = await AsyncStorage.getItem('userData');
+        if (userDataString !== null) {
+          // Parse the stringified userData back into an object
+          const userData = JSON.parse(userDataString);
+          // Check if userData contains the necessary attributes
+          if (userData && 'name' in userData && 'carModels' in userData) {
+            // User is logged in, navigate to MainScreen with userData as parameters
+            navigation.navigate('homeScreen', {
+              name: userData.name,
+              carModels: userData.carModels,
+            });
+          } else {
+            // If userData does not contain the necessary attributes, navigate to LoginScreen
+            navigation.navigate('phoneNoAuth');
+          }
+        } else {
+          // If no userData is found, navigate to LoginScreen
+          navigation.navigate('phoneNoAuth');
+        }
+     } catch (error) {
+        console.error('Error retrieving user data from AsyncStorage:', error);
+     }
+    };
 
   return (
     <View style={styles.container}>
