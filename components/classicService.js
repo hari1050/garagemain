@@ -3,34 +3,44 @@ import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image,
 import { useNavigation, useRoute } from '@react-navigation/native';
 // import { Dropdown } from "react-native-material-dropdown";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Calendar, CaretRight, CaretLeft } from 'phosphor-react-native';
 
 export default function classicService() {
 
     const navigation = useNavigation();
     const route = useRoute();
     const {name} = route.params;
-    const [dateOfBirth, setDateOfBirth] = useState(new Date()); // Set initial date to current date
+    const [serviceDate, setserviceDate] = useState(new Date()); // Set initial date to current date
     const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
 
 
-    const navigateToClassicService = () => {
-            navigation.navigate('homeScreen');
+    // const navigateToClassicService = () => {
+    //     navigation.navigate('homeScreen');
+    // }
+    const navigatetoHome = () => {
+        navigation.navigate('homeScreen',{name:name});
     }
-
     const navigateToProfile = () => {
         navigation.navigate('homeScreen');
     }
 
+    const handleBookService = () => {
+        navigation.navigate('userCompleteDetails',{name:name});
+    }
+
     const handleDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || dateOfBirth;
+        const currentDate = selectedDate || serviceDate;
         setShowDatePicker(false); 
-        setDateOfBirth(currentDate); 
+        setserviceDate(currentDate); 
       };
 
     return (
         <View style={styles.viewContainer}>
 
         <ScrollView style={styles.container}>
+           <TouchableOpacity style={styles.caretLeft} onPress={navigatetoHome}>
+            <CaretLeft></CaretLeft>
+           </TouchableOpacity>
           <View style={styles.header}>
               <Text style={styles.headerText}>Hi {name}</Text>
               <TouchableOpacity onPress={navigateToProfile}>
@@ -43,13 +53,15 @@ export default function classicService() {
             <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} />
               <View>
                 <View style={styles.classicService}>
+                <Text style={styles.serviceDescription}>Select Service Date</Text>
                 <TouchableOpacity style={styles.calendar} onPress={() => setShowDatePicker(true)}>
-                    <Text style={styles.input}>{dateOfBirth.toDateString()}</Text>
+                    <Text style={styles.input}>{serviceDate.toDateString()}</Text>
+                    <Calendar></Calendar>
                 </TouchableOpacity>
                     {showDatePicker && (
                     <DateTimePicker
                     testID="dateTimePicker"
-                    value={dateOfBirth}
+                    value={serviceDate}
                     mode="date"
                     display="default"
                     onChange={handleDateChange}
@@ -66,7 +78,7 @@ export default function classicService() {
           </View>
         </ScrollView>
           <View>
-              <TouchableOpacity style={styles.customButton}>
+              <TouchableOpacity style={styles.customButton} onPress={handleBookService}>
                 <Text style={styles.buttonText}>Book Service</Text>
               </TouchableOpacity>
           </View>
@@ -85,7 +97,12 @@ export default function classicService() {
       padding: 20,
       backgroundColor: '#fff',
     },
+    caretLeft: {
+        marginTop:0,
+        marginBottom:20,
+    },
     header: {
+        paddingBottom:10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -100,7 +117,7 @@ export default function classicService() {
       alignItems: 'center', 
     },
     classicService:{
-        paddingTop: 30
+        paddingTop: 10,
     },
     classicServiceImg: {
         borderRadius: 12,
@@ -128,6 +145,7 @@ export default function classicService() {
     },
     serviceDescription: {
         marginTop: 8,
+        marginBottom:8,
         fontSize: 16,
         color: '#000',
         opacity: 0.8,
@@ -167,6 +185,12 @@ export default function classicService() {
       right: 0,
     },
     calendar: {
-        
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between',
+        width:345,
+        backgroundColor:'#F5F5F5',
+        padding:16,
+        borderRadius:12,
     }
 });

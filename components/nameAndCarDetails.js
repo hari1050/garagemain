@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
+import { UserContext } from '../contexts/userContext';
 
 export default function nameAndCarDetails() {
 
@@ -15,7 +16,7 @@ export default function nameAndCarDetails() {
     
     const navigateHome = () => {
         if(name.length != 0) {
-            navigation.navigate('homeScreen',{name: name});
+            navigation.navigate('homeScreen',{name:name});
         }
     }
 

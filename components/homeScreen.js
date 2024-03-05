@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-// import { Dropdown } from "react-native-material-dropdown";
-// import { Dropdown } from 'react-native-material-dropdown';
-
 
 export default function homeScreen() {
 
@@ -24,76 +21,76 @@ export default function homeScreen() {
     }
 
     return (
-    <View style={styles.viewContainer}>
+        <View style={styles.viewContainer}>
 
-      <ScrollView style={styles.container}>
-        <View style={styles.header}>
-            <Text style={styles.headerText}>Hi {name}</Text>
-            <TouchableOpacity onPress={navigateToProfile}>
-                <Image
-                style={styles.profile}
-                source={require('../assets/profile.png')} 
-                />
+        <ScrollView style={styles.container}>
+            <View style={styles.header}>
+                <Text style={styles.headerText}>Hi {name}</Text>
+                <TouchableOpacity onPress={navigateToProfile}>
+                    <Image
+                    style={styles.profile}
+                    source={require('../assets/profile.png')} 
+                    />
+                </TouchableOpacity>
+            </View>
+            {/* <Dropdown
+                placeholder='Hyundai i20'
+            /> */}
+            <TouchableOpacity onPress={navigateToClassicService} style={styles.classicService}>
+            <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} />
+                <View style={styles.textOverlay}>
+                    <View style={styles.priceTag}>
+                        <Text style={styles.priceText}>Rs. 2999</Text>
+                    </View>
+                    <View style={styles.bottomTextContainer}>
+                        <Text style={styles.serviceText}>Classic Service</Text>
+                        <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                    </View>
+                </View>
             </TouchableOpacity>
-        </View>
-        {/* <Dropdown
-            placeholder='Hyundai i20'
-        /> */}
-        <TouchableOpacity onPress={navigateToClassicService} style={styles.classicService}>
-        <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} />
-            <View style={styles.textOverlay}>
-                <View style={styles.priceTag}>
-                    <Text style={styles.priceText}>Rs. 2999</Text>
-                </View>
-                <View style={styles.bottomTextContainer}>
-                    <Text style={styles.serviceText}>Classic Service</Text>
-                    <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+            <View style={styles.classicService}>
+            <Image source={require('../assets/summerService.png')} style={styles.summerServiceImg} />
+                <View style={styles.textOverlay}>
+                    <View style={styles.priceTag}>
+                        <Text style={styles.priceText}>Rs. 2999</Text>
+                    </View>
+                    <View style={styles.bottomTextContainer}>
+                        <Text style={styles.serviceText}>Summer Service</Text>
+                        <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                    </View>
                 </View>
             </View>
-        </TouchableOpacity>
-        <View style={styles.classicService}>
-        <Image source={require('../assets/summerService.png')} style={styles.summerServiceImg} />
-            <View style={styles.textOverlay}>
-                <View style={styles.priceTag}>
-                    <Text style={styles.priceText}>Rs. 2999</Text>
-                </View>
-                <View style={styles.bottomTextContainer}>
-                    <Text style={styles.serviceText}>Summer Service</Text>
-                    <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
-                </View>
-            </View>
-        </View>
-        <View style={styles.classicService}>
-        <Image source={require('../assets/monsoonService.png')} style={styles.summerServiceImg} />
-            <View style={styles.textOverlay}>
-                <View style={styles.priceTag}>
-                    <Text style={styles.priceText}>Rs. 2999</Text>
-                </View>
-                <View style={styles.bottomTextContainer}>
-                    <Text style={styles.serviceText}>Monsoon Service</Text>
-                    <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+            <View style={styles.classicService}>
+            <Image source={require('../assets/monsoonService.png')} style={styles.summerServiceImg} />
+                <View style={styles.textOverlay}>
+                    <View style={styles.priceTag}>
+                        <Text style={styles.priceText}>Rs. 2999</Text>
+                    </View>
+                    <View style={styles.bottomTextContainer}>
+                        <Text style={styles.serviceText}>Monsoon Service</Text>
+                        <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                    </View>
                 </View>
             </View>
-        </View>
-        <View style={styles.classicService}>
-        <Image source={require('../assets/winterService.png')} style={styles.summerServiceImg} />
-            <View style={styles.textOverlay}>
-                <View style={styles.priceTag}>
-                    <Text style={styles.priceText}>Rs. 2999</Text>
-                </View>
-                <View style={styles.bottomTextContainer}>
-                    <Text style={styles.serviceText}>Winter Service</Text>
-                    <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+            <View style={styles.classicService}>
+            <Image source={require('../assets/winterService.png')} style={styles.summerServiceImg} />
+                <View style={styles.textOverlay}>
+                    <View style={styles.priceTag}>
+                        <Text style={styles.priceText}>Rs. 2999</Text>
+                    </View>
+                    <View style={styles.bottomTextContainer}>
+                        <Text style={styles.serviceText}>Winter Service</Text>
+                        <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                    </View>
                 </View>
             </View>
+        </ScrollView>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.customButton} onPress={navigateToEmergency}>
+                <Text style={styles.buttonText}>Emergency</Text>
+                </TouchableOpacity>
+            </View>
         </View>
-      </ScrollView>
-        <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.customButton} onPress={navigateToEmergency}>
-              <Text style={styles.buttonText}>Emergency</Text>
-            </TouchableOpacity>
-        </View>
-    </View>
     );
   };
   
