@@ -15,15 +15,20 @@ export default function homeScreen() {
     const [carPrices, setCarPrices] = useState([]);
 
     const navigateToClassicService = () => {
-            navigation.navigate('classicService',{name:name});
+            navigation.navigate('classicService',{name:name, carModels:carModels, carPrices:carPrices});
     }
 
     const navigateToProfile = () => {
-        navigation.navigate('homeScreen');
+        navigation.navigate('userProfile');
     }
 
-    const navigateToEmergency = () => {
-        navigation.navigate('homeScreen');
+    const navigateToEmergency = async () => {
+        try {
+            await AsyncStorage.removeItem('userData');
+            console.log('UserData deleted successfully.');
+          } catch (error) {
+            console.error('Error deleting UserData:', error);
+          }   
     }
 
     useEffect(() => {

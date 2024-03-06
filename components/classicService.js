@@ -9,7 +9,7 @@ export default function classicService() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const { name, carModels, carPrices  } = route.params;
+    const { name, carModels, carPrices = []  } = route.params;
     const [serviceDate, setserviceDate] = useState(new Date()); // Set initial date to current date
     const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
 
