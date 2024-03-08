@@ -3,8 +3,6 @@ import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image 
 import { useNavigation, useRoute } from '@react-navigation/native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { Dropdown } from "react-native-material-dropdown";
-// import { Dropdown } from 'react-native-material-dropdown';
 
 
 export default function homeScreen() {
@@ -18,14 +16,27 @@ export default function homeScreen() {
             navigation.navigate('classicService',{name:name, carModels:carModels, carPrices:carPrices});
     }
 
+    const navigateToSummerService = () => {
+        navigation.navigate('summerService',{name:name, carModels:carModels, carPrices:carPrices});
+    }
+
+    const navigateToWinterService = () => {
+        navigation.navigate('winterService',{name:name, carModels:carModels, carPrices:carPrices});
+    }
+
+    const navigateToMonsoonService = () => {
+        navigation.navigate('monsoonService',{name:name, carModels:carModels, carPrices:carPrices});
+    }
+
     const navigateToProfile = () => {
         navigation.navigate('userProfile');
     }
 
     const navigateToEmergency = async () => {
         try {
-            await AsyncStorage.removeItem('userData');
+            // await AsyncStorage.removeItem('userData');
             console.log('UserData deleted successfully.');
+            navigation.navigate('Emergency',{name:name, carModels:carModels});
           } catch (error) {
             console.error('Error deleting UserData:', error);
           }   
@@ -91,43 +102,48 @@ export default function homeScreen() {
                         </View>
                     </TouchableOpacity>
                 ))}
-
-                <View style={styles.classicService}>
-                    <Image source={require('../assets/summerService.png')} style={styles.summerServiceImg} />
-                    <View style={styles.textOverlay}>
-                        <View style={styles.priceTag}>
-                            <Text style={styles.priceText}>Rs. 2999</Text>
-                        </View>
-                        <View style={styles.bottomTextContainer}>
-                            <Text style={styles.serviceText}>Summer Service</Text>
-                            <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.classicService}>
-                    <Image source={require('../assets/monsoonService.png')} style={styles.summerServiceImg} />
-                    <View style={styles.textOverlay}>
-                        <View style={styles.priceTag}>
-                            <Text style={styles.priceText}>Rs. 2999</Text>
-                        </View>
-                        <View style={styles.bottomTextContainer}>
-                            <Text style={styles.serviceText}>Monsoon Service</Text>
-                            <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                <TouchableOpacity onPress={navigateToSummerService}>
+                    <View style={styles.classicService}>
+                        <Image source={require('../assets/summerService.png')} style={styles.summerServiceImg} />
+                        <View style={styles.textOverlay}>
+                            <View style={styles.priceTag}>
+                                <Text style={styles.priceText}>Rs. 2999</Text>
+                            </View>
+                            <View style={styles.bottomTextContainer}>
+                                <Text style={styles.serviceText}>Summer Service</Text>
+                                <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                            </View>
                         </View>
                     </View>
-                </View>
-                <View style={styles.classicService}>
-                    <Image source={require('../assets/winterService.png')} style={styles.summerServiceImg} />
-                    <View style={styles.textOverlay}>
-                        <View style={styles.priceTag}>
-                            <Text style={styles.priceText}>Rs. 2999</Text>
-                        </View>
-                        <View style={styles.bottomTextContainer}>
-                            <Text style={styles.serviceText}>Winter Service</Text>
-                            <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={navigateToMonsoonService}>
+                    <View style={styles.classicService}>
+                        <Image source={require('../assets/monsoonService.png')} style={styles.summerServiceImg} />
+                        <View style={styles.textOverlay}>
+                            <View style={styles.priceTag}>
+                                <Text style={styles.priceText}>Rs. 2999</Text>
+                            </View>
+                            <View style={styles.bottomTextContainer}>
+                                <Text style={styles.serviceText}>Monsoon Service</Text>
+                                <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                            </View>
                         </View>
                     </View>
-                </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={navigateToWinterService}>
+                    <View style={styles.classicService}>
+                        <Image source={require('../assets/winterService.png')} style={styles.summerServiceImg} />
+                        <View style={styles.textOverlay}>
+                            <View style={styles.priceTag}>
+                                <Text style={styles.priceText}>Rs. 2999</Text>
+                            </View>
+                            <View style={styles.bottomTextContainer}>
+                                <Text style={styles.serviceText}>Winter Service</Text>
+                                <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableOpacity>
             </ScrollView>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.customButton} onPress={navigateToEmergency}>
