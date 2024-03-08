@@ -65,6 +65,11 @@ export default function userProfile() {
       </View>
     </View>
       </ScrollView>
+      <View>
+          <TouchableOpacity style={styles.logout} onPress={navigateToEditProfile}>
+              <Text style={styles.logoutText}>Log out</Text>
+          </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -113,14 +118,34 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff', 
     borderColor:'#2C152A',
     height: 54,
-    width: 350,
+    width:'94%',
     borderRadius: 8,
     paddingLeft: 24,
     paddingRight: 24,
     paddingTop: 16,
     paddingBottom: 16,
+    alignSelf:'center',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  logout: {
+    borderWidth:1,
+    backgroundColor: '#9B0E0E', 
+    height: 54,
+    width:'94%',
+    borderRadius: 8,
+    paddingLeft: 24,
+    paddingRight: 24,
+    paddingTop: 16,
+    paddingBottom: 12,
+    alignSelf:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom:20,
+  },
+  logoutText:{
+    color: '#fff',
+    fontSize: 18,
   },
   card: {
     backgroundColor: '#FFFFFF',

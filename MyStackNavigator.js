@@ -14,6 +14,10 @@ import userCompleteDetails from './components/userCompleteDetails';
 import bookingConfirmation from './components/bookingConfirmation';
 import userProfile from './components/userProfile';
 import editProfile from './components/editProfile';
+import summerService from './components/summerService';
+import winterService from './components/winterService';
+import monsoonService from './components/monsoonService';
+import Emergency from './components/Emergency';
 
 const Stack = createStackNavigator();
 
@@ -26,10 +30,14 @@ function MyStackNavigator() {
         <Stack.Screen name="nameAndCarDetails" component={nameAndCarDetails}/>
         <Stack.Screen name="homeScreen" component={homeScreen}/>
         <Stack.Screen name="classicService" component={classicService}/>
+        <Stack.Screen name="summerService" component={summerService}/>
+        <Stack.Screen name="monsoonService" component={monsoonService}/>
+        <Stack.Screen name="winterService" component={winterService}/>
         <Stack.Screen name="userCompleteDetails" component={userCompleteDetails}/>
         <Stack.Screen name="bookingConfirmation" component={bookingConfirmation}/>
         <Stack.Screen name="userProfile" component={userProfile}/>
         <Stack.Screen name="editProfile" component={editProfile}/>
+        <Stack.Screen name="Emergency" component={Emergency}/>
         <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen}/>
         <Stack.Screen name="MainScreen" component={MainScreen}/>

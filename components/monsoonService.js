@@ -5,7 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Calendar, CaretRight, CaretLeft } from 'phosphor-react-native';
 
-export default function classicService() {
+export default function monsoonService() {
 
     const navigation = useNavigation();
     const route = useRoute();
@@ -53,7 +53,7 @@ export default function classicService() {
                   />
               </TouchableOpacity>
           </View>
-            <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} />
+            <Image source={require('../assets/monsoonService.png')} style={styles.classicServiceImg} />
               <View>
                 <View style={styles.classicService}>
                 <Text style={styles.selectDate}>Select Service Date</Text>
@@ -77,7 +77,7 @@ export default function classicService() {
                       </Text>
                   </View>
                   <View style={styles.bottomTextContainer}>
-                      <Text style={styles.serviceText}>Classic Service</Text>
+                      <Text style={styles.serviceText}>Monsoon Service</Text>
                       <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Sem rhoncus sed scelerisque eros. Sed sed suspendisse enim cursus. Vitae id pharetra amet in libero integer fringilla sed. Vitae scelerisque bibendum interdum scelerisque elementum. Consequat iaculis non ut feugiat tellus eros. Consectetur porttitor habitant pharetra sit faucibus sit. Sit libero tincidunt elit sit interdum metus eget..</Text>
                   </View>
               </View>
