@@ -4,11 +4,14 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Route } from 'react-router-dom';
 
 
 export default function nameAndCarDetails() {
 
     const navigation = useNavigation();
+    const route = useRoute();
+    const {phonenumber} = route.params;
     const [name, setName] = useState('');
     const [carModels, setCarModels] = useState([{ name: '', id: null }]); // Initial state with one empty car model object
     const [suggestions, setSuggestions] = useState([{ name: '', id: null }]); // New state for holding suggestions
@@ -20,14 +23,27 @@ export default function nameAndCarDetails() {
     const navigateHome = async () => {
         if(name.length != 0) {
           try {
-            const userData = { name, carModels };
+            const userData = { name, carModels, phonenumber };
             await AsyncStorage.setItem('userData', JSON.stringify(userData));
             console.log('User data saved to AsyncStorage:', userData);
+
+            const { data, error } = await supabase.from('user_profiles').insert([
+              {
+                phonenumber: phonenumber,
+                fullname: name,
+                carmodels: carModels,
+              }
+            ]);
+              if (error) {
+                console.error('Error saving details:', error.message);
+              } else {
+                console.log('Details saved successfully:', data);
+              }
+            
           } catch (error) {
             console.error('Error saving user data to AsyncStorage:', error);
           }
-            navigation.navigate('homeScreen',{name: name, carModels: carModels});
-            console.log(carModels);
+            navigation.navigate('homeScreen');
         }
     }
 

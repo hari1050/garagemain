@@ -3,13 +3,15 @@ import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image,
 import { useNavigation, useRoute } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Calendar, CaretLeft } from 'phosphor-react-native';
+import supabase from '../supabaseConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function userCompleteDetails() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const {name} = route.params;
-    const [serviceDate, setserviceDate] = useState(new Date()); 
+    const { name,phonenumber,serviceDate, carModels, carPrices = []} = route.params;
     const [showDatePicker, setShowDatePicker] = useState(false); 
     const [registrationNumber, setRegistrationNumber] = useState('');
     const [address, setAddress] = useState('');
@@ -19,15 +21,74 @@ export default function userCompleteDetails() {
 
 
     const navigateToClassicService = () => {
-            navigation.navigate('classicService');
+      navigation.navigate('classicService');
     }
 
-    const navigateToConfirmation = () => {
-        navigation.navigate('bookingConfirmation',{name:name});
+    const navigateToConfirmation = async () => {
+      try {
+        console.log(phonenumber)
+        // Save user details in "user_profiles" table
+        const { data: usertableData, error: userError } = await supabase.from('user_profiles').update(
+          {
+            address: address,
+            user_dob: dob,
+            car_reg_no: registrationNumber,
+            Car_purchase_time: carPurchaseDate
+          }
+        )
+        .eq('phonenumber', phonenumber);
+    
+        if (userError) {
+          console.error('Error saving user details:', userError.message);
+          return;
+        }
+    
+        console.log('User details saved successfully:', usertableData);
+
+        const userData = {
+          address: address,
+          dob: dob,
+          car_reg_no: registrationNumber,
+          car_purchase_time: carPurchaseDate
+        };
+
+        // Store user data in AsyncStorage
+        await AsyncStorage.setItem('userData', JSON.stringify(userData));
+    
+        // Save order details in "order" table
+        const { data: orderData, error: orderError } = await supabase.from('service_orders_table').insert([
+          {
+            servicedate: serviceDate,
+            phonenumber: phonenumber,
+            fullname: name,
+            carmodel: carModels,
+            price: carPrices,
+            car_purchase_time: carPurchaseDate,
+            car_reg_no: registrationNumber
+          }
+        ]);
+    
+        if (orderError) {
+          console.error('Error saving order details:', orderError.message);
+          return;
+        }
+    
+        console.log('Order details saved successfully:', orderData);
+    
+        // Navigate to the booking confirmation screen
+        navigation.navigate('bookingConfirmation', {
+          name: name,
+          carModels: carModels,
+          carPrices: carPrices
+        });
+        
+      } catch (error) {
+        console.error('Error saving details:', error.message);
+      }
     }
 
     const navigateToProfile = () => {
-        navigation.navigate('homeScreen');
+      navigation.navigate('homeScreen');
     }
 
     const handleDateChange = (event, selectedDate) => {

@@ -6,7 +6,7 @@ export default function bookingConfirmation() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const {name} = route.params;
+    const { name, carModels, carPrices = []  } = route.params;
 
     const navigateToHome = () => {
         navigation.navigate('homeScreen',{name:name});

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
+import supabase from '../supabaseConfig'; // Import Supabase client
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function mobileAuth() {
 
@@ -9,7 +11,7 @@ export default function mobileAuth() {
     const [otpNumber, setOtpNumber] = useState('');
     const [agreeToTerms, setAgreeToTerms] = useState(false);
     const route = useRoute();
-    const { phoneNumber } = route.params;
+    const { phonenumber } = route.params;
     
     // const sendOtp = async () => {
     //     const fullPhoneNumber = '+91' + phoneNumber;
@@ -22,9 +24,42 @@ export default function mobileAuth() {
     //     }
     // }
 
-    const handleOtp = () => {
+    const handleOtp = async () => {
       if(otpNumber.length === 4){
-        navigation.navigate('nameAndCarDetails');
+        try {
+          // Check if the phone number exists in the user_profiles table
+          const { data, error } = await supabase
+              .from('user_profiles')
+              .select('*') // Fetch required columns
+              .eq('phonenumber', phonenumber)
+              .single();
+
+          if (error) {
+              console.log('no phone number');
+              navigation.navigate('nameAndCarDetails',{phonenumber:phonenumber});
+          }
+
+          else {
+              // Phone number exists, store user details in AsyncStorage
+              const userData = {
+                  id: data.id,
+                  name: data.fullname,
+                  phonenumber:data.phonenumber,
+                  carModels: data.carmodels,
+                  address: data.address,
+                  dob: data.user_dob,
+                  car_purchase_time: data.Car_purchase_time,
+                  car_reg_no: data.car_reg_no
+              };
+
+              // Store user data in AsyncStorage
+              await AsyncStorage.setItem('userData', JSON.stringify(userData));
+              // Navigate to the next screen
+              navigation.navigate('homeScreen');
+          }
+      } catch (error) {
+          console.error('Error:', error.message);
+      }
       }
     };
 
@@ -36,7 +71,7 @@ export default function mobileAuth() {
     const handleContinue = () => {
       if (agreeToTerms) {
         // Handle the continue action, e.g., navigate to the next screen or make an API call
-        console.log('Phone number:', phoneNumber);
+        console.log('Phone number:', phonenumber);
       } else {
         // Handle the case where terms are not agreed to
         alert('Please agree to the terms of use and privacy notice.');
@@ -50,13 +85,14 @@ export default function mobileAuth() {
         </TouchableOpacity>
         <Text style={styles.headerText}>What's the code</Text>
         <Text style={styles.subHeaderText}>
-          4 digit code has been sent to {phoneNumber}
+          4 digit code has been sent to {phonenumber}
         </Text>
         
         <TextInput
           style={styles.input}
           onChangeText={setOtpNumber}
           value={otpNumber}
+          maxLength={4} // Limits the input to 10 characters
           placeholder="OTP"
           keyboardType="phone-pad"
         />

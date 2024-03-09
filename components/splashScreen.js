@@ -33,6 +33,15 @@ export default function splashScreen() {
      }
     };
 
+    const handleSplash1 = async () => {
+      try {
+        await AsyncStorage.removeItem('userData');
+        console.log('UserData deleted successfully.');
+      } catch (error) {
+        console.error('Error deleting UserData:', error);
+      }   
+    }
+
   return (
     <View style={styles.container}>
       <Image
