@@ -9,7 +9,7 @@ export default function classicService() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const { name, carModels, carPrices = []  } = route.params;
+    const { name,phonenumber, carModels, carPrices = []} = route.params;
     const [serviceDate, setserviceDate] = useState(new Date()); // Set initial date to current date
     const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
 
@@ -18,15 +18,16 @@ export default function classicService() {
     //     navigation.navigate('homeScreen');
     // }
     const navigatetoHome = () => {
-        navigation.navigate('homeScreen',{name:name});
+        navigation.navigate('homeScreen');
     }
     const navigateToProfile = () => {
         navigation.navigate('homeScreen');
     }
 
     const handleBookService = () => {
-        navigation.navigate('userCompleteDetails',{name:name});
-    }
+        navigation.navigate('userCompleteDetails',{name:name, carModels:carModels, carPrices:carPrices, serviceDate:serviceDate, phonenumber:phonenumber});
+        console.log(carPrices)
+      }
 
     const handleDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || serviceDate;

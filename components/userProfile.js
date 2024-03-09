@@ -7,7 +7,7 @@ export default function userProfile() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const {name} = route.params;
+    const {name, phonenumber} = route.params;
 
 
     const navigateToHome = () => {
@@ -15,7 +15,7 @@ export default function userProfile() {
     }
 
     const navigateToEditProfile = () => {
-        navigation.navigate('editProfile',{name:name});
+        navigation.navigate('editProfile');
     }
 
 

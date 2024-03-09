@@ -3,6 +3,7 @@ import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image 
 import { useNavigation, useRoute } from '@react-navigation/native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 // import { Dropdown } from "react-native-material-dropdown";
 // import { Dropdown } from 'react-native-material-dropdown';
 
@@ -11,35 +12,49 @@ export default function homeScreen() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const { name, carModels } = route.params;
+    const [triggerFetch, setTriggerFetch] = useState(false);
+    const [name, setName] = useState('');
+    const [phonenumber, setPhoneNumber] = useState('')
+    const [carModels, setCarModels] = useState([])
     const [carPrices, setCarPrices] = useState([]);
 
-    const navigateToClassicService = () => {
-            navigation.navigate('classicService',{name:name, carModels:carModels, carPrices:carPrices});
-    }
-
-    const navigateToProfile = () => {
-        navigation.navigate('userProfile');
-    }
-
-    const navigateToEmergency = async () => {
-        try {
-            await AsyncStorage.removeItem('userData');
-            console.log('UserData deleted successfully.');
-          } catch (error) {
-            console.error('Error deleting UserData:', error);
-          }   
-    }
+    useFocusEffect(
+        React.useCallback(() => {
+            // This runs every time the screen comes into focus
+            setTriggerFetch(prev => !prev); // Toggle the trigger state
+        }, [])
+    );
 
     useEffect(() => {
+        const initializeUserData = async () => {
+          try {
+            const userDataString = await AsyncStorage.getItem('userData');
+            if (userDataString !== null) {
+              const userData = JSON.parse(userDataString);
+              console.log(userData.carModels)
+              setName(userData.name);
+              setCarModels(userData.carModels)
+              setPhoneNumber(userData.phonenumber);
+            }
+          } catch (error) {
+            console.error('Error retrieving user data from AsyncStorage:', error);
+          }
+        };
+    
+        initializeUserData();
+     }, []);
+
+     useEffect(() => {
         // Function to fetch prices based on carModels IDs
         const fetchPrices = async () => {
             try {
+                const carModelIds = carModels.map(model => model.id);
                 const { data, error } = await supabase
                     .from('Car_Model_Joined')
                     .select('Service_cost')
-                    .eq('Id', carModels.map(model => model.id)); // Fetch prices for car models IDs
-
+                    .in('Id', carModelIds); // Fetch prices for car models IDs
+                    console.log(carModels)
+                    console.log(name)
                 if (error) {
                     throw error;
                 }
@@ -52,7 +67,25 @@ export default function homeScreen() {
         };
 
         fetchPrices(); // Call fetchPrices function when component mounts
-    }, [carModels]);
+    }, [carModels, triggerFetch]);
+
+    const navigateToClassicService = () => {
+            navigation.navigate('classicService',{name:name, carModels:carModels, carPrices:carPrices, phonenumber:phonenumber});
+    }
+
+    const navigateToProfile = () => {
+        navigation.navigate('userProfile',{name:name, phonenumber:phonenumber});
+        console.log(phonenumber)
+    }
+
+    const navigateToEmergency = async () => {
+        try {
+            await AsyncStorage.removeItem('userData');
+            console.log('UserData deleted successfully.');
+          } catch (error) {
+            console.error('Error deleting UserData:', error);
+          }   
+    }
 
 
     return (
@@ -71,14 +104,14 @@ export default function homeScreen() {
                 {/* <Dropdown
             placeholder='Hyundai i20'
         /> */}
-                {carModels.map((model, index) => (
-                    <TouchableOpacity key={model.id} onPress={navigateToClassicService} style={styles.classicService}>
+                    {carModels.length > 0 && (
+                        <TouchableOpacity key={carModels[0].id} onPress={navigateToClassicService} style={styles.classicService}>
                         <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} />
                         <View style={styles.textOverlay}>
                             <View style={styles.priceTag}>
-                                {carPrices.length > 0 && carPrices[index] ? (
+                                {carPrices.length > 0 ? (
                                     <Text style={styles.priceText}>
-                                        Rs. {carPrices[index].Service_cost}
+                                        Rs. {carPrices.map(price => price.Service_cost).join(', ')}
                                     </Text>
                                 ) : (
                                     <Text style={styles.priceText}>N/A</Text>
@@ -90,7 +123,7 @@ export default function homeScreen() {
                             </View>
                         </View>
                     </TouchableOpacity>
-                ))}
+                )}
 
                 <View style={styles.classicService}>
                     <Image source={require('../assets/summerService.png')} style={styles.summerServiceImg} />

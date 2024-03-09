@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function mobileAuth() {
 
     const navigation = useNavigation();
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [phonenumber, setPhoneNumber] = useState('');
     const [agreeToTerms, setAgreeToTerms] = useState(false);
     
     // const sendOtp = async () => {
@@ -26,15 +26,25 @@ export default function mobileAuth() {
     // }
 
     const handlePhone = () => {
-      if(phoneNumber.length === 10){
-        navigation.navigate('otpverifyScreen',{ phoneNumber: phoneNumber });
+      if(phonenumber.length === 10){
+        navigation.navigate('otpverifyScreen',{ phonenumber: phonenumber });
       }
     };
+
+    const handlePhoneChange = (text) => {
+      // Allow only numbers
+      const numericValue = text.replace(/[^0-9]/g, "");
+      // Limit input to 10 numbers
+      if (numericValue.length <= 10) {
+          setPhoneNumber(numericValue || ''); // Ensure it's never null
+      }
+  };
+  
 
     const handleContinue = () => {
       if (agreeToTerms) {
         // Handle the continue action, e.g., navigate to the next screen or make an API call
-        console.log('Phone number:', phoneNumber);
+        console.log('Phone number:', phonenumber);
       } else {
         // Handle the case where terms are not agreed to
         alert('Please agree to the terms of use and privacy notice.');
@@ -50,8 +60,9 @@ export default function mobileAuth() {
         
         <TextInput
           style={styles.input}
-          onChangeText={setPhoneNumber}
-          value={phoneNumber}
+          onChangeText={handlePhoneChange}
+          value={phonenumber}
+          maxLength={10} // Limits the input to 10 characters
           placeholder="Enter your phone number"
           keyboardType="phone-pad"
         />
@@ -68,7 +79,7 @@ export default function mobileAuth() {
         </View> */}
   
         <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.customButton, phoneNumber.length === 10 ? {} : styles.disabledButton]} onPress={handlePhone}>
+            <TouchableOpacity style={[styles.customButton, phonenumber.length === 10 ? {} : styles.disabledButton]} onPress={handlePhone}>
               <Text style={styles.buttonText}>Continue</Text>
             </TouchableOpacity>
           </View>
