@@ -78,7 +78,10 @@ export default function winterService() {
                   </View>
                   <View style={styles.bottomTextContainer}>
                       <Text style={styles.serviceText}>Winter Service</Text>
-                      <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Sem rhoncus sed scelerisque eros. Sed sed suspendisse enim cursus. Vitae id pharetra amet in libero integer fringilla sed. Vitae scelerisque bibendum interdum scelerisque elementum. Consequat iaculis non ut feugiat tellus eros. Consectetur porttitor habitant pharetra sit faucibus sit. Sit libero tincidunt elit sit interdum metus eget..</Text>
+                      <Text style={styles.serviceDescription}>{'\u2022'} Classic Service {'\n'}
+                        {'\u2022'} Headlights and fog lamps are optimised {'\n'}
+                        {'\u2022'} Engine coolant is checked for concentration and topped up{'\n'}
+                        {'\u2022'} Cabin heater is checked for blockage or valve issues.{'\n'}</Text>
                   </View>
               </View>
           </View>

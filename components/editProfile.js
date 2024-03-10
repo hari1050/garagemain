@@ -260,6 +260,16 @@ export default function editProfile() {
       padding: 20,
       backgroundColor: '#fff',
     },
+    suggestionsContainer:{
+        backgroundColor:'#fff',
+        borderRadius:4,
+        borderWidth:1,
+        borderColor:'#ddd',
+        elevation:4,
+      },
+      suggestion:{
+        padding:6,
+      },
     buttonContainer:{
       flex: 1,
       justifyContent: 'flex-end', 

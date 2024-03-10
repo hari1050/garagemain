@@ -78,7 +78,14 @@ export default function monsoonService() {
                   </View>
                   <View style={styles.bottomTextContainer}>
                       <Text style={styles.serviceText}>Monsoon Service</Text>
-                      <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Sem rhoncus sed scelerisque eros. Sed sed suspendisse enim cursus. Vitae id pharetra amet in libero integer fringilla sed. Vitae scelerisque bibendum interdum scelerisque elementum. Consequat iaculis non ut feugiat tellus eros. Consectetur porttitor habitant pharetra sit faucibus sit. Sit libero tincidunt elit sit interdum metus eget..</Text>
+                      <Text style={styles.serviceDescription}>{'\u2022'} Classic Service {'\n'}
+                        {'\u2022'} Wipers are replaced {'\n'}
+                        {'\u2022'} Tyres are checked for thread wear{'\n'}
+                        {'\u2022'} Tyres are checked for thread wear{'\n'}
+                        {'\u2022'}  Additional wiper washer fluid is provided. {'\n'}
+                        {'\u2022'}  Anti Rat treatment on demand {'\n'}
+                        {'\u2022'}  Underbody coating using rubber based paint for anti rust and chipping protection. {'\n'}
+                        {'\u2022'} Joints are greased with water resistant grease.{'\n'}</Text>
                   </View>
               </View>
           </View>

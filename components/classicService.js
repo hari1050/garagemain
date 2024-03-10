@@ -79,7 +79,22 @@ export default function classicService() {
                   </View>
                   <View style={styles.bottomTextContainer}>
                       <Text style={styles.serviceText}>Classic Service</Text>
-                      <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Sem rhoncus sed scelerisque eros. Sed sed suspendisse enim cursus. Vitae id pharetra amet in libero integer fringilla sed. Vitae scelerisque bibendum interdum scelerisque elementum. Consequat iaculis non ut feugiat tellus eros. Consectetur porttitor habitant pharetra sit faucibus sit. Sit libero tincidunt elit sit interdum metus eget..</Text>
+                      <Text style={styles.serviceDescription}>
+                        {'\u2022'} Genuine oil and engine air filter replacement{'\n'}
+                        {'\u2022'} Brake assembly opened and cleaned completely{'\n'}
+                        {'\u2022'} Up to 200 ml of brake oil, coolant, and steering oil (if equipped) topped up{'\n'}
+                        {'\u2022'} Bolts of critical components checked and tightened{'\n'}
+                        {'\u2022'} Identification and communication of parts requiring change due to wear and tear{'\n'}
+                        {'\u2022'} Washing and interior cleaning of the car (engine bay not washed for critical electronics){'\n'}
+                        {'\u2022'} Optional engine oil replacement at an additional cost (customer may buy oil separately){'\n'}
+                        {'\u2022'} Lubrication of window channels, greasing of door hinges, and seat rails{'\n'}
+                        {'\u2022'} Testing of all lights and bulbs for functionality{'\n'}
+                        {'\u2022'} Checking battery health{'\n'}
+                        {'\u2022'} Checking AC performance with a thermometer{'\n'}
+                        {'\u2022'} Inspection of tires for tread wear; alignment and balancing available at an extra discounted rate{'\n'}
+                        {'\u2022'} For BS4 cars, checking and cleaning (or replacement if necessary) of spark plugs{'\n'}
+                        {'\u2022'} Checking spare tire for air pressure; lubrication and storage of tools
+                      </Text>
                   </View>
               </View>
           </View>

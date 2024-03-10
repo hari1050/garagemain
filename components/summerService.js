@@ -78,7 +78,11 @@ export default function summerService() {
                   </View>
                   <View style={styles.bottomTextContainer}>
                       <Text style={styles.serviceText}>Summer Service</Text>
-                      <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Sem rhoncus sed scelerisque eros. Sed sed suspendisse enim cursus. Vitae id pharetra amet in libero integer fringilla sed. Vitae scelerisque bibendum interdum scelerisque elementum. Consequat iaculis non ut feugiat tellus eros. Consectetur porttitor habitant pharetra sit faucibus sit. Sit libero tincidunt elit sit interdum metus eget..</Text>
+                      <Text style={styles.serviceDescription}>{'\u2022'} Classic Service {'\n'}
+                        {'\u2022'} Engine coolant topped up{'\n'}
+                        {'\u2022'} AC air filter replaced{'\n'}
+                        {'\u2022'} Ac performance is checked and enhanced using gas top up.{'\n'}
+                        </Text>
                   </View>
               </View>
           </View>

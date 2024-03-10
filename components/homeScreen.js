@@ -118,7 +118,7 @@ export default function homeScreen() {
                             </View>
                             <View style={styles.bottomTextContainer}>
                                 <Text style={styles.serviceText}>Classic Service</Text>
-                                <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                                <Text style={styles.serviceDescription}>A package that makes you car ready for road trips, 6+ months of daily use or ready for any occasion with regular maintenance.</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -133,7 +133,7 @@ export default function homeScreen() {
                             </View>
                             <View style={styles.bottomTextContainer}>
                                 <Text style={styles.serviceText}>Summer Service</Text>
-                                <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                                <Text style={styles.serviceDescription}>Free Ice pack and some accessory related to keeping drinks cool</Text>
                             </View>
                         </View>
                     </View>
@@ -147,7 +147,7 @@ export default function homeScreen() {
                             </View>
                             <View style={styles.bottomTextContainer}>
                                 <Text style={styles.serviceText}>Monsoon Service</Text>
-                                <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                                <Text style={styles.serviceDescription}>Free, anti-fog window treatment and CCC branded umbrella.</Text>
                             </View>
                         </View>
                     </View>
@@ -161,7 +161,7 @@ export default function homeScreen() {
                             </View>
                             <View style={styles.bottomTextContainer}>
                                 <Text style={styles.serviceText}>Winter Service</Text>
-                                <Text style={styles.serviceDescription}>Lorem ipsum dolor sit amet consectetur. Faucibus lorem mi etiam.</Text>
+                                <Text style={styles.serviceDescription}>Free hot chocolate drink.</Text>
                             </View>
                         </View>
                     </View>
