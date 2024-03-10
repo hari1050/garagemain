@@ -28,6 +28,7 @@ export default function editProfile() {
       const loadUserData = async () => {
           try {
               const userDataString = await AsyncStorage.getItem('userData');
+              console.log(phonenumber)
               if (userDataString !== null) {
                   const userData = JSON.parse(userDataString);
                   console.log(userData.name)
@@ -120,7 +121,7 @@ export default function editProfile() {
           // Store updated userData in AsyncStorage
           await AsyncStorage.setItem('userData', JSON.stringify(updatedUserData));
 
-          navigation.navigate('userProfile', { name: name });
+          navigation.navigate('userProfile', { name: name, phonenumber:phonenumber });
       } catch (error) {
           console.error('Error saving user data to AsyncStorage:', error);
       }
