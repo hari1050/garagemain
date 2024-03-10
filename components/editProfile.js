@@ -103,15 +103,23 @@ export default function editProfile() {
       
           console.log('User details saved successfully:', usertableData);
                 // Save changes to AsyncStorage
+          // Fetch existing userData from AsyncStorage
+          let existingUserData = await AsyncStorage.getItem('userData');
+          existingUserData = JSON.parse(existingUserData) || {}; // Parse the existing data or initialize as empty object if it doesn't exist
 
-          const userData = {
-            carModels: carModels,
-            address: address,
-            dob: dob,
-            car_reg_no: registrationNumber,
-            car_purchase_time: carPurchaseDate
+          // Merge existing data with new data
+          const updatedUserData = {
+              ...existingUserData, // Keep existing data
+              carModels: carModels || existingUserData.carModels, // Update carModels if provided, otherwise keep existing
+              address: address || existingUserData.address, // Update address if provided, otherwise keep existing
+              dob: dob || existingUserData.dob, // Update dob if provided, otherwise keep existing
+              car_reg_no: registrationNumber || existingUserData.car_reg_no, // Update car_reg_no if provided, otherwise keep existing
+              car_purchase_time: carPurchaseDate || existingUserData.car_purchase_time // Update car_purchase_time if provided, otherwise keep existing
           };
-          await AsyncStorage.setItem('userData', JSON.stringify(userData));
+
+          // Store updated userData in AsyncStorage
+          await AsyncStorage.setItem('userData', JSON.stringify(updatedUserData));
+
           navigation.navigate('userProfile', { name: name });
       } catch (error) {
           console.error('Error saving user data to AsyncStorage:', error);

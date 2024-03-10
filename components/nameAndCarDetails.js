@@ -23,7 +23,11 @@ export default function nameAndCarDetails() {
     const navigateHome = async () => {
         if(name.length != 0) {
           try {
-            const userData = { name, carModels, phonenumber };
+            const userData = { 
+              name:name, 
+              carModels:carModels,
+              phonenumber: phonenumber
+            };
             await AsyncStorage.setItem('userData', JSON.stringify(userData));
             console.log('User data saved to AsyncStorage:', userData);
 

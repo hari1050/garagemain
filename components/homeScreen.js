@@ -1,19 +1,18 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
-
 export default function homeScreen() {
-
     const navigation = useNavigation();
     const route = useRoute();
     const [triggerFetch, setTriggerFetch] = useState(false);
     const [name, setName] = useState('');
-    const [phonenumber, setPhoneNumber] = useState('')
-    const [carModels, setCarModels] = useState([])
+    const [phonenumber, setPhoneNumber] = useState('');
+    const [servicetype, setServiceType] = useState('');
+    const [carModels, setCarModels] = useState([]);
     const [carPrices, setCarPrices] = useState([]);
 
     useFocusEffect(
@@ -24,80 +23,68 @@ export default function homeScreen() {
 
     useEffect(() => {
         const initializeUserData = async () => {
-          try {
-            const userDataString = await AsyncStorage.getItem('userData');
-            if (userDataString !== null) {
-              const userData = JSON.parse(userDataString);
-              console.log(userData.carModels)
-              setName(userData.name);
-              setCarModels(userData.carModels)
-              setPhoneNumber(userData.phonenumber);
+            try {
+                const userDataString = await AsyncStorage.getItem('userData');
+                if (userDataString !== null) {
+                    const userData = JSON.parse(userDataString);
+                    console.log(userData.carModels);
+                    setName(userData.name);
+                    setCarModels(userData.carModels);
+                    setPhoneNumber(userData.phonenumber);
+                }
+            } catch (error) {
+                console.log("Error retrieving user data from AsyncStorage:", error);
             }
-    const navigateToClassicService = () => {
-            navigation.navigate('classicService',{name:name, carModels:carModels, carPrices:carPrices});
-    }
+        };
 
-    const navigateToSummerService = () => {
-        navigation.navigate('summerService',{name:name, carModels:carModels, carPrices:carPrices});
-    }
+        initializeUserData();
+    }, [triggerFetch]); // Add triggerFetch as a dependency
 
-    const navigateToWinterService = () => {
-        navigation.navigate('winterService',{name:name, carModels:carModels, carPrices:carPrices});
-    }
-
-    const navigateToMonsoonService = () => {
-        navigation.navigate('monsoonService',{name:name, carModels:carModels, carPrices:carPrices});
-    }
-
-    const navigateToProfile = () => {
-        navigation.navigate('userProfile');
-    }
-
-    const navigateToEmergency = async () => {
-      navigation.navigate('Emergency',{name:name, carModels:carModels});
-    
-     useEffect(() => {
-        // Function to fetch prices based on carModels IDs
+    useEffect(() => {
         const fetchPrices = async () => {
             try {
                 const carModelIds = carModels.map(model => model.id);
                 const { data, error } = await supabase
                     .from('Car_Model_Joined')
                     .select('Service_cost')
-                    .in('Id', carModelIds); // Fetch prices for car models IDs
-                    console.log(carModels)
-                    console.log(name)
+                    .in('Id', carModelIds);
+
                 if (error) {
                     throw error;
                 }
 
-                // Update state with fetched prices
-                setCarPrices(data);
+                setCarPrices(data || []);
             } catch (error) {
                 console.error('Error fetching prices:', error.message);
             }
         };
 
-        fetchPrices(); // Call fetchPrices function when component mounts
-    }, [carModels, triggerFetch]);
+        fetchPrices();
+    }, [carModels]); // Fetch prices when carModels change
 
     const navigateToClassicService = () => {
-            navigation.navigate('classicService',{name:name, carModels:carModels, carPrices:carPrices, phonenumber:phonenumber});
+        navigation.navigate('classicService', { name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype: "Classicservice" });
+    };
+
+    const navigateToSummerService = () => {
+        navigation.navigate('summerService',{ name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype:"Summerservice" });
+    }
+
+    const navigateToWinterService = () => {
+        navigation.navigate('winterService',{ name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype:"Winterservice" });
+    }
+
+    const navigateToMonsoonService = () => {
+        navigation.navigate('monsoonService',{ name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype:"Monsoonservice" });
     }
 
     const navigateToProfile = () => {
-        navigation.navigate('userProfile',{name:name, phonenumber:phonenumber});
-        console.log(phonenumber)
-    }
+        navigation.navigate('userProfile', { name: name, phonenumber: phonenumber });
+    };
 
     const navigateToEmergency = async () => {
-        try {
-            await AsyncStorage.removeItem('userData');
-            console.log('UserData deleted successfully.');
-          } catch (error) {
-            console.error('Error deleting UserData:', error);
-          }   
-    }
+        navigation.navigate('Emergency',{name:name, carModels:carModels, phonenumber:phonenumber});
+    };
 
 
     return (
@@ -136,7 +123,7 @@ export default function homeScreen() {
                         </View>
                     </TouchableOpacity>
                 )}
-                ))}
+
                 <TouchableOpacity onPress={navigateToSummerService}>
                     <View style={styles.classicService}>
                         <Image source={require('../assets/summerService.png')} style={styles.summerServiceImg} />
@@ -300,4 +287,4 @@ const styles = StyleSheet.create({
         left: 18,
         right: 0,
     },
-});
+})

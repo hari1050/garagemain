@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -11,7 +11,7 @@ export default function userCompleteDetails() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const { name,phonenumber,serviceDate, carModels, carPrices = []} = route.params;
+    const { name,phonenumber,serviceDate, carModels, servicetype, carPrices = []} = route.params;
     const [showDatePicker, setShowDatePicker] = useState(false); 
     const [registrationNumber, setRegistrationNumber] = useState('');
     const [address, setAddress] = useState('');
@@ -19,6 +19,24 @@ export default function userCompleteDetails() {
     const [dob,setDob] = useState(new Date());
     const [carModel, setCarModel] = useState('');
 
+
+    useEffect(() => {
+      const fetchData = async () => {
+          try {
+              const userDataString = await AsyncStorage.getItem('userData');
+               console.log(servicetype)
+              if (userDataString !== null) {
+                  const userData = JSON.parse(userDataString);
+                  setRegistrationNumber(userData.car_reg_no || ''); // Populate registration number
+                  setAddress(userData.address || ''); // Populate address
+              }
+          } catch (error) {
+              console.error('Error fetching user data:', error);
+          }
+      };
+
+      fetchData(); // Fetch data when component mounts
+  }, []);
 
     const navigateToClassicService = () => {
       navigation.navigate('classicService');
@@ -45,19 +63,24 @@ export default function userCompleteDetails() {
     
         console.log('User details saved successfully:', usertableData);
 
-        const userData = {
-          address: address,
-          dob: dob,
-          car_reg_no: registrationNumber,
-          car_purchase_time: carPurchaseDate
-        };
+        let existingUserData = await AsyncStorage.getItem('userData');
+        existingUserData = JSON.parse(existingUserData) || {}; // Parse the existing data or initialize as empty object if it doesn't exist
 
-        // Store user data in AsyncStorage
-        await AsyncStorage.setItem('userData', JSON.stringify(userData));
+        // Merge existing data with new data
+        const updatedUserData = {
+            ...existingUserData, // Keep existing data
+            address: address || existingUserData.address, // Update address if provided, otherwise keep existing
+            dob: dob || existingUserData.dob, // Update dob if provided, otherwise keep existing
+            car_reg_no: registrationNumber || existingUserData.car_reg_no, // Update car_reg_no if provided, otherwise keep existing
+            car_purchase_time: carPurchaseDate || existingUserData.car_purchase_time // Update car_purchase_time if provided, otherwise keep existing
+        };
+        // Store updated userData in AsyncStorage
+        await AsyncStorage.setItem('userData', JSON.stringify(updatedUserData));
     
         // Save order details in "order" table
         const { data: orderData, error: orderError } = await supabase.from('service_orders_table').insert([
           {
+            servicetype: servicetype,
             servicedate: serviceDate,
             phonenumber: phonenumber,
             fullname: name,

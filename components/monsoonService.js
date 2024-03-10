@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 // import { Dropdown } from "react-native-material-dropdown";
@@ -9,14 +9,14 @@ export default function monsoonService() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const { name, carModels, carPrices = []  } = route.params;
+    const { name,phonenumber, carModels, servicetype, carPrices = []} = route.params;
     const [serviceDate, setserviceDate] = useState(new Date()); // Set initial date to current date
     const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
 
-
-    // const navigateToClassicService = () => {
-    //     navigation.navigate('homeScreen');
-    // }
+    useEffect(() => {
+      console.log(servicetype);
+  }, []); // Empty array means this effect runs once on mount  
+    
     const navigatetoHome = () => {
         navigation.navigate('homeScreen',{name:name});
     }
@@ -25,7 +25,7 @@ export default function monsoonService() {
     }
 
     const handleBookService = () => {
-        navigation.navigate('userCompleteDetails',{name:name});
+      navigation.navigate('userCompleteDetails',{name:name, carModels:carModels, carPrices:carPrices, servicetype:servicetype, serviceDate:serviceDate, phonenumber:phonenumber});
     }
 
     const today = new Date();
