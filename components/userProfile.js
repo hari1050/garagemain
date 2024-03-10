@@ -81,7 +81,7 @@ export default function userProfile() {
                             <Text style={styles.label}>Date:</Text>
                             <Text style={styles.value}>{booking.servicedate}</Text>
                         </View>
-                        <View style={styles.row}>
+                        <View style={styles.carModel}>
                             <Text style={styles.label}>Car Model:</Text>
                             <Text style={styles.value}>{booking.carmodel[0].name}</Text>
                         </View>
@@ -146,6 +146,10 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#2C152A',
     fontSize: 18,
+  },
+  carModel: {
+    paddingTop:8,
+    paddingBottom:8,
   },
   secondaryButton: {
     borderWidth:1,
