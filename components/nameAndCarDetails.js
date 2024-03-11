@@ -116,7 +116,7 @@ export default function nameAndCarDetails() {
             value={carModel.name}
             onChangeText={(value) => handleCarModelChange(index, value)}
           />
-          {suggestions.length > 0 ? (
+          {suggestions.length > 0 && carModel.name.length > 1 ? (
             <ScrollView style={styles.suggestionsContainer}>
               {suggestions.map((suggestion, sIndex) => (
                 <TouchableOpacity key={sIndex} onPress={() => selectSuggestion(index, suggestion)}>

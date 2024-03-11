@@ -128,7 +128,7 @@ export default function editProfile() {
   };
 
     const navigateToProfile = () => {
-        navigation.navigate('userProfile',{name:name});
+        navigation.navigate('userProfile',{name:name, phonenumber:phonenumber});
     }
 
     const handleDateChange = (event, selectedDate) => {
@@ -180,7 +180,7 @@ export default function editProfile() {
                 value={carModel.name}
                 onChangeText={(value) => handleCarModelChange(index, value)}
               />
-              {suggestions.length > 0 && (
+              {suggestions.length > 0 && carModel.name.length > 1 && (
                 <ScrollView style={styles.suggestionsContainer}>
                   {suggestions.map((suggestion, sIndex) => (
                     <TouchableOpacity key={sIndex} onPress={() => selectSuggestion(index, suggestion)}>
