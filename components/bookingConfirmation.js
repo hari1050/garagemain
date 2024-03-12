@@ -6,14 +6,14 @@ export default function bookingConfirmation() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const { name, carModels, carPrices = []  } = route.params;
+    const { name, phonenumber} = route.params;
 
     const navigateToHome = () => {
         navigation.navigate('homeScreen',{name:name});
     }
 
     const navigateToProfile = () => {
-        navigation.navigate('userProfile',{name:name});
+        navigation.navigate('userProfile',{name:name , phonenumber:phonenumber});
     }
 
 

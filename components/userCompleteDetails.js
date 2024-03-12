@@ -101,8 +101,7 @@ export default function userCompleteDetails() {
         // Navigate to the booking confirmation screen
         navigation.navigate('bookingConfirmation', {
           name: name,
-          carModels: carModels,
-          carPrices: carPrices
+          phonenumber:phonenumber
         });
         
       } catch (error) {
