@@ -124,7 +124,7 @@ export default function homeScreen() {
                     </TouchableOpacity>
                 )}
 
-                <TouchableOpacity onPress={navigateToSummerService}>
+                {/* <TouchableOpacity onPress={navigateToSummerService}>
                     <View style={styles.classicService}>
                         <Image source={require('../assets/summerService.png')} style={styles.summerServiceImg} />
                         <View style={styles.textOverlay}>
@@ -165,7 +165,7 @@ export default function homeScreen() {
                             </View>
                         </View>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </ScrollView>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.customButton} onPress={navigateToEmergency}>

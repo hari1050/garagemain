@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 // import { Dropdown } from "react-native-material-dropdown";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Calendar, CaretRight, CaretLeft } from 'phosphor-react-native';
+import { Calendar, CaretRight, CaretLeft, PlusCircle } from 'phosphor-react-native';
+import supabase from '../supabaseConfig';
 
 export default function classicService() {
 
@@ -12,11 +13,49 @@ export default function classicService() {
     const { name,phonenumber, carModels, servicetype, carPrices = []} = route.params;
     const [serviceDate, setserviceDate] = useState(new Date()); // Set initial date to current date
     const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
+    const [summerServiceAdded, setSummerServiceAdded] = useState(false);
+    const [totalPrice, setTotalPrice] = useState(carPrices.length > 0 ? carPrices[0].Service_cost : 0);
+    const summerServiceCost = 1500.00;
+    const [countOFslots, setCountOFslots] = useState(0);
+
+    useEffect(()=> {
+      getCountOfSlot();
+      
+    },[]);
+
+    const handleSummerServie = () => {
+      const numericTotalPrice = parseFloat(totalPrice.replace(/,/g, ''));
+      if(!summerServiceAdded){
+        setSummerServiceAdded(true);
+        const updatedTotalPrice = numericTotalPrice + parseFloat(summerServiceCost);
+        setTotalPrice(updatedTotalPrice.toFixed(2));
+      } else if(summerServiceAdded){
+        console.log(totalPrice);
+        setSummerServiceAdded(false);
+        const updatedTotalPrice = numericTotalPrice - parseFloat(summerServiceCost);
+        setTotalPrice(updatedTotalPrice.toFixed(2));
+      }
+    }
+
+    const getCountOfSlot = async() => {
+      try {
+        const dateNow = new Date();
+        dateNow.setHours(0,0,0,0);
+        const year = dateNow.getFullYear();
+        const month = String(dateNow.getMonth() + 1).padStart(2, '0');
+        const day = String(dateNow.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        const { count } = await supabase
+          .from('service_orders_table')
+          .select('count', { count: 'exact' })
+          .eq('servicedate', formattedDate);
+          setCountOFslots(count);
+      } catch(error){
+        console.log(error.message);
+      }
+    }
 
 
-    // const navigateToClassicService = () => {
-    //     navigation.navigate('homeScreen');
-    // }
     const navigatetoHome = () => {
         navigation.navigate('homeScreen');
     }
@@ -25,12 +64,20 @@ export default function classicService() {
     }
 
     const handleBookService = () => {
+        carPrices[0].Service_cost = totalPrice;
         navigation.navigate('userCompleteDetails',{name:name, carModels:carModels, carPrices:carPrices, servicetype:servicetype, serviceDate:serviceDate, phonenumber:phonenumber});
         console.log(carPrices)
       }
 
-    const today = new Date();
-    today.setHours(0,0,0,0);
+      const today = new Date();
+      today.setHours(0,0,0,0);
+
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+
+      console.log(tomorrow);
+
 
     const handleDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || serviceDate;
@@ -69,12 +116,17 @@ export default function classicService() {
                     mode="date"
                     display="default"
                     onChange={handleDateChange}
-                    minimumDate={today}
+                    minimumDate={countOFslots > 50 ? tomorrow : today}
                 />
                     )}
+                  <TouchableOpacity style={styles.summerService} onPress={handleSummerServie}>
+                    <Text>Add Summer Service worth Rs.1500</Text>
+                    <PlusCircle></PlusCircle>
+                  </TouchableOpacity>
                   <View style={styles.priceTag}>
                       <Text style={styles.priceText}>
-                      Rs. {carPrices.length > 0 ? carPrices[0].Service_cost : 'N/A'}
+                      Rs. {totalPrice === null ? 'N/A': totalPrice}
+                      {/* Rs. {carPrices.length > 0 ? carPrices[0].Service_cost : 'N/A'} */}
                       </Text>
                   </View>
                   <View style={styles.bottomTextContainer}>
@@ -122,6 +174,18 @@ export default function classicService() {
     caretLeft: {
         marginTop:0,
         marginBottom:20,
+    },
+    summerService:{
+      flex:1,
+      flexDirection:'row',
+      justifyContent:'space-between',
+      alignContent:'center',
+      padding:16,
+      width: '98%',
+      borderWidth:1,
+      borderRadius:12,
+      borderColor:'#000',
+      marginTop:28,
     },
     header: {
         paddingBottom:10,
