@@ -1,12 +1,31 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
+import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function bookingConfirmation() {
 
     const navigation = useNavigation();
     const route = useRoute();
     const { name, phonenumber} = route.params;
+
+    useFocusEffect(
+      React.useCallback(() => {
+          const onBackPress = () => {
+              // Return true to indicate that we've handled the back press
+              // and don't want the default behavior to occur
+              return true;
+          };
+
+          // Add listener for the hardware back button
+          BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+          // Remove listener when component is unfocused or unmounted
+          return () => {
+              BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+          };
+      }, [])
+  );
 
     const navigateToHome = () => {
         navigation.navigate('homeScreen',{name:name});
@@ -50,6 +69,7 @@ export default function bookingConfirmation() {
     container: {
       flexGrow: 1,
       padding: 20,
+      paddingTop: 60,
       backgroundColor: '#fff',
     },
     header: {

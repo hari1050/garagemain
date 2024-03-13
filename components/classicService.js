@@ -5,14 +5,23 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Calendar, CaretRight, CaretLeft, PlusCircle } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function classicService() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const { name,phonenumber, carModels, servicetype, carPrices = []} = route.params;
-    const [serviceDate, setserviceDate] = useState(new Date()); // Set initial date to current date
-    const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
+    const [name, setName] = useState('');
+    const [phonenumber, setPhoneNumber] = useState('');
+    const [carModels, setCarModels] = useState([]);
+    const {servicetype, carPrices = []} = route.params;
+    const [serviceDate, setserviceDate] = useState(() => {
+      // Create a new Date object for the current date with the time set to 12 PM (noon)
+      const currentDate = new Date();
+      currentDate.setHours(12, 0, 0, 0);
+      return currentDate;
+    });
+        const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
     const [summerServiceAdded, setSummerServiceAdded] = useState(false);
     const [totalPrice, setTotalPrice] = useState(carPrices.length > 0 ? carPrices[0].Service_cost : 0);
     const summerServiceCost = 1500.00;
@@ -22,6 +31,24 @@ export default function classicService() {
       getCountOfSlot();
       
     },[]);
+
+    useEffect(() => {
+      const initializeUserData = async () => {
+          try {
+              const userDataString = await AsyncStorage.getItem('userData');
+              if (userDataString !== null) {
+                  const userData = JSON.parse(userDataString);
+                  setName(userData.name);
+                  setCarModels(userData.carModels);
+                  setPhoneNumber(userData.phonenumber);
+              }
+          } catch (error) {
+              console.log("Error retrieving user data from AsyncStorage:", error);
+          }
+      };
+
+      initializeUserData();
+    }, []);
 
     const handleSummerServie = () => {
       const numericTotalPrice = parseFloat(totalPrice.replace(/,/g, ''));
@@ -60,13 +87,13 @@ export default function classicService() {
         navigation.navigate('homeScreen');
     }
     const navigateToProfile = () => {
-        navigation.navigate('homeScreen');
+      navigation.navigate('userProfile', { name: name, phonenumber: phonenumber });
     }
 
     const handleBookService = () => {
         carPrices[0].Service_cost = totalPrice;
+        console.log(serviceDate)
         navigation.navigate('userCompleteDetails',{name:name, carModels:carModels, carPrices:carPrices, servicetype:servicetype, serviceDate:serviceDate, phonenumber:phonenumber});
-        console.log(carPrices)
       }
 
       const today = new Date();
@@ -76,14 +103,19 @@ export default function classicService() {
       tomorrow.setDate(tomorrow.getDate() + 1);
       tomorrow.setHours(0, 0, 0, 0);
 
-      console.log(tomorrow);
 
 
-    const handleDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || serviceDate;
+      const handleDateChange = (event, selectedDate) => {
+        // Set the time to 12 PM (noon)
+        const currentDate = new Date();
+        currentDate.setHours(12, 0, 0, 0);
+        console.log("Current Date:", currentDate);
         setShowDatePicker(false); 
-        setserviceDate(currentDate); 
+        setserviceDate(currentDate);
       };
+      
+      
+      
 
     return (
         <View style={styles.viewContainer}>
@@ -119,9 +151,14 @@ export default function classicService() {
                     minimumDate={countOFslots > 50 ? tomorrow : today}
                 />
                     )}
-                  <TouchableOpacity style={styles.summerService} onPress={handleSummerServie}>
-                    <Text>Add Summer Service worth Rs.1500</Text>
-                    <PlusCircle></PlusCircle>
+                  <TouchableOpacity 
+                    style={[styles.summerService, summerServiceAdded && { backgroundColor: 'green' }]} 
+                    onPress={handleSummerServie}
+                  >
+                    <Text style={[{ color: summerServiceAdded ? 'white' : 'black' }]}>
+                      {summerServiceAdded ? 'Summer Service Added' : 'Add Summer Service worth Rs.1500'}
+                    </Text>
+                    {summerServiceAdded ? null : <PlusCircle></PlusCircle>}
                   </TouchableOpacity>
                   <View style={styles.priceTag}>
                       <Text style={styles.priceText}>
@@ -145,7 +182,7 @@ export default function classicService() {
                         {'\u2022'} Checking AC performance with a thermometer{'\n'}
                         {'\u2022'} Inspection of tires for tread wear; alignment and balancing available at an extra discounted rate{'\n'}
                         {'\u2022'} For BS4 cars, checking and cleaning (or replacement if necessary) of spark plugs{'\n'}
-                        {'\u2022'} Checking spare tire for air pressure; lubrication and storage of tools
+                        {'\u2022'} Checking spare tire for air pressure; lubrication and storage of tools{'\n'}
                       </Text>
                   </View>
               </View>
@@ -169,24 +206,30 @@ export default function classicService() {
     container: {
       flexGrow: 1,
       padding: 20,
+      paddingTop: 60,
       backgroundColor: '#fff',
     },
     caretLeft: {
         marginTop:0,
         marginBottom:20,
     },
-    summerService:{
-      flex:1,
-      flexDirection:'row',
-      justifyContent:'space-between',
-      alignContent:'center',
-      padding:16,
+    summerService: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: 16,
       width: '98%',
-      borderWidth:1,
-      borderRadius:12,
-      borderColor:'#000',
-      marginTop:28,
+      borderWidth: 1,
+      borderRadius: 12,
+      borderColor: '#000',
+      marginTop: 28,
+      shadowColor: '#000',
+      shadowOpacity: 0.8, // Increased shadow opacity for a stronger embossed effect
+      shadowRadius: 8, // Increased shadow radius for a stronger embossed effect
+      shadowOffset: { width: 0, height: 8 }, // Increased shadow offset for a stronger embossed effect
+      backgroundColor: '#F5F5F5', // Lighter background color for embossed effect
     },
+    
     header: {
         paddingBottom:10,
         flexDirection: 'row',

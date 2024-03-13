@@ -13,12 +13,12 @@ export default function userCompleteDetails() {
     const route = useRoute();
     const { name,phonenumber,serviceDate, carModels, servicetype, carPrices = []} = route.params;
     const [showDatePicker, setShowDatePicker] = useState(false); 
+    const [showDobPicker, setShowDobPicker] = useState(false);
+    const [showCarPurchaseDatePicker, setShowCarPurchaseDatePicker] = useState(false);
     const [registrationNumber, setRegistrationNumber] = useState('');
     const [address, setAddress] = useState('');
-    const [carPurchaseDate, setCarPuchaseDate] = useState(new Date());
+    const [carPurchaseDate, setCarPurchaseDate] = useState(new Date());
     const [dob,setDob] = useState(new Date());
-    const [carModel, setCarModel] = useState('');
-
 
     useEffect(() => {
       const fetchData = async () => {
@@ -29,6 +29,15 @@ export default function userCompleteDetails() {
                   const userData = JSON.parse(userDataString);
                   setRegistrationNumber(userData.car_reg_no || ''); // Populate registration number
                   setAddress(userData.address || ''); // Populate address
+                  const carPurchaseTime = new Date(userData.car_purchase_time);
+                  if (!isNaN(carPurchaseTime.getTime())) {
+                    setCarPurchaseDate(carPurchaseTime);
+                  }
+                  const userDob = new Date(userData.dob);
+                  if (!isNaN(userDob.getTime())) {
+                    setDob(userDob);
+                  }
+                  
               }
           } catch (error) {
               console.error('Error fetching user data:', error);
@@ -39,12 +48,11 @@ export default function userCompleteDetails() {
   }, []);
 
     const navigateToClassicService = () => {
-      navigation.navigate('classicService');
+      navigation.navigate('classicService', {carPrices:carPrices, servicetype:servicetype, serviceDate:serviceDate});
     }
 
     const navigateToConfirmation = async () => {
       try {
-        console.log(phonenumber)
         // Save user details in "user_profiles" table
         const { data: usertableData, error: userError } = await supabase.from('user_profiles').update(
           {
@@ -109,15 +117,21 @@ export default function userCompleteDetails() {
       }
     }
 
-    const navigateToProfile = () => {
-      navigation.navigate('homeScreen');
-    }
-
-    const handleDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || serviceDate;
-        setShowDatePicker(false); 
-        setserviceDate(currentDate); 
-      };
+    const handleDateChange = (event, selectedDate, field) => {
+      console.log('Selected Date:', selectedDate);
+      const istOffset = 5.5; // IST offset in hours
+      const istDate = new Date(selectedDate.getTime() + (istOffset * 60 * 60 * 1000));
+      const currentDate = istDate || (field === 'dob' ? dob : carPurchaseDate);
+      console.log(istDate)
+      if (field === 'dob') {
+          setDob(currentDate);
+          setShowDobPicker(false);
+      } else if (field === 'carPurchaseDate') {
+          setCarPurchaseDate(currentDate);
+          setShowCarPurchaseDatePicker(false);
+      }
+    };
+  
 
     return (
         <View style={styles.viewContainer}>
@@ -127,13 +141,13 @@ export default function userCompleteDetails() {
             <CaretLeft></CaretLeft>
            </TouchableOpacity>
           <View style={styles.header}>
-              <Text style={styles.headerText}>Hi {name}</Text>
-              <TouchableOpacity onPress={navigateToProfile}>
+              <Text style={styles.headerText}>Please confirm your details</Text>
+              {/* <TouchableOpacity onPress={navigateToProfile}>
                   <Image
                   style={styles.profile}
                   source={require('../assets/profile.png')} 
                   />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
           </View>
           <View style={styles.inputFieldContainer}>
             <Text style={styles.inputLabel}>
@@ -163,35 +177,35 @@ export default function userCompleteDetails() {
 
           <View style={styles.inputFieldContainer}>
           <Text style={styles.inputLabel}>Car Purchase Month and Year</Text>
-                    <TouchableOpacity style={styles.calendar} onPress={() => setShowDatePicker(true)}>
+                    <TouchableOpacity style={styles.calendar} onPress={() => setShowCarPurchaseDatePicker(true)}>
                         <Text style={styles.input}>{carPurchaseDate.toDateString()}</Text>
                         <Calendar></Calendar>
                     </TouchableOpacity>
-                        {showDatePicker && (
+                        {showCarPurchaseDatePicker && (
                         <DateTimePicker
                         testID="dateTimePicker"
                         value={carPurchaseDate}
                         mode="date"
                         display="default"
-                        onChange={handleDateChange}
-                    />
+                        onChange={(event, selectedDate) => handleDateChange(event, selectedDate, 'carPurchaseDate')}
+                        />
                         )}
           </View>
 
           <View style={styles.inputFieldContainer}>
             <Text style={styles.inputLabel}>Date of Birth</Text>
-                    <TouchableOpacity style={styles.calendar} onPress={() => setShowDatePicker(true)}>
+                    <TouchableOpacity style={styles.calendar} onPress={() => setShowDobPicker(true)}>
                         <Text style={styles.input}>{dob.toDateString()}</Text>
                         <Calendar></Calendar>
                     </TouchableOpacity>
-                        {showDatePicker && (
+                        {showDobPicker && (
                         <DateTimePicker
                         testID="dateTimePicker"
                         value={dob}
                         mode="date"
                         display="default"
-                        onChange={handleDateChange}
-                    />
+                        onChange={(event, selectedDate) => handleDateChange(event, selectedDate, 'dob')}
+                        />
                         )}
           </View>
             
@@ -214,6 +228,7 @@ export default function userCompleteDetails() {
     container: {
       flexGrow: 1,
       padding: 20,
+      paddingTop: 60,
       backgroundColor: '#fff',
     },
     header: {
@@ -245,7 +260,8 @@ export default function userCompleteDetails() {
         paddingTop:8,
     },
     headerText: {
-      fontSize: 22,
+      paddingTop: 10,
+      fontSize: 18,
       fontWeight: 'bold',
       color: '#732753',
       textAlign: 'left',

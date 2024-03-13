@@ -91,6 +91,7 @@ export default function mobileAuth() {
     container: {
       flex: 1,
       padding: 20,
+      paddingTop: 60,
       backgroundColor: '#fff',
     },
     buttonContainer:{

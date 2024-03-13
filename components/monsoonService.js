@@ -108,6 +108,7 @@ export default function monsoonService() {
     container: {
       flexGrow: 1,
       padding: 20,
+      paddingTop: 60,
       backgroundColor: '#fff',
     },
     caretLeft: {

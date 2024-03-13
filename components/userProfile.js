@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
+import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,6 +12,21 @@ export default function userProfile() {
     const route = useRoute();
     const {name, phonenumber} = route.params;
     const [bookings, setBookings] = useState([]);
+
+    useFocusEffect(
+      React.useCallback(() => {
+        const onBackPress = () => {
+          navigation.navigate('homeScreen');
+          return true; // Prevent default back button behavior
+        };
+  
+        BackHandler.addEventListener('hardwareBackPress', onBackPress);
+  
+        return () => {
+          BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+        };
+      }, [navigation, name])
+   );
 
     useEffect(() => {
       const fetchBookings = async () => {
@@ -36,7 +52,7 @@ export default function userProfile() {
 
 
     const navigateToHome = () => {
-        navigation.navigate('homeScreen',{name:name});
+        navigation.navigate('homeScreen');
     }
 
     const navigateToEditProfile = () => {
@@ -118,6 +134,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 20,
+    paddingTop: 60,
     backgroundColor: '#fff',
   },
   caretLeft: {

@@ -13,8 +13,9 @@ export default function editProfile() {
     const route = useRoute();
     const [name, setName] = useState('');
     const [phonenumber, setPhoneNumber] = useState('');
-    const [serviceDate, setserviceDate] = useState(new Date()); 
     const [showDatePicker, setShowDatePicker] = useState(false); 
+    const [showDobPicker, setShowDobPicker] = useState(false);
+    const [showCarPurchaseDatePicker, setShowCarPurchaseDatePicker] = useState(false);
     const [registrationNumber, setRegistrationNumber] = useState('');
     const [address, setAddress] = useState('');
     const [carPurchaseDate, setCarPurchaseDate] = useState(new Date());
@@ -36,8 +37,14 @@ export default function editProfile() {
                   setPhoneNumber(userData.phonenumber);
                   setRegistrationNumber(userData.car_reg_no || '');
                   setAddress(userData.address || '');
-                  setCarPurchaseDate(new Date(userData.car_purchase_time) || new Date());
-                  setDob(new Date(userData.dob) || new Date());
+                  const carPurchaseTime = new Date(userData.car_purchase_time);
+                  if (!isNaN(carPurchaseTime.getTime())) {
+                    setCarPurchaseDate(carPurchaseTime);
+                  }
+                  const userDob = new Date(userData.dob);
+                  if (!isNaN(userDob.getTime())) {
+                    setDob(userDob);
+                  }
                   setCarModels(userData.carModels || '');
                   setcarModelname(carModels[0].name)
               }
@@ -85,7 +92,6 @@ export default function editProfile() {
     const navigateToConfirmation = async () => {
       try {
         // Save changes to table
-        console.log(phonenumber)
           const { data: usertableData, error: userError } = await supabase.from('user_profiles').update(
             {
               carmodels: carModels,
@@ -131,11 +137,23 @@ export default function editProfile() {
         navigation.navigate('userProfile',{name:name, phonenumber:phonenumber});
     }
 
-    const handleDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || serviceDate;
-        setShowDatePicker(false); 
-        setserviceDate(currentDate); 
-      };
+    const handleDateChange = (event, selectedDate, field) => {
+      console.log('Selected Date:', selectedDate);
+      // Create a new Date object with the same year, month, and day from selectedDate,
+      // and set the time to 12 PM (noon)
+      const currentDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 12, 0, 0);
+      
+      if (field === 'dob') {
+        setDob(currentDate);
+        setShowDobPicker(false);
+      } else if (field === 'carPurchaseDate') {
+        setCarPurchaseDate(currentDate);
+        setShowCarPurchaseDatePicker(false);
+      }
+    };
+    
+  
+  
 
     return (
         <View style={styles.viewContainer}>
@@ -207,35 +225,35 @@ export default function editProfile() {
 
           <View style={styles.inputFieldContainer}>
           <Text style={styles.inputLabel}>Car Purchase Month and Year</Text>
-                    <TouchableOpacity style={styles.calendar} onPress={() => setShowDatePicker(true)}>
+                    <TouchableOpacity style={styles.calendar} onPress={() => setShowCarPurchaseDatePicker(true)}>
                         <Text style={styles.input}>{carPurchaseDate.toDateString()}</Text>
                         <Calendar></Calendar>
                     </TouchableOpacity>
-                        {showDatePicker && (
+                        {showCarPurchaseDatePicker && (
                         <DateTimePicker
                         testID="dateTimePicker"
                         value={carPurchaseDate}
                         mode="date"
                         display="default"
-                        onChange={handleDateChange}
-                    />
+                        onChange={(event, selectedDate) => handleDateChange(event, selectedDate, 'carPurchaseDate')}
+                        />
                         )}
           </View>
 
           <View style={styles.inputFieldContainer}>
             <Text style={styles.inputLabel}>Date of Birth</Text>
-                    <TouchableOpacity style={styles.calendar} onPress={() => setShowDatePicker(true)}>
+                    <TouchableOpacity style={styles.calendar} onPress={() => setShowDobPicker(true)}>
                         <Text style={styles.input}>{dob.toDateString()}</Text>
                         <Calendar></Calendar>
                     </TouchableOpacity>
-                        {showDatePicker && (
+                        {showDobPicker && (
                         <DateTimePicker
                         testID="dateTimePicker"
                         value={dob}
                         mode="date"
                         display="default"
-                        onChange={handleDateChange}
-                    />
+                        onChange={(event, selectedDate) => handleDateChange(event, selectedDate, 'dob')}
+                        />
                         )}
           </View>
             
@@ -258,6 +276,7 @@ export default function editProfile() {
     container: {
       flexGrow: 1,
       padding: 20,
+      paddingTop: 60,
       backgroundColor: '#fff',
     },
     suggestionsContainer:{

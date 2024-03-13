@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,6 +18,20 @@ export default function homeScreen() {
     useFocusEffect(
         React.useCallback(() => {
             setTriggerFetch(prev => !prev); // Toggle the trigger state
+
+            const onBackPress = () => {
+                // Return true to indicate that we've handled the back press
+                // and don't want the default behavior to occur
+                return true;
+            };
+
+            // Add listener for the hardware back button
+            BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+            // Remove listener when component is unfocused or unmounted
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+            };
         }, [])
     );
 
@@ -185,6 +199,7 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         padding: 20,
+        paddingTop: 60,
         backgroundColor: '#fff',
     },
     header: {

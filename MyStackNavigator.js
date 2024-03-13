@@ -18,7 +18,7 @@ const Stack = createStackNavigator();
 
 function MyStackNavigator() {
   return (
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="splashScreen" component={splashScreen}/>
         <Stack.Screen name="phoneNoAuth" component={mobileAuth}/>
         <Stack.Screen name="otpverifyScreen" component={otpverifyScreen}/>

@@ -105,6 +105,7 @@ export default function summerService() {
     container: {
       flexGrow: 1,
       padding: 20,
+      paddingTop: 60,
       backgroundColor: '#fff',
     },
     caretLeft: {
