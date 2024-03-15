@@ -14,16 +14,6 @@ export default function mobileAuth() {
     const [phonenumber, setPhoneNumber] = useState('');
     const [agreeToTerms, setAgreeToTerms] = useState(false);
     
-    // const sendOtp = async () => {
-    //     const fullPhoneNumber = '+91' + phoneNumber;
-    //     try {
-    //         const recaptcha = new RecaptchaVerifier(auth,"recaptcha",{})
-    //         const confirmation = await signInWithPhoneNumber(auth,phoneNumber,recaptcha)
-    //         console.log(confirmation);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
 
     const handlePhone = () => {
       if(phonenumber.length === 10){

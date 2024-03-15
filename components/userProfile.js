@@ -115,6 +115,7 @@ export default function userProfile() {
                         </View>
                     </View>
                 ))}
+                <Text>{'\n\n'}</Text>
       </ScrollView>
       <View>
           <TouchableOpacity style={styles.logout} onPress={navigatelogout}>
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 20,
-    paddingTop: 60,
+    paddingTop: 30,
     backgroundColor: '#fff',
   },
   caretLeft: {

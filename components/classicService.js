@@ -206,7 +206,7 @@ export default function classicService() {
     container: {
       flexGrow: 1,
       padding: 20,
-      paddingTop: 60,
+      paddingTop: 30,
       backgroundColor: '#fff',
     },
     caretLeft: {

@@ -153,7 +153,7 @@ export default function nameAndCarDetails() {
     container: {
       flex: 1,
       padding: 20,
-      paddingTop: 60,
+      paddingTop: 30,
       backgroundColor: '#fff',
     },
     caretLeft: {

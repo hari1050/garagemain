@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     viewContainer: {
         flex: 1,
-        paddingTop: 60,
+        paddingTop: 30,
         backgroundColor: '#fff',
         position: 'relative',
     },
