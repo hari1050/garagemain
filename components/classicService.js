@@ -300,6 +300,7 @@ export default function classicService() {
       fontSize: 18,
     },
     customButton: {
+      alignSelf:'center',
       backgroundColor: '#2C152A', 
       height: 54,
       width: 350,
@@ -317,10 +318,8 @@ export default function classicService() {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      position: 'absolute', 
+      // position: 'absolute', 
       bottom: 20, 
-      left: 18,
-      right: 0,
     },
     calendar: {
         flexDirection:'row',

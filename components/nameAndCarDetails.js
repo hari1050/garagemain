@@ -208,6 +208,7 @@ export default function nameAndCarDetails() {
       fontSize: 18,
     },
     customButton: {
+      alignSelf:'center',
       backgroundColor: '#2C152A', // Specify your color
       height: 54,
       width: 350,
@@ -225,9 +226,10 @@ export default function nameAndCarDetails() {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts.
+      // position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts.
     },
     disabledButton: {
+      alignSelf:'center',
       backgroundColor: '#646464', // Specify your color
       height: 54,
       width: 350,
@@ -245,7 +247,7 @@ export default function nameAndCarDetails() {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts
+      // position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts
     },
     resendLink: {
       color: '#732753', // Specify the color for the link
