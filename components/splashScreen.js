@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   frame10: {
+    alignSelf:'center',
     backgroundColor: '#2C152A', // Specify your color
     height: 54,
     width: 330,
@@ -107,8 +108,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // The gap property is not supported in React Native. You will have to manage spacing manually, for example, by using margin on child components.
-    position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts.
   },
 
 });
