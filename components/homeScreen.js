@@ -8,7 +8,9 @@ import { useFocusEffect } from '@react-navigation/native';
 export default function homeScreen() {
     const navigation = useNavigation();
     const route = useRoute();
+    const [backPressCount, setBackPressCount] = useState(0);
     const [triggerFetch, setTriggerFetch] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [name, setName] = useState('');
     const [phonenumber, setPhoneNumber] = useState('');
     const [servicetype, setServiceType] = useState('');
@@ -17,23 +19,22 @@ export default function homeScreen() {
 
     useFocusEffect(
         React.useCallback(() => {
-            setTriggerFetch(prev => !prev); // Toggle the trigger state
+          const onBackPress = () => {
+            setBackPressCount(prevCount => prevCount + 1);
+            if (backPressCount >= 2) {
+              BackHandler.exitApp();
+            }
+            return true; // Prevent default back button behavior
+          };
+    
+          BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    
+          return () => {
+            BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+          };
+        }, [backPressCount]) // Include backPressCount in the dependency array
+     );
 
-            const onBackPress = () => {
-                // Return true to indicate that we've handled the back press
-                // and don't want the default behavior to occur
-                return true;
-            };
-
-            // Add listener for the hardware back button
-            BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
-            // Remove listener when component is unfocused or unmounted
-            return () => {
-                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-            };
-        }, [])
-    );
 
     useEffect(() => {
         const initializeUserData = async () => {
@@ -45,6 +46,7 @@ export default function homeScreen() {
                     setName(userData.name);
                     setCarModels(userData.carModels);
                     setPhoneNumber(userData.phonenumber);
+                    setIsLoading(false); // Set loading to false after data is loaded
                 }
             } catch (error) {
                 console.log("Error retrieving user data from AsyncStorage:", error);
@@ -66,8 +68,9 @@ export default function homeScreen() {
                 if (error) {
                     throw error;
                 }
-
-                setCarPrices(data || []);
+                setTimeout(() => {
+                    setCarPrices(data || []);
+                }, 1000);
             } catch (error) {
                 console.error('Error fetching prices:', error.message);
             }
@@ -114,9 +117,7 @@ export default function homeScreen() {
                         />
                     </TouchableOpacity>
                 </View>
-                {/* <Dropdown
-            placeholder='Hyundai i20'
-        /> */}
+
                     {carModels.length > 0 && (
                         <TouchableOpacity key={carModels[0].id} onPress={navigateToClassicService} style={styles.classicService}>
                         <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} />

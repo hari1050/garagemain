@@ -36,7 +36,7 @@ export default function mobileAuth() {
 
           if (error) {
               console.log('no phone number');
-              navigation.navigate('nameAndCarDetails',{phonenumber:phonenumber});
+              navigation.navigate('Nameentry',{phonenumber:phonenumber});
           }
 
           else {

@@ -85,31 +85,16 @@ export default function userCompleteDetails() {
         // Store updated userData in AsyncStorage
         await AsyncStorage.setItem('userData', JSON.stringify(updatedUserData));
     
-        // Save order details in "order" table
-        const { data: orderData, error: orderError } = await supabase.from('service_orders_table').insert([
-          {
-            servicetype: servicetype,
-            servicedate: serviceDate,
-            phonenumber: phonenumber,
-            fullname: name,
-            carmodel: carModels,
-            price: carPrices,
-            car_purchase_time: carPurchaseDate,
-            car_reg_no: registrationNumber
-          }
-        ]);
-    
-        if (orderError) {
-          console.error('Error saving order details:', orderError.message);
-          return;
-        }
-    
-        console.log('Order details saved successfully:', orderData);
-    
         // Navigate to the booking confirmation screen
-        navigation.navigate('bookingConfirmation', {
+        navigation.navigate('Bookingmap', {
           name: name,
-          phonenumber:phonenumber
+          phonenumber:phonenumber,
+          serviceDate:serviceDate,
+          carModels:carModels,
+          servicetype: servicetype,
+          carPurchaseDate: carPurchaseDate,
+          registrationNumber: registrationNumber,
+          carPrices: carPrices
         });
         
       } catch (error) {
@@ -119,9 +104,7 @@ export default function userCompleteDetails() {
 
     const handleDateChange = (event, selectedDate, field) => {
       console.log('Selected Date:', selectedDate);
-      const istOffset = 5.5; // IST offset in hours
-      const istDate = new Date(selectedDate.getTime() + (istOffset * 60 * 60 * 1000));
-      const currentDate = istDate || (field === 'dob' ? dob : carPurchaseDate);
+      const currentDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 12, 0, 0);
       console.log(istDate)
       if (field === 'dob') {
           setDob(currentDate);
@@ -151,7 +134,7 @@ export default function userCompleteDetails() {
           </View>
           <View style={styles.inputFieldContainer}>
             <Text style={styles.inputLabel}>
-                Registration Number
+                Vehicle number plate no.
             </Text>
             <TextInput
                 style={styles.input}
@@ -212,7 +195,7 @@ export default function userCompleteDetails() {
         </ScrollView>
           <View>
               <TouchableOpacity style={styles.customButton} onPress={navigateToConfirmation}>
-                <Text style={styles.buttonText}>Confirm Booking</Text>
+                <Text style={styles.buttonText}>Confirm Details</Text>
               </TouchableOpacity>
           </View>
       </View>

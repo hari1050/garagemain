@@ -176,7 +176,7 @@ export default function editProfile() {
 
           <View style={styles.inputFieldContainer}>
             <Text style={styles.inputLabel}>
-                Registration Number
+                Vehicle number plate no.
             </Text>
             <TextInput
                 style={styles.input}

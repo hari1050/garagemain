@@ -4,86 +4,23 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Route } from 'react-router-dom';
 
 
-export default function nameAndCarDetails() {
+export default function Nameentry() {
 
     const navigation = useNavigation();
     const route = useRoute();
     const {phonenumber} = route.params;
     const [name, setName] = useState('');
-    const [carModels, setCarModels] = useState([{ name: '', id: null }]); // Initial state with one empty car model object
-    const [suggestions, setSuggestions] = useState([{ name: '', id: null }]); // New state for holding suggestions
 
     const handleBack = () => {
           navigation.navigate('phoneNoAuth');
     };
     
     const navigateHome = async () => {
-        if(name.length != 0) {
-          try {
-            const userData = { 
-              name:name, 
-              carModels:carModels,
-              phonenumber: phonenumber
-            };
-            await AsyncStorage.setItem('userData', JSON.stringify(userData));
-            console.log('User data saved to AsyncStorage:', userData);
-
-            const { data, error } = await supabase.from('user_profiles').insert([
-              {
-                phonenumber: phonenumber,
-                fullname: name,
-                carmodels: carModels,
-              }
-            ]);
-              if (error) {
-                console.error('Error saving details:', error.message);
-              } else {
-                console.log('Details saved successfully:', data);
-              }
-            
-          } catch (error) {
-            console.error('Error saving user data to AsyncStorage:', error);
-          }
-            navigation.navigate('homeScreen');
-        }
+        navigation.navigate('Carmodelentry', {name:name, phonenumber:phonenumber});
+        
     }
-
-    const handleCarModelChange = async (index, value) => {
-      const updatedCarModels = [...carModels];
-      updatedCarModels[index] = { ...updatedCarModels[index], name: value }; // Update only the name part
-      setCarModels(updatedCarModels);
-  
-      if (value.length > 1) { // Perform search if user has typed at least 2 characters
-        try {
-          const { data, error } = await supabase
-            .from('distinct_modelinfo')
-            .select('Car_Model_Fullname, Id')
-            .ilike('Car_Model_Fullname', `%${value}%`); // Search for similar car models
-          if (error) {
-            console.error('Error fetching car models:', error.message);
-          } else {
-            setSuggestions(data.map(item => ({
-              name: item.Car_Model_Fullname,
-              id: item.Id
-          })));
-        }
-        } catch (error) {
-          console.error('Error fetching car models:', error.message);
-        }
-      } else {
-        setSuggestions([]); // Clear suggestions if input is cleared or too short
-      }
-    };
-
-    const selectSuggestion = (index, suggestion) => {
-      const updatedCarModels = [...carModels];
-      updatedCarModels[index] = suggestion;
-      setCarModels(updatedCarModels);
-      setSuggestions([]); // Clear suggestions after selection
-    };
 
     return (
         
@@ -105,32 +42,8 @@ export default function nameAndCarDetails() {
           keyboardType="name-phone-pad"
         />
         
-        <Text style={styles.subHeaderText}>
-          Please select your car models
-        </Text>
-        {carModels.map((carModel, index) => (
-        <View key={index} style={styles.carModelContainer}>
-         <TextInput
-            style={styles.input} // Ensure this style matches other input fields
-            placeholder={`Car Model ${index + 1}`}
-            value={carModel.name}
-            onChangeText={(value) => handleCarModelChange(index, value)}
-          />
-          {suggestions.length > 0 && carModel.name.length > 1 ? (
-            <ScrollView style={styles.suggestionsContainer}>
-              {suggestions.map((suggestion, sIndex) => (
-                <TouchableOpacity key={sIndex} onPress={() => selectSuggestion(index, suggestion)}>
-                  <Text style={styles.suggestion}>{suggestion.name}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          ) : null}
-          
-        </View>
-      ))}
-        
         <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.customButton, (name.length != 0 && carModels.some(model => model.name.trim() !== '')) ? {} : styles.disabledButton]} onPress={navigateHome}>
+            <TouchableOpacity style={[styles.customButton, (name.length != 0 ) ? {} : styles.disabledButton]} onPress={navigateHome}>
               <Text style={styles.buttonText}>Continue</Text>
             </TouchableOpacity>
         </View>
@@ -140,16 +53,6 @@ export default function nameAndCarDetails() {
   };
   
   const styles = StyleSheet.create({
-    suggestionsContainer:{
-      backgroundColor:'#fff',
-      borderRadius:4,
-      borderWidth:1,
-      borderColor:'#ddd',
-      elevation:4,
-    },
-    suggestion:{
-      padding:6,
-    },
     container: {
       flex: 1,
       padding: 20,
@@ -176,6 +79,7 @@ export default function nameAndCarDetails() {
       color: '#000', 
       marginTop: 30,
       textAlign: 'left',
+      paddingBottom: 10
     },
     input: {
       marginTop: 10,

@@ -32,7 +32,7 @@ export default function bookingConfirmation() {
     }
 
     const navigateToProfile = () => {
-        navigation.navigate('userProfile',{name:name , phonenumber:phonenumber});
+        navigation.navigate('Servicehistory',{name:name , phonenumber:phonenumber});
     }
 
 

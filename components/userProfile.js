@@ -11,7 +11,6 @@ export default function userProfile() {
     const navigation = useNavigation();
     const route = useRoute();
     const {name, phonenumber} = route.params;
-    const [bookings, setBookings] = useState([]);
 
     useFocusEffect(
       React.useCallback(() => {
@@ -28,29 +27,6 @@ export default function userProfile() {
       }, [navigation, name])
    );
 
-    useEffect(() => {
-      const fetchBookings = async () => {
-          try {
-              const { data, error } = await supabase
-                  .from('service_orders_table')
-                  .select('*')
-                  .eq('phonenumber', phonenumber);
-
-              if (error) {
-                  console.error('Error fetching bookings:', error.message);
-                  return;
-              }
-
-              setBookings(data || []);
-          } catch (error) {
-              console.error('Error fetching bookings:', error.message);
-          }
-      };
-
-      fetchBookings(); // Fetch bookings when component mounts
-  }, [phonenumber]);
-
-
     const navigateToHome = () => {
         navigation.navigate('homeScreen');
     }
@@ -58,6 +34,10 @@ export default function userProfile() {
     const navigateToEditProfile = () => {
         navigation.navigate('editProfile');
     }
+
+    const navigateToMyBookings = () => {
+      navigation.navigate('Servicehistory', {name:name, phonenumber:phonenumber});
+  }
 
     const navigatelogout = async () => {
       try {
@@ -84,38 +64,10 @@ export default function userProfile() {
             <TouchableOpacity style={styles.secondaryButton} onPress={navigateToEditProfile}>
                   <Text style={styles.buttonText}>Edit Profile</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.secondaryButton} onPress={navigateToMyBookings}>
+                  <Text style={styles.buttonText}>My Bookings</Text>
+            </TouchableOpacity>
         </View>
-        
-        <Text style={styles.headerText1}>Your Bookings</Text>
-                {bookings.map((booking, index) => (
-                    <View key={index} style={styles.card}>
-                        <View style={styles.row}>
-                            <Text style={styles.label}>Price:</Text>
-                            <Text style={styles.value}>Rs. {booking.price[0].Service_cost}</Text>
-                        </View>
-                        <View style={styles.row}>
-                            <Text style={styles.label}>Date:</Text>
-                            <Text style={styles.value}>{booking.servicedate}</Text>
-                        </View>
-                        <View style={styles.carModel}>
-                            <Text style={styles.label}>Car Model:</Text>
-                            <Text style={styles.value}>{booking.carmodel[0].name}</Text>
-                        </View>
-                        <View style={styles.row}>
-                            <Text style={styles.label}>Service Type:</Text>
-                            <Text style={styles.value}>{booking.servicetype}</Text>
-                        </View>
-                        <View style={styles.row}>
-                            <Text style={styles.label}>Registration Number:</Text>
-                            <Text style={styles.value}>{booking.car_reg_no}</Text>
-                        </View>
-                        <View style={styles.row}>
-                            <Text style={styles.label}>Customer Phone Number:</Text>
-                            <Text style={styles.value}>{booking.phonenumber}</Text>
-                        </View>
-                    </View>
-                ))}
-                <Text>{'\n\n'}</Text>
       </ScrollView>
       <View>
           <TouchableOpacity style={styles.logout} onPress={navigatelogout}>
@@ -174,7 +126,7 @@ const styles = StyleSheet.create({
     borderColor:'#2C152A',
     backgroundColor: '#fff', 
     borderColor:'#2C152A',
-    height: 54,
+    height: 57,
     width:'94%',
     borderRadius: 8,
     paddingLeft: 24,
@@ -203,35 +155,5 @@ const styles = StyleSheet.create({
   logoutText:{
     color: '#fff',
     fontSize: 18,
-  },
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
-    margin: 10,
-  },
-  headerText1: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  label: {
-    fontWeight: 'bold',
-  },
-  value: {
-    color: '#333',
   },
 });
