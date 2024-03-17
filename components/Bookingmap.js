@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Calendar, CaretLeft } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { WebView } from 'react-native-webview';
+import RadioGroup from 'react-native-radio-buttons-group';
 
 
 export default function Bookingmap() {
 
     const navigation = useNavigation();
     const route = useRoute();
+    const [selectedOption, setSelectedOption] = useState(null);
     const { name,phonenumber,serviceDate, carModels, servicetype,carPurchaseDate, registrationNumber, carPrices = []} = route.params;
     const [pickupoption, setpickupoption] = useState('');
+    const google = 'https://www.google.com/maps/place/Classic+car+Care/@19.3906961,72.7825159,17z/data=!4m6!3m5!1s0x3be7adea38f543f3:0x2e89d31efac7bdc1!8m2!3d19.3906961!4d72.7825159!16s%2Fg%2F11q3snm5lp?entry=ttu'
+    const [selectedId, setSelectedId] = useState();
 
     const navigateToConfirmation = async () => {
       try {
@@ -25,7 +30,8 @@ export default function Bookingmap() {
             carmodel: carModels,
             price: carPrices,
             car_purchase_time: carPurchaseDate,
-            car_reg_no: registrationNumber
+            car_reg_no: registrationNumber,
+            vehiclePickUpType: selectedId === '1' ? 'Free Pick Up' : 'Self Drive In'
           }
         ]);
     
@@ -51,6 +57,19 @@ export default function Bookingmap() {
     const navigateTousercompletedetails = () => {
         navigation.navigate('userCompleteDetails',{name:name, carModels:carModels, carPrices:carPrices, servicetype:servicetype, serviceDate:serviceDate, phonenumber:phonenumber});
       }
+
+      const radioButtons = useMemo(() => ([
+        {
+            id: '1', // acts as primary key, should be unique and non-empty string
+            label: 'Free Pick Up',
+            value: 'Pick Up'
+        },
+        {
+            id: '2',
+            label: 'Self Drive In',
+            value: 'Drive In'
+        }
+    ]), []);
   
 
     return (
@@ -61,7 +80,19 @@ export default function Bookingmap() {
             <CaretLeft></CaretLeft>
            </TouchableOpacity>
           <View style={styles.header}>
-              <Text style={styles.headerText}>Do you want the free car pickup from home ?</Text>
+              <Text style={styles.headerText}>How would you like to come to garage?</Text>
+          </View>
+          <View>
+          <View style={styles.radioGrp}>
+            <RadioGroup 
+              radioButtons={radioButtons} 
+              onPress={setSelectedId}
+              selectedId={selectedId}
+            />
+          </View>
+            <View style={styles.webviewOverlay} pointerEvents="box-none">
+              <WebView source={{ uri: google }} style={{ flex: 1 }} />
+            </View>
           </View>
             
         </ScrollView>
@@ -86,6 +117,19 @@ export default function Bookingmap() {
       paddingTop: 30,
       backgroundColor: '#fff',
     },
+    radioGrp: {
+      alignItems:'flex-start',
+    },
+    webviewOverlay: {
+      width:'100%',
+      height:400,
+      // position: 'absolute',
+      // top: 0,
+      // bottom: 0,
+      // left: 0,
+      // right: 0,
+      backgroundColor: 'transparent', // Transparent background
+  },
     header: {
         paddingTop:10,
         paddingBottom:10,
