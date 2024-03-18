@@ -4,6 +4,7 @@ import mobileAuth from './components/mobileAuth';
 import otpverifyScreen from './components/otpverifyScreen';
 import Nameentry from './components/Nameentry';
 import Carmodelentry from './components/Carmodelentry';
+import Customloadingicon from './components/Customloadingicon';
 import homeScreen from './components/homeScreen';
 import classicService from './components/classicService';
 import userCompleteDetails from './components/userCompleteDetails';
@@ -23,6 +24,7 @@ function MyStackNavigator() {
   return (
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="splashScreen" component={splashScreen}/>
+        <Stack.Screen name="Customloadingicon" component={Customloadingicon}/>
         <Stack.Screen name="phoneNoAuth" component={mobileAuth}/>
         <Stack.Screen name="otpverifyScreen" component={otpverifyScreen}/>
         <Stack.Screen name="Nameentry" component={Nameentry}/>

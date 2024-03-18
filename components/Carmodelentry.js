@@ -104,7 +104,7 @@ export default function Carmodelentry() {
             onChangeText={(value) => handleCarModelChange(index, value)}
           />
           {suggestions.length > 0 && carModel.name.length > 1 ? (
-            <ScrollView style={styles.suggestionsContainer}>
+            <ScrollView style={[styles.suggestionsContainer,styles.scrollcontainer]}>
               {suggestions.map((suggestion, sIndex) => (
                 <TouchableOpacity key={sIndex} onPress={() => selectSuggestion(index, suggestion)}>
                   <Text style={styles.suggestion}>{suggestion.name}</Text>
@@ -133,6 +133,12 @@ export default function Carmodelentry() {
       borderWidth:1,
       borderColor:'#ddd',
       elevation:4,
+      maxHeight: 300, // Set a max height to enable scrolling
+      overflow: 'scroll', // Enable scrolling
+      width: '100%'
+    },
+    scrollContainer: {
+      paddingBottom: 6, // Add some padding to the bottom to ensure the content is not clipped
     },
     suggestion:{
       padding:6,

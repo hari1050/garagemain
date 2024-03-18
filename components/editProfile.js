@@ -11,6 +11,7 @@ export default function editProfile() {
 
     const navigation = useNavigation();
     const route = useRoute();
+    const [typing, setTyping] = useState(false);
     const [name, setName] = useState('');
     const [phonenumber, setPhoneNumber] = useState('');
     const [showDatePicker, setShowDatePicker] = useState(false); 
@@ -56,6 +57,7 @@ export default function editProfile() {
     }, []);
 
     const handleCarModelChange = async (index, value) => {
+      setTyping(value.length > 0);
       const updatedCarModels = [...carModels];
       updatedCarModels[index] = { ...updatedCarModels[index], name: value }; // Update only the name part
       setCarModels(updatedCarModels);
@@ -198,8 +200,8 @@ export default function editProfile() {
                 value={carModel.name}
                 onChangeText={(value) => handleCarModelChange(index, value)}
               />
-              {suggestions.length > 0 && carModel.name.length > 1 && (
-                <ScrollView style={styles.suggestionsContainer}>
+              {suggestions.length > 0 && typing && carModel.name.length > 1 && (
+                <ScrollView style={[styles.suggestionsContainer, styles.scrollContainer]}>
                   {suggestions.map((suggestion, sIndex) => (
                     <TouchableOpacity key={sIndex} onPress={() => selectSuggestion(index, suggestion)}>
                       <Text style={styles.suggestion}>{suggestion.name}</Text>
@@ -281,10 +283,19 @@ export default function editProfile() {
     },
     suggestionsContainer:{
         backgroundColor:'#fff',
+        position: 'absolute',
+        top:50,
         borderRadius:4,
         borderWidth:1,
         borderColor:'#ddd',
         elevation:4,
+        zIndex: 99,
+        maxHeight: 150, // Set a max height to enable scrolling
+        overflow: 'scroll', // Enable scrolling
+        width: '100%'
+      },
+      scrollContainer: {
+        paddingBottom: 6, // Add some padding to the bottom to ensure the content is not clipped
       },
       suggestion:{
         padding:6,

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-native';
+import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, BackHandler, ActivityIndicator } from 'react-native';
+import Customloadingicon from './Customloadingicon'; // Import your custom loading indicator component
 import { useNavigation, useRoute } from '@react-navigation/native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,12 +11,14 @@ export default function homeScreen() {
     const route = useRoute();
     const [backPressCount, setBackPressCount] = useState(0);
     const [triggerFetch, setTriggerFetch] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
     const [name, setName] = useState('');
     const [phonenumber, setPhoneNumber] = useState('');
     const [servicetype, setServiceType] = useState('');
     const [carModels, setCarModels] = useState([]);
     const [carPrices, setCarPrices] = useState([]);
+    const [pricesFetched, setPricesFetched] = useState(false); // Track if prices are fetched
+    const [userDataLoaded, setUserDataLoaded] = useState(false); // Track if user data is loaded
+
 
     useFocusEffect(
         React.useCallback(() => {
@@ -46,7 +49,7 @@ export default function homeScreen() {
                     setName(userData.name);
                     setCarModels(userData.carModels);
                     setPhoneNumber(userData.phonenumber);
-                    setIsLoading(false); // Set loading to false after data is loaded
+                    setUserDataLoaded(true); // Set userDataLoaded to true after user data is loaded
                 }
             } catch (error) {
                 console.log("Error retrieving user data from AsyncStorage:", error);
@@ -70,14 +73,17 @@ export default function homeScreen() {
                 }
                 setTimeout(() => {
                     setCarPrices(data || []);
+                    setPricesFetched(true); // Set pricesFetched to true after prices are fetched
                 }, 100);
             } catch (error) {
                 console.error('Error fetching prices:', error.message);
             }
         };
 
-        fetchPrices();
-    }, [carModels]); // Fetch prices when carModels change
+        if (userDataLoaded) {
+            fetchPrices();
+        }
+    }, [userDataLoaded,carModels]); // Fetch prices when carModels change
 
     const navigateToClassicService = () => {
         navigation.navigate('classicService', { name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype: "Classicservice" });
@@ -103,6 +109,9 @@ export default function homeScreen() {
         navigation.navigate('Emergency',{name:name, carModels:carModels, phonenumber:phonenumber});
     };
 
+    if (!pricesFetched || !userDataLoaded) {
+        return <Customloadingicon />;
+    }
 
     return (
         <View style={styles.viewContainer}>
