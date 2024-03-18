@@ -66,6 +66,7 @@ export default function Servicehistory() {
         </View>
         
         <Text style={styles.headerText1}>Your Bookings</Text>
+        <View style={styles.carddiv}>
                 {bookings.map((booking, index) => (
                     <View key={index} style={styles.card}>
                         <View style={styles.row}>
@@ -94,6 +95,7 @@ export default function Servicehistory() {
                         </View>
                     </View>
                 ))}
+          </View>
       </ScrollView>
     </View>
   );
@@ -176,6 +178,9 @@ const styles = StyleSheet.create({
   logoutText:{
     color: '#fff',
     fontSize: 18,
+  },
+  carddiv:{
+    marginBottom: 60
   },
   card: {
     backgroundColor: '#FFFFFF',

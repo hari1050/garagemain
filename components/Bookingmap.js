@@ -122,7 +122,8 @@ export default function Bookingmap() {
     },
     webviewOverlay: {
       width:'100%',
-      height:400,
+      height:500,
+      paddingTop: 20,
       // position: 'absolute',
       // top: 0,
       // bottom: 0,

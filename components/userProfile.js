@@ -67,6 +67,12 @@ export default function userProfile() {
             <TouchableOpacity style={styles.secondaryButton} onPress={navigateToMyBookings}>
                   <Text style={styles.buttonText}>My Bookings</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.secondaryButton}>
+                  <Text style={styles.buttonText}>About Us</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.secondaryButton}>
+                  <Text style={styles.buttonText}>Contact Us</Text>
+            </TouchableOpacity>
         </View>
       </ScrollView>
       <View>

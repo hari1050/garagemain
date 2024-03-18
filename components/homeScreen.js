@@ -70,7 +70,7 @@ export default function homeScreen() {
                 }
                 setTimeout(() => {
                     setCarPrices(data || []);
-                }, 1000);
+                }, 100);
             } catch (error) {
                 console.error('Error fetching prices:', error.message);
             }
