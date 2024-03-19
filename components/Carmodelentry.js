@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
@@ -103,15 +103,18 @@ export default function Carmodelentry() {
             value={carModel.name}
             onChangeText={(value) => handleCarModelChange(index, value)}
           />
-          {suggestions.length > 0 && carModel.name.length > 1 ? (
-            <ScrollView style={[styles.suggestionsContainer,styles.scrollcontainer]}>
-              {suggestions.map((suggestion, sIndex) => (
-                <TouchableOpacity key={sIndex} onPress={() => selectSuggestion(index, suggestion)}>
-                  <Text style={styles.suggestion}>{suggestion.name}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          ) : null}
+          {suggestions.length > 0 && carModel.name.length > 1 && (
+                <FlatList style={[styles.suggestionsContainer, styles.scrollContainer]}
+                    data={suggestions}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                              <TouchableOpacity onPress={() => selectSuggestion(index, item)}>
+                              <Text style={styles.suggestion}>{item.name}</Text>
+                              </TouchableOpacity>
+                     )}
+                     nestedScrollEnabled={true}
+                />
+              )}
           
         </View>
       ))}

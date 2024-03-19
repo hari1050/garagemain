@@ -1,5 +1,5 @@
 import React, { useState , useEffect} from 'react';
-import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
+import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Calendar,CaretLeft } from 'phosphor-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -160,7 +160,7 @@ export default function editProfile() {
     return (
         <View style={styles.viewContainer}>
 
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container}contentContainerStyle={{ paddingBottom: 80 }}>
            <TouchableOpacity style={styles.caretLeft} onPress={navigateToProfile}>
             <CaretLeft></CaretLeft>
            </TouchableOpacity>
@@ -201,13 +201,16 @@ export default function editProfile() {
                 onChangeText={(value) => handleCarModelChange(index, value)}
               />
               {suggestions.length > 0 && typing && carModel.name.length > 1 && (
-                <ScrollView style={[styles.suggestionsContainer, styles.scrollContainer]}>
-                  {suggestions.map((suggestion, sIndex) => (
-                    <TouchableOpacity key={sIndex} onPress={() => selectSuggestion(index, suggestion)}>
-                      <Text style={styles.suggestion}>{suggestion.name}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
+                <FlatList style={[styles.suggestionsContainer, styles.scrollContainer]}
+                    data={suggestions}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                              <TouchableOpacity onPress={() => selectSuggestion(index, item)}>
+                              <Text style={styles.suggestion}>{item.name}</Text>
+                              </TouchableOpacity>
+                     )}
+                     nestedScrollEnabled={true}
+                />
               )}
             </View>
           ))}
@@ -273,27 +276,30 @@ export default function editProfile() {
     viewContainer: {
       flex: 1,
       backgroundColor: '#fff',
-      position: 'relative', 
+      justifyContent: 'center', // Center children vertically
+      alignItems: 'center',
     },
+
     container: {
       flexGrow: 1,
       padding: 20,
       paddingTop: 30,
       backgroundColor: '#fff',
     },
-    suggestionsContainer:{
-        backgroundColor:'#fff',
-        position: 'absolute',
-        top:50,
-        borderRadius:4,
-        borderWidth:1,
-        borderColor:'#ddd',
-        elevation:4,
-        zIndex: 99,
-        maxHeight: 150, // Set a max height to enable scrolling
-        overflow: 'scroll', // Enable scrolling
-        width: '100%'
-      },
+    suggestionsContainer: {
+      backgroundColor: '#fff',
+      position: 'absolute',
+      top: 50,
+      borderRadius: 4,
+      borderWidth: 1,
+      borderColor: '#ddd',
+      elevation: 4,
+      zIndex: 99,
+      maxHeight: 150, // Set a max height to enable scrolling
+      overflow: 'scroll', // Enable scrolling
+      width: '100%',
+      maxHeight: 200, // Adjust this value as needed
+     },
       scrollContainer: {
         paddingBottom: 6, // Add some padding to the bottom to ensure the content is not clipped
       },
@@ -346,10 +352,9 @@ export default function editProfile() {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      position: 'absolute', 
+      // position: 'absolute', 
       bottom: 20, 
-      left: 18,
-      right: 0,
+
     },
     calendar: {
         flexDirection:'row',

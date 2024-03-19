@@ -45,7 +45,8 @@ export default function Bookingmap() {
         // Navigate to the booking confirmation screen
         navigation.navigate('bookingConfirmation', {
           name: name,
-          phonenumber:phonenumber
+          phonenumber:phonenumber,
+          selectedId: selectedId
         });
         
       } catch (error) {
@@ -60,7 +61,7 @@ export default function Bookingmap() {
 
       const radioButtons = useMemo(() => ([
         {
-            id: '1', // acts as primary key, should be unique and non-empty string
+            id: '1',
             label: 'Free Pick Up',
             value: 'Pick Up'
         },
@@ -80,7 +81,7 @@ export default function Bookingmap() {
             <CaretLeft></CaretLeft>
            </TouchableOpacity>
           <View style={styles.header}>
-              <Text style={styles.headerText}>How would you like to come to garage?</Text>
+              <Text style={styles.headerText}>Would you like the car to be picked up at your home for free?</Text>
           </View>
           <View>
           <View style={styles.radioGrp}>
@@ -90,9 +91,6 @@ export default function Bookingmap() {
               selectedId={selectedId}
             />
           </View>
-            <View style={styles.webviewOverlay} pointerEvents="box-none">
-              <WebView source={{ uri: google }} style={{ flex: 1 }} />
-            </View>
           </View>
             
         </ScrollView>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-native';
+import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, BackHandler, Linking } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -7,7 +7,9 @@ export default function bookingConfirmation() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const { name, phonenumber} = route.params;
+    const { name, phonenumber, selectedId} = route.params;
+    const googleMapLink = 'https://www.google.com/maps/place/Classic+car+Care/@19.3906961,72.7825159,17z/data=!4m6!3m5!1s0x3be7adea38f543f3:0x2e89d31efac7bdc1!8m2!3d19.3906961!4d72.7825159!16s%2Fg%2F11q3snm5lp?entry=ttu'
+
 
     useFocusEffect(
       React.useCallback(() => {
@@ -27,13 +29,17 @@ export default function bookingConfirmation() {
       }, [])
   );
 
-    const navigateToHome = () => {
-        navigation.navigate('homeScreen',{name:name});
-    }
+  const navigateToMap = () => {
+    Linking.openURL(googleMapLink);
+  }
+  
+  const navigateToHome = () => {
+        navigation.navigate('homeScreen');
+  }
 
-    const navigateToProfile = () => {
+  const navigateToProfile = () => {
         navigation.navigate('Servicehistory',{name:name , phonenumber:phonenumber});
-    }
+  }
 
 
     return (
@@ -49,6 +55,12 @@ export default function bookingConfirmation() {
             
         </ScrollView>
           <View>
+              {selectedId === '2' && (
+                    <TouchableOpacity style={styles.customButton} onPress={navigateToMap}>
+                        <Text style={styles.buttonText}>Get directions to the service center</Text>
+                    </TouchableOpacity>
+              )}
+              <View style={styles.buttonSpacing} />
               <TouchableOpacity style={styles.customButton} onPress={navigateToProfile}>
                 <Text style={styles.buttonText}>View Booking Details</Text>
               </TouchableOpacity>
@@ -117,9 +129,7 @@ export default function bookingConfirmation() {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      // position: 'absolute', 
       bottom: 40, 
-      // left: 18,
       right: 0,
     },
     secondaryButton: {
@@ -144,4 +154,7 @@ export default function bookingConfirmation() {
         // left: 18,
         right: 0,
       },
+      buttonSpacing: {
+        height: 20, // Adjust the height as needed for the desired space between buttons
+    },
 });
