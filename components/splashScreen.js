@@ -52,66 +52,6 @@ export default function splashScreen() {
   );
 };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     paddingTop: 30,
-//     justifyContent: 'center',
-//     backgroundColor: '#fff',
-//   },
-//   title: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//     marginVertical: 20,
-//   },
-//   image: {
-//     // backgroundColor:'#000',
-//     marginTop:60,
-//     width: '100%', // You should adjust this
-//     height: 400, // And this, according to your image's aspect ratio
-//     resizeMode: 'contain',
-//   },
-//   svgImage: {
-//     // backgroundColor: '#000',
-//     width:'80%',
-//     height:100,
-//     resizeMode: 'contain',
-//   },
-//   button: {
-//     backgroundColor: '#A020F0', // Replace with the color of your button
-//     paddingHorizontal: 20,
-//     paddingVertical: 10,
-//     borderRadius: 5,
-//     marginTop: 20,
-//   },
-//   buttonText: {
-//     color: '#fff',
-//     fontSize: 18,
-//   },
-//   frame10: {
-//     alignSelf:'center',
-//     backgroundColor: '#2C152A', // Specify your color
-//     height: 54,
-//     width: 330,
-//     // React Native doesn't support CSS filters. For drop shadows, you use elevation for Android, and shadow props for iOS
-//     elevation: 4, // Android shadow
-//     shadowColor: '#000', // iOS shadows
-//     shadowOffset: { width: 0, height: 4 }, // iOS shadows
-//     shadowOpacity: 0.25, // iOS shadows
-//     shadowRadius: 6, // iOS shadows
-//     borderRadius: 8,
-//     paddingLeft: 24,
-//     paddingRight: 24,
-//     paddingTop: 16,
-//     paddingBottom: 16,
-//     display: 'flex', // This is the default display style for React Native components, so it can be omitted
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-
-// });
 const styles = StyleSheet.create({
   container: {
       flex: 1,
@@ -142,9 +82,9 @@ const styles = StyleSheet.create({
   frame10: {
     alignSelf:'center',
     backgroundColor: '#2C152A', // Specify your color
+    top: 30,
     height: 54,
     width: 330,
-    // React Native doesn't support CSS filters. For drop shadows, you use elevation for Android, and shadow props for iOS
     elevation: 4, // Android shadow
     shadowColor: '#000', // iOS shadows
     shadowOffset: { width: 0, height: 4 }, // iOS shadows

@@ -57,7 +57,7 @@ export default function bookingConfirmation() {
           <View>
               {selectedId === '2' && (
                     <TouchableOpacity style={styles.customButton} onPress={navigateToMap}>
-                        <Text style={styles.buttonText}>Get directions to the service center</Text>
+                        <Text style={styles.buttonText}>Get directions</Text>
                     </TouchableOpacity>
               )}
               <View style={styles.buttonSpacing} />
@@ -97,10 +97,10 @@ export default function bookingConfirmation() {
         textAlign: 'center',
       },
     profile: {
-        marginTop:48,
+        marginTop:30,
         marginBottom:48,
         width: 352,
-        height: 300,
+        height: 265,
     },
     buttonText: {
       color: '#fff',

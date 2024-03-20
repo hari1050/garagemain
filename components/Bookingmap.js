@@ -108,6 +108,7 @@ export default function Bookingmap() {
       flex: 1,
       backgroundColor: '#fff',
       position: 'relative', 
+      alignItems: 'center',
     },
     container: {
       flexGrow: 1,
@@ -187,10 +188,9 @@ export default function Bookingmap() {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      position: 'absolute', 
+      // position: 'absolute', 
       bottom: 20, 
-      left: 18,
-      right: 0,
+
     },
     calendar: {
         flexDirection:'row',
