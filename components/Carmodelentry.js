@@ -216,8 +216,8 @@ export default function Carmodelentry() {
       borderRadius: 8,
       paddingLeft: 24,
       paddingRight: 24,
-      paddingTop: 16,
-      paddingBottom: 16,
+      // paddingTop: 16,
+      // paddingBottom: 16,
       display: 'flex', // This is the default display style for React Native components, so it can be omitted
       flexDirection: 'row',
       justifyContent: 'center',
@@ -237,8 +237,8 @@ export default function Carmodelentry() {
       borderRadius: 8,
       paddingLeft: 24,
       paddingRight: 24,
-      paddingTop: 16,
-      paddingBottom: 16,
+      // paddingTop: 16,
+      // paddingBottom: 16,
       display: 'flex', // This is the default display style for React Native components, so it can be omitted
       flexDirection: 'row',
       justifyContent: 'center',

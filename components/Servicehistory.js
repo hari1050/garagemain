@@ -27,32 +27,45 @@ export default function Servicehistory() {
         };
       }, [navigation, name])
    );
+   const fetchBookings = async () => {
+    try {
+        const { data, error } = await supabase
+            .from('service_orders_table')
+            .select('*')
+            .eq('phonenumber', phonenumber)
+            .eq('IsServiceCancelled', false);
+
+        if (error) {
+            console.error('Error fetching bookings:', error.message);
+            return;
+        }
+
+        setBookings(data || []);
+    } catch (error) {
+        console.error('Error fetching bookings:', error.message);
+    }
+    };
 
     useEffect(() => {
-      const fetchBookings = async () => {
-          try {
-              const { data, error } = await supabase
-                  .from('service_orders_table')
-                  .select('*')
-                  .eq('phonenumber', phonenumber);
-
-              if (error) {
-                  console.error('Error fetching bookings:', error.message);
-                  return;
-              }
-
-              setBookings(data || []);
-          } catch (error) {
-              console.error('Error fetching bookings:', error.message);
-          }
-      };
-
       fetchBookings(); // Fetch bookings when component mounts
   }, [phonenumber]);
-
-    const navigateToUserProfile = () => {
-        navigation.navigate('userProfile',{name:name, phonenumber:phonenumber});
+    
+  const cancelBooking = async(bookingId) => {
+    try {
+      const { error } = await supabase
+        .from('service_orders_table')
+        .update({ IsServiceCancelled: 'true' }) 
+        .eq('id', bookingId) 
+      if(!error){
+        await fetchBookings();
+      }
+    } catch(ex) {
+      console.log('error', ex.message);
     }
+  }
+  const navigateToUserProfile = () => {
+        navigation.navigate('userProfile',{name:name, phonenumber:phonenumber});
+  }
 
     return (
       <View style={styles.viewContainer}>
@@ -89,10 +102,9 @@ export default function Servicehistory() {
                             <Text style={styles.label}>Registration Number:</Text>
                             <Text style={styles.value}>{booking.car_reg_no}</Text>
                         </View>
-                        <View style={styles.row}>
-                            <Text style={styles.label}>Customer Phone Number:</Text>
-                            <Text style={styles.value}>{booking.phonenumber}</Text>
-                        </View>
+                        <TouchableOpacity style={styles.secondaryButton} onPress={()=> cancelBooking(booking.id)}>
+                          <Text style={styles.buttonText}>Cancel Booking</Text>
+                        </TouchableOpacity>
                     </View>
                 ))}
           </View>
@@ -195,6 +207,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2.62,
     elevation: 4,
     margin: 10,
+    maxWidth: '90%',
   },
   headerText1: {
     fontSize: 20,
@@ -205,11 +218,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
+    flexWrap: 'wrap',
   },
   label: {
     fontWeight: 'bold',
+    // flex: 1,
   },
   value: {
     color: '#333',
+    // flex: 2,
+  },
+  secondaryButton: {
+    borderWidth:1,
+    borderColor:'#2C152A',
+    backgroundColor: '#fff', 
+    borderColor:'#2C152A',
+    height: 40,
+    width:'94%',
+    borderRadius: 8,
+    paddingLeft: 24,
+    paddingRight: 24,
+    alignSelf:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#2C152A',
+    fontSize: 14,
   },
 });
