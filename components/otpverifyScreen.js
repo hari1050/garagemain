@@ -182,7 +182,7 @@ export default function mobileAuth() {
       alignSelf:'center',
       backgroundColor: '#2C152A', // Specify your color
       height: 54,
-      width: 350,
+      width: '94%',
       elevation: 4, // Android shadow
       shadowColor: '#000', // iOS shadows
       shadowOffset: { width: 0, height: 4 }, // iOS shadows
@@ -203,7 +203,7 @@ export default function mobileAuth() {
       alignSelf:'center',
       backgroundColor: '#646464', // Specify your color
       height: 54,
-      width: 350,
+      width: '94%',
       elevation: 4, // Android shadow
       shadowColor: '#000', // iOS shadows
       shadowOffset: { width: 0, height: 4 }, // iOS shadows

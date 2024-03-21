@@ -74,7 +74,7 @@ export default function Bookingmap() {
   
 
     return (
-        <View style={styles.viewContainer}>
+      <View style={styles.viewContainer}>
 
         <ScrollView style={styles.container}>
            <TouchableOpacity style={styles.caretLeft} onPress={navigateTousercompletedetails}>
@@ -92,7 +92,6 @@ export default function Bookingmap() {
             />
           </View>
           </View>
-            
         </ScrollView>
           <View>
               <TouchableOpacity style={styles.customButton} onPress={navigateToConfirmation}>
@@ -105,10 +104,14 @@ export default function Bookingmap() {
   
   const styles = StyleSheet.create({
     viewContainer: {
-      flex: 1,
+      flexGrow: 1,
+      // padding: 20,
+      // paddingTop: 30,
       backgroundColor: '#fff',
-      position: 'relative', 
-      alignItems: 'center',
+      // flex: 1,
+      // backgroundColor: '#fff',
+      // position: 'relative', 
+      // alignItems: 'center',
     },
     container: {
       flexGrow: 1,
@@ -119,17 +122,6 @@ export default function Bookingmap() {
     radioGrp: {
       alignItems:'flex-start',
     },
-    webviewOverlay: {
-      width:'100%',
-      height:500,
-      paddingTop: 20,
-      // position: 'absolute',
-      // top: 0,
-      // bottom: 0,
-      // left: 0,
-      // right: 0,
-      backgroundColor: 'transparent', // Transparent background
-  },
     header: {
         paddingTop:10,
         paddingBottom:10,
@@ -171,34 +163,22 @@ export default function Bookingmap() {
       fontSize: 18,
     },
     customButton: {
-      backgroundColor: '#2C152A', 
+      alignSelf:'center',
+      backgroundColor: '#2C152A', // Specify your color
       height: 54,
-      width: 350,
-      elevation: 8, 
-      shadowColor: '#000', 
-      shadowOffset: { width: 0, height: 4 }, 
-      shadowOpacity: 0.5, 
-      shadowRadius: 10, 
+      width: '94%',
+      elevation: 4, // Android shadow
+      shadowColor: '#000', // iOS shadows
+      shadowOffset: { width: 0, height: 4 }, // iOS shadows
+      shadowOpacity: 0.25, // iOS shadows
+      shadowRadius: 6, // iOS shadows
       borderRadius: 8,
       paddingLeft: 24,
       paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 16,
-      display: 'flex', 
-      flexDirection: 'row',
+      // display: 'flex', // This is the default display style for React Native components, so it can be omitted
+      // flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      // position: 'absolute', 
-      bottom: 20, 
-
+      bottom:20,
     },
-    calendar: {
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'space-between',
-        width:345,
-        backgroundColor:'#F5F5F5',
-        padding:4,
-        borderRadius:12,
-    }
 });

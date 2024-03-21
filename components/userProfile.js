@@ -86,9 +86,8 @@ export default function userProfile() {
 
 const styles = StyleSheet.create({
   viewContainer: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: '#fff',
-    position: 'relative', 
   },
   container: {
     flexGrow: 1,

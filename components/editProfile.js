@@ -274,10 +274,10 @@ export default function editProfile() {
   
   const styles = StyleSheet.create({
     viewContainer: {
-      flex: 1,
+      flexGrow: 1,
       backgroundColor: '#fff',
-      justifyContent: 'center', // Center children vertically
-      alignItems: 'center',
+      // justifyContent: 'center', // Center children vertically
+      // alignItems: 'center',
     },
 
     container: {
@@ -335,9 +335,10 @@ export default function editProfile() {
       fontSize: 18,
     },
     customButton: {
+      alignSelf:'center',
       backgroundColor: '#2C152A', 
       height: 54,
-      width: 350,
+      width: '94%',
       elevation: 8, 
       shadowColor: '#000', 
       shadowOffset: { width: 0, height: 4 }, 
@@ -360,7 +361,6 @@ export default function editProfile() {
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between',
-        width:345,
         backgroundColor:'#F5F5F5',
         padding:4,
         borderRadius:12,

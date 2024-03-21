@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         backgroundColor: '#9B0E0E',
         height: 54,
-        width: 350,
+        width: '94%',
         elevation: 8,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },

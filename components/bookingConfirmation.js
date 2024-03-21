@@ -74,9 +74,8 @@ export default function bookingConfirmation() {
   
   const styles = StyleSheet.create({
     viewContainer: {
-      flex: 1,
+      flexGrow: 1,
       backgroundColor: '#fff',
-      position: 'relative', 
     },
     container: {
       flexGrow: 1,
@@ -91,16 +90,17 @@ export default function bookingConfirmation() {
         alignItems: 'center',
     },
     headerText: {
-        fontSize: 22,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#333',
         textAlign: 'center',
       },
     profile: {
+        alignSelf:'center',
         marginTop:30,
         marginBottom:48,
-        width: 352,
-        height: 265,
+        width: 300,
+        height: 230,
     },
     buttonText: {
       color: '#fff',
@@ -114,7 +114,7 @@ export default function bookingConfirmation() {
       alignSelf:'center',
       backgroundColor: '#2C152A', 
       height: 54,
-      width: 350,
+      width: '94%',
       elevation: 8, 
       shadowColor: '#000', 
       shadowOffset: { width: 0, height: 4 }, 
@@ -139,7 +139,7 @@ export default function bookingConfirmation() {
         backgroundColor: '#fff', 
         borderColor:'#2C152A',
         height: 54,
-        width: 350,
+        width: '94%',
         borderRadius: 8,
         paddingLeft: 24,
         paddingRight: 24,

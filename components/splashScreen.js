@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2C152A', // Specify your color
     top: 30,
     height: 54,
-    width: 330,
+    width: '94%',
     elevation: 4, // Android shadow
     shadowColor: '#000', // iOS shadows
     shadowOffset: { width: 0, height: 4 }, // iOS shadows
