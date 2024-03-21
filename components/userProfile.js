@@ -88,6 +88,8 @@ const styles = StyleSheet.create({
   viewContainer: {
     flexGrow: 1,
     backgroundColor: '#fff',
+    position: 'relative',
+
   },
   container: {
     flexGrow: 1,
@@ -113,12 +115,13 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
   },
   headerText: {
+    fontFamily: 'Satoshi-Bold',
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#732753',
     textAlign: 'left',
   },
   buttonText: {
+    fontFamily: 'Satoshi-Medium',
     color: '#2C152A',
     fontSize: 18,
   },
@@ -144,6 +147,8 @@ const styles = StyleSheet.create({
   },
   logout: {
     borderWidth:1,
+    display: 'flex',
+    flexDirection: 'row',
     backgroundColor: '#9B0E0E', 
     height: 54,
     width:'94%',
@@ -155,9 +160,10 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:20,
+    bottom: '10%',
   },
   logoutText:{
+    fontFamily: 'Satoshi-Medium',
     color: '#fff',
     fontSize: 18,
   },

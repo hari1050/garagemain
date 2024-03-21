@@ -116,7 +116,7 @@ export default function homeScreen() {
     return (
         <View style={styles.viewContainer}>
 
-            <ScrollView style={styles.container}>
+            <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 120 }}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Hi {name}</Text>
                     <TouchableOpacity onPress={navigateToProfile}>
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     },
     classicServiceImg: {
         borderRadius: 12,
-        width: 345,
+        width: '100%',
         height: 396,
     },
     summerServiceImg: {
@@ -264,28 +264,31 @@ const styles = StyleSheet.create({
         marginTop: 26,
     },
     priceText: {
+        fontFamily: 'Satoshi-Medium',
         fontSize: 16,
         color: '#fff'
     },
     serviceText: {
+        fontFamily: 'Satoshi-Bold',
         fontSize: 22,
-        fontWeight: 'bold',
         color: '#fff',
         textAlign: 'left',
     },
     serviceDescription: {
+        fontFamily: 'Satoshi-Medium',
         fontSize: 16,
         color: '#fff',
         opacity: 0.8,
         textAlign: 'left',
     },
     headerText: {
+        fontFamily: 'Satoshi-Bold',
         fontSize: 22,
-        fontWeight: 'bold',
         color: '#732753',
         textAlign: 'left',
     },
     buttonText: {
+        fontFamily: 'Satoshi-Medium',
         color: '#fff',
         fontSize: 18,
     },
@@ -302,13 +305,10 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingLeft: 24,
         paddingRight: 24,
-        // paddingTop: 16,
-        // paddingBottom: 12,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        // position: 'absolute',
-        bottom: 20,
+        bottom: '5%',
     },
 })

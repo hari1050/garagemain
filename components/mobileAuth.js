@@ -6,6 +6,7 @@ import { auth } from '../firebaseConfig';
 import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
 // import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 
 export default function mobileAuth() {
@@ -42,10 +43,11 @@ export default function mobileAuth() {
     };
   
     return (
-      <View style={styles.container}>
+      <View style={styles.viewContainer}>
+        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 120 }}>
         <Text style={styles.headerText}>We need your phone number</Text>
         <Text style={styles.subHeaderText}>
-          we’ll text you a code to verify your phone
+          We’ll text you a code to verify your phone
         </Text>
         
         <TextInput
@@ -67,7 +69,7 @@ export default function mobileAuth() {
             By selecting “I Agree”, I have reviewed and agree to the Terms of Use and acknowledge the Privacy Notice. I am at least 18 years of age
           </Text>
         </View> */}
-  
+        </ScrollView>
         <View style={styles.buttonContainer}>
             <TouchableOpacity style={[styles.customButton, phonenumber.length === 10 ? {} : styles.disabledButton]} onPress={handlePhone}>
               <Text style={styles.buttonText}>Continue</Text>
@@ -78,30 +80,37 @@ export default function mobileAuth() {
   };
   
   const styles = StyleSheet.create({
-    container: {
+    viewContainer: {
       flex: 1,
-      padding: 20,
-      paddingTop: 60,
       backgroundColor: '#fff',
+      position: 'relative',
     },
+    container: {
+      flexGrow: 1,
+      padding: 20,
+      paddingTop: 30,
+      backgroundColor: '#fff',
+  },
     buttonContainer:{
       flex: 1,
       justifyContent: 'flex-end', // Centers children vertically in the container
       alignItems: 'center', 
     },
     headerText: {
+      fontFamily:'Satoshi-Bold',
       fontSize: 22,
-      fontWeight: 'bold',
       color: '#732753',
       textAlign: 'left',
     },
     subHeaderText: {
+      fontFamily:'Satoshi-Medium',
       fontSize: 16,
       color: '#000', 
       marginTop: 10,
       textAlign: 'left',
     },
     input: {
+      fontFamily: 'Satoshi-Medium',
       marginTop: 30,
       padding: 10,
       borderWidth: 1,
@@ -128,6 +137,7 @@ export default function mobileAuth() {
       alignItems: 'center',
     },
     buttonText: {
+      fontFamily: 'Satoshi-Medium',
       color: '#fff',
       fontSize: 18,
     },
@@ -144,13 +154,11 @@ export default function mobileAuth() {
       borderRadius: 8,
       paddingLeft: 24,
       paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 16,
       display: 'flex', // This is the default display style for React Native components, so it can be omitted
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts.
+      bottom: '5%',
     },
     disabledButton: {
       alignSelf:'center',
@@ -165,13 +173,11 @@ export default function mobileAuth() {
       borderRadius: 8,
       paddingLeft: 24,
       paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 16,
       display: 'flex', // This is the default display style for React Native components, so it can be omitted
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts.
+      bottom: '5%'
 
     }
 });

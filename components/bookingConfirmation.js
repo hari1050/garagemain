@@ -46,6 +46,7 @@ export default function bookingConfirmation() {
         <View style={styles.viewContainer}>
 
         <ScrollView style={styles.container}>
+        <View style={styles.messagecontainer}>
         <Text style={styles.headerText}>Thank you for choosing SureFix</Text>
         <Image
             style={styles.profile}
@@ -53,8 +54,8 @@ export default function bookingConfirmation() {
         />
         <Text style={styles.headerText}>You will shortly receive a call from our Service center</Text>
             
-        </ScrollView>
-          <View>
+        </View>
+          <View style={styles.buttoncontainer}>
               {selectedId === '2' && (
                     <TouchableOpacity style={styles.customButton} onPress={navigateToMap}>
                         <Text style={styles.buttonText}>Get directions</Text>
@@ -68,6 +69,7 @@ export default function bookingConfirmation() {
                 <Text style={styles.secondaryButtonText}>Back to Home</Text>
               </TouchableOpacity>
           </View>
+          </ScrollView>
       </View>
     );
   };
@@ -78,10 +80,15 @@ export default function bookingConfirmation() {
       backgroundColor: '#fff',
     },
     container: {
-      flexGrow: 1,
-      padding: 20,
+      padding: 10,
       paddingTop: 60,
       backgroundColor: '#fff',
+    },
+    messagecontainer: {
+      paddingBottom: 60
+    },
+    buttoncontainer: {
+      paddingBottom: 70
     },
     header: {
         paddingBottom:10,
@@ -90,8 +97,8 @@ export default function bookingConfirmation() {
         alignItems: 'center',
     },
     headerText: {
+      fontFamily: 'Satoshi-Bold',
         fontSize: 18,
-        fontWeight: 'bold',
         color: '#333',
         textAlign: 'center',
       },
@@ -103,10 +110,12 @@ export default function bookingConfirmation() {
         height: 230,
     },
     buttonText: {
+      fontFamily: 'Satoshi-Medium',
       color: '#fff',
       fontSize: 18,
     },
     secondaryButtonText: {
+      fontFamily: 'Satoshi-Medium',
         color:'#2C152A',
         fontSize: 18,
     },
@@ -129,7 +138,7 @@ export default function bookingConfirmation() {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      bottom: 40, 
+      bottom: '15%', 
       right: 0,
     },
     secondaryButton: {
@@ -143,15 +152,11 @@ export default function bookingConfirmation() {
         borderRadius: 8,
         paddingLeft: 24,
         paddingRight: 24,
-        // paddingTop: 16,
-        // paddingBottom: 12,
         display: 'flex', 
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        // position: 'absolute', 
-        bottom: 20, 
-        // left: 18,
+        bottom: '10%', 
         right: 0,
       },
       buttonSpacing: {

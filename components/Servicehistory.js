@@ -143,8 +143,8 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
   },
   headerText: {
+    fontFamily: 'Satoshi-Bold',
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#732753',
     textAlign: 'left',
   },
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   },
   headerText1: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'Satoshi-Bold',
     marginBottom: 15,
   },
   row: {
@@ -221,10 +221,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   label: {
-    fontWeight: 'bold',
-    // flex: 1,
+    fontFamily: 'Satoshi-Bold',    // flex: 1,
   },
   value: {
+    fontFamily: 'Satoshi-Medium',
     color: '#333',
     // flex: 2,
   },
@@ -243,6 +243,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
+    fontFamily: 'Satoshi-Medium',
     color: '#2C152A',
     fontSize: 14,
   },

@@ -104,22 +104,25 @@ export default function userCompleteDetails() {
 
     const handleDateChange = (event, selectedDate, field) => {
       console.log('Selected Date:', selectedDate);
+      // Create a new Date object with the same year, month, and day from selectedDate,
+      // and set the time to 12 PM (noon)
       const currentDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 12, 0, 0);
-      console.log(istDate)
+      
       if (field === 'dob') {
-          setDob(currentDate);
-          setShowDobPicker(false);
+        setShowDobPicker(false); // Close the date picker first
+        setDob(currentDate);
       } else if (field === 'carPurchaseDate') {
-          setCarPurchaseDate(currentDate);
-          setShowCarPurchaseDatePicker(false);
+        setShowCarPurchaseDatePicker(false); // Close the date picker first
+        setCarPurchaseDate(currentDate);
       }
     };
+    
   
 
     return (
         <View style={styles.viewContainer}>
 
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 80 }}>
            <TouchableOpacity style={styles.caretLeft} onPress={navigateToClassicService}>
             <CaretLeft></CaretLeft>
            </TouchableOpacity>
@@ -230,11 +233,13 @@ export default function userCompleteDetails() {
       alignItems: 'center', 
     },
     input:{
+      fontFamily: 'Satoshi-Medium',
         padding:12,
         borderRadius:8,
         backgroundColor:'#f5f5f5',
     },
     inputLabel:{
+      fontFamily: 'Satoshi-Medium',
         marginTop: 8,
         marginBottom: 8,
         fontSize:16,
@@ -243,13 +248,14 @@ export default function userCompleteDetails() {
         paddingTop:8,
     },
     headerText: {
+      fontFamily: 'Satoshi-Bold',
       paddingTop: 10,
       fontSize: 18,
-      fontWeight: 'bold',
       color: '#732753',
       textAlign: 'left',
     },
     buttonText: {
+      fontFamily: 'Satoshi-Medium',
       color: '#fff',
       fontSize: 18,
     },
@@ -266,16 +272,11 @@ export default function userCompleteDetails() {
       borderRadius: 8,
       paddingLeft: 24,
       paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 12,
       display: 'flex', 
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      // position: 'absolute', 
-      bottom: 20, 
-      // left: 18,
-      right: 0,
+      bottom: '5%', 
     },
     calendar: {
         flexDirection:'row',

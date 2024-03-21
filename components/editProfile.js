@@ -146,11 +146,11 @@ export default function editProfile() {
       const currentDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 12, 0, 0);
       
       if (field === 'dob') {
+        setShowDobPicker(false); // Close the date picker first
         setDob(currentDate);
-        setShowDobPicker(false);
       } else if (field === 'carPurchaseDate') {
+        setShowCarPurchaseDatePicker(false); // Close the date picker first
         setCarPurchaseDate(currentDate);
-        setShowCarPurchaseDatePicker(false);
       }
     };
     
@@ -276,8 +276,7 @@ export default function editProfile() {
     viewContainer: {
       flexGrow: 1,
       backgroundColor: '#fff',
-      // justifyContent: 'center', // Center children vertically
-      // alignItems: 'center',
+      justifyContent: 'center', // Center children vertically
     },
 
     container: {
@@ -304,6 +303,7 @@ export default function editProfile() {
         paddingBottom: 6, // Add some padding to the bottom to ensure the content is not clipped
       },
       suggestion:{
+        fontFamily: 'Satoshi-Medium',
         padding:6,
       },
     buttonContainer:{
@@ -312,17 +312,20 @@ export default function editProfile() {
       alignItems: 'center', 
     },
     input:{
+      fontFamily: 'Satoshi-Medium',
         padding:12,
         borderRadius:8,
         backgroundColor:'#f5f5f5',
     },
     input1:{
+      fontFamily: 'Satoshi-Medium',
         padding:12,
         borderRadius:8,
         backgroundColor:'#f5f5f5',
         color:'#000'
     },
     inputLabel:{
+      fontFamily: 'Satoshi-Medium',
         marginTop: 8,
         marginBottom: 8,
         fontSize:16,
@@ -331,6 +334,7 @@ export default function editProfile() {
         paddingTop:8,
     },
     buttonText: {
+      fontFamily: 'Satoshi-Medium',
       color: '#fff',
       fontSize: 18,
     },
@@ -347,14 +351,11 @@ export default function editProfile() {
       borderRadius: 8,
       paddingLeft: 24,
       paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 16,
       display: 'flex', 
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      // position: 'absolute', 
-      bottom: 20, 
+      bottom: '10%', 
 
     },
     calendar: {

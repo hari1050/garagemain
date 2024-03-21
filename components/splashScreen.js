@@ -2,22 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useFonts} from 'expo-font';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export default function splashScreen() {
 
-    const [fontsLoaded] = useFonts({
-      'Satoshi-Regular': require('../assets/fonts/Satoshi-Regular.otf'),
-      'Satoshi-Bold': require('../assets/fonts/Satoshi-Bold.otf'),
-    });
-    if(!fontsLoaded){
-      console.log('no fonts found');
-    }else{
-      console.log(fontsLoaded);
-    }
     const navigation = useNavigation();
     const handleSplash = async() => {
       try {
@@ -71,9 +61,8 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
   },
   title: {
-      fontFamily:'Satoshi-Regular',
+      fontFamily:'Satoshi-Bold',
       fontSize: windowHeight * 0.025, // Percentage of window height
-      fontWeight: 'bold',
       marginVertical: '2%', // Percentage of window height
   },
   image: {
@@ -88,15 +77,15 @@ const styles = StyleSheet.create({
       resizeMode: 'contain',
   },
   buttonText: {
+    fontFamily: 'Satoshi-Medium',
       color: '#fff',
       fontSize: windowHeight * 0.025, // Percentage of window height
   },
   frame10: {
     alignSelf:'center',
     backgroundColor: '#2C152A', // Specify your color
-    top: 30,
     height: 54,
-    width: '94%',
+    width: '90%',
     elevation: 4, // Android shadow
     shadowColor: '#000', // iOS shadows
     shadowOffset: { width: 0, height: 4 }, // iOS shadows
@@ -105,12 +94,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingLeft: 24,
     paddingRight: 24,
-    // paddingTop: 16,
-    // paddingBottom: 16,
     display: 'flex', // This is the default display style for React Native components, so it can be omitted
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    top: '10%'
   },
 });
 

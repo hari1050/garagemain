@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
 import supabase from '../supabaseConfig'; // Import Supabase client
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function mobileAuth() {
 
@@ -79,7 +80,8 @@ export default function mobileAuth() {
     };
   
     return (
-      <View style={styles.container}>
+      <View style={styles.viewContainer}>
+        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 120 }}>
         <TouchableOpacity style={styles.caretLeft} onPress={handleResend}>
             <CaretLeft/>
         </TouchableOpacity>
@@ -110,7 +112,7 @@ export default function mobileAuth() {
             By selecting “I Agree”, I have reviewed and agree to the Terms of Use and acknowledge the Privacy Notice. I am at least 18 years of age
           </Text>
         </View> */}
-  
+        </ScrollView> 
         <View style={styles.buttonContainer}>
             <TouchableOpacity style={[styles.customButton, otpNumber.length === 4 ? {} : styles.disabledButton]} onPress={handleOtp}>
               <Text style={styles.buttonText}>Continue</Text>
@@ -121,12 +123,17 @@ export default function mobileAuth() {
   };
   
   const styles = StyleSheet.create({
-    container: {
+    viewContainer: {
       flex: 1,
+      backgroundColor: '#fff',
+      position: 'relative',
+    },
+    container: {
+      flexGrow: 1,
       padding: 20,
       paddingTop: 30,
       backgroundColor: '#fff',
-    },
+  },
     caretLeft: {
       marginTop:0,
       marginBottom:20,
@@ -137,18 +144,20 @@ export default function mobileAuth() {
       alignItems: 'center', 
     },
     headerText: {
+      fontFamily: 'Satoshi-Bold',
       fontSize: 22,
-      fontWeight: 'bold',
       color: '#732753',
       textAlign: 'left',
     },
     subHeaderText: {
+      fontFamily: 'Satoshi-Medium',
       fontSize: 16,
       color: '#000', 
       marginTop: 10,
       textAlign: 'left',
     },
     input: {
+      fontFamily: 'Satoshi-Medium',
       marginTop: 30,
       padding: 10,
       borderWidth: 1,
@@ -175,6 +184,7 @@ export default function mobileAuth() {
       alignItems: 'center',
     },
     buttonText: {
+      fontFamily: 'Satoshi-Medium',
       color: '#fff',
       fontSize: 18,
     },
@@ -191,13 +201,11 @@ export default function mobileAuth() {
       borderRadius: 8,
       paddingLeft: 24,
       paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 16,
       display: 'flex', // This is the default display style for React Native components, so it can be omitted
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      // position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts.
+      bottom:'5%'
     },
     disabledButton: {
       alignSelf:'center',
@@ -212,15 +220,14 @@ export default function mobileAuth() {
       borderRadius: 8,
       paddingLeft: 24,
       paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 16,
       display: 'flex', // This is the default display style for React Native components, so it can be omitted
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      // position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts
+      bottom: '5%'
     },
     resendLink: {
+      fontFamily: 'Satoshi-Medium',
       color: '#732753', // Specify the color for the link
       textDecorationLine: 'underline', // Underline the link
     },

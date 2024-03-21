@@ -50,7 +50,7 @@ export default function classicService() {
       initializeUserData();
     }, []);
 
-    const handleSummerServie = () => {
+    const handleSummerService = () => {
       const numericTotalPrice = parseFloat(totalPrice.replace(/,/g, ''));
       if(!summerServiceAdded){
         setSummerServiceAdded(true);
@@ -107,8 +107,7 @@ export default function classicService() {
 
       const handleDateChange = (event, selectedDate) => {
         // Set the time to 12 PM (noon)
-        const currentDate = new Date();
-        currentDate.setHours(12, 0, 0, 0);
+        const currentDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 12, 0, 0);
         console.log("Current Date:", currentDate);
         setShowDatePicker(false); 
         setserviceDate(currentDate);
@@ -153,12 +152,11 @@ export default function classicService() {
                     )}
                   <TouchableOpacity 
                     style={[styles.summerService, summerServiceAdded && { backgroundColor: 'green' }]} 
-                    onPress={handleSummerServie}
+                    onPress={handleSummerService}
                   >
-                    <Text style={[{ color: summerServiceAdded ? 'white' : 'black' }]}>
+                    <Text style={[{ color: summerServiceAdded ? 'white' : 'black', fontFamily: 'Satoshi-Medium', }]}>
                       {summerServiceAdded ? 'Summer Service Added' : 'Add Summer Service worth Rs.1500'}
                     </Text>
-                    {summerServiceAdded ? null : <PlusCircle></PlusCircle>}
                   </TouchableOpacity>
                   <View style={styles.priceTag}>
                       <Text style={styles.priceText}>
@@ -219,7 +217,7 @@ export default function classicService() {
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: 16,
-      width: '94%',
+      width: '100%',
       borderWidth: 1,
       borderRadius: 12,
       borderColor: '#000',
@@ -251,7 +249,7 @@ export default function classicService() {
     },
     classicServiceImg: {
         borderRadius: 12,
-        width: 345,
+        width: '100%',
         height: 396,
     },
     priceTag: {
@@ -263,18 +261,20 @@ export default function classicService() {
         marginTop: 26,
       },
     priceText: {
+      fontFamily: 'Satoshi-Medium',
         fontSize: 16,
         color: '#fff'
     },
     serviceText: {
+      fontFamily: 'Satoshi-Bold',
         marginTop: 8,
         fontSize: 22,
-        fontWeight: 'bold',
         color: '#000',
         textAlign: 'left',
     },
     serviceDescription: {
         marginTop: 8,
+        fontFamily: 'Satoshi-Medium',
         marginBottom:8,
         fontSize: 16,
         color: '#000',
@@ -283,6 +283,7 @@ export default function classicService() {
         marginBottom: 120,
     },
     selectDate: {
+      fontFamily: 'Satoshi-Medium',
       marginTop: 8,
       marginLeft: 12,
       marginBottom:8,
@@ -291,13 +292,17 @@ export default function classicService() {
       opacity: 0.8,
       textAlign: 'left',
     },
+    input:{
+      fontFamily: 'Satoshi-Medium',
+    },
     headerText: {
+      fontFamily: 'Satoshi-Bold',
       fontSize: 22,
-      fontWeight: 'bold',
       color: '#732753',
       textAlign: 'left',
     },
     buttonText: {
+      fontFamily: 'Satoshi-Medium',
       color: '#fff',
       fontSize: 18,
     },
@@ -314,21 +319,18 @@ export default function classicService() {
       borderRadius: 8,
       paddingLeft: 24,
       paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 16,
       display: 'flex', 
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      // position: 'absolute', 
-      bottom: 20, 
+      bottom: '5%', 
     },
     calendar: {
         alignSelf:'center',
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between',
-        width:'94%',
+        width:'100%',
         backgroundColor:'#F5F5F5',
         padding:16,
         borderRadius:12,

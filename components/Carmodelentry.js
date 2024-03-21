@@ -144,6 +144,7 @@ export default function Carmodelentry() {
       paddingBottom: 6, // Add some padding to the bottom to ensure the content is not clipped
     },
     suggestion:{
+      fontFamily: 'Satoshi-Medium',
       padding:6,
     },
     container: {
@@ -162,18 +163,20 @@ export default function Carmodelentry() {
       alignItems: 'center', 
     },
     headerText: {
+      fontFamily: 'Satoshi-Bold',
       fontSize: 22,
-      fontWeight: 'bold',
       color: '#732753',
       textAlign: 'left',
     },
     subHeaderText: {
+      fontFamily: 'Satoshi-Medium',
       fontSize: 16,
       color: '#000', 
       marginTop: 30,
       textAlign: 'left',
     },
     input: {
+      fontFamily: 'Satoshi-Medium',
       marginTop: 10,
       padding: 10,
       borderWidth: 1,
@@ -200,6 +203,7 @@ export default function Carmodelentry() {
       alignItems: 'center',
     },
     buttonText: {
+      fontFamily: 'Satoshi-Medium',
       color: '#fff',
       fontSize: 18,
     },

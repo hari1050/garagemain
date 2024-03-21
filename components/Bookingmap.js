@@ -62,12 +62,12 @@ export default function Bookingmap() {
       const radioButtons = useMemo(() => ([
         {
             id: '1',
-            label: 'Free Pick Up',
+            label: <Text style={styles.radioButtonText}>  Free Pick Up</Text>, // Style the radio button text here
             value: 'Pick Up'
         },
         {
             id: '2',
-            label: 'Self Drive In',
+            label: <Text style={styles.radioButtonText}>  Self Drive In</Text>, // Style the radio button text here
             value: 'Drive In'
         }
     ]), []);
@@ -89,6 +89,7 @@ export default function Bookingmap() {
               radioButtons={radioButtons} 
               onPress={setSelectedId}
               selectedId={selectedId}
+              fontFamily="Satoshi-Regular"
             />
           </View>
           </View>
@@ -105,12 +106,8 @@ export default function Bookingmap() {
   const styles = StyleSheet.create({
     viewContainer: {
       flexGrow: 1,
-      // padding: 20,
-      // paddingTop: 30,
       backgroundColor: '#fff',
-      // flex: 1,
-      // backgroundColor: '#fff',
-      // position: 'relative', 
+      position: 'relative', 
       // alignItems: 'center',
     },
     container: {
@@ -121,6 +118,9 @@ export default function Bookingmap() {
     },
     radioGrp: {
       alignItems:'flex-start',
+    },
+    radioButtonText: {
+      fontFamily: 'Satoshi-Medium', // Set the font family for radio button text
     },
     header: {
         paddingTop:10,
@@ -138,27 +138,15 @@ export default function Bookingmap() {
       justifyContent: 'flex-end', 
       alignItems: 'center', 
     },
-    input:{
-        padding:12,
-        borderRadius:8,
-        backgroundColor:'#f5f5f5',
-    },
-    inputLabel:{
-        marginTop: 8,
-        marginBottom: 8,
-        fontSize:16,
-    },
-    inputFieldContainer: {
-        paddingTop:8,
-    },
     headerText: {
+      fontFamily: 'Satoshi-Bold',
       paddingTop: 10,
       fontSize: 18,
-      fontWeight: 'bold',
       color: '#732753',
       textAlign: 'left',
     },
     buttonText: {
+      fontFamily: 'Satoshi-Medium',
       color: '#fff',
       fontSize: 18,
     },
@@ -179,6 +167,6 @@ export default function Bookingmap() {
       // flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      bottom:20,
+      bottom:'35%',
     },
 });

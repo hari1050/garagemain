@@ -70,11 +70,12 @@ export default function Nameentry() {
     },
     headerText: {
       fontSize: 22,
-      fontWeight: 'bold',
+      fontFamily: 'Satoshi-Bold',
       color: '#732753',
       textAlign: 'left',
     },
     subHeaderText: {
+      fontFamily: 'Satoshi-Medium',
       fontSize: 16,
       color: '#000', 
       marginTop: 30,
@@ -82,6 +83,7 @@ export default function Nameentry() {
       paddingBottom: 10
     },
     input: {
+      fontFamily: 'Satoshi-Medium',
       marginTop: 10,
       padding: 10,
       borderWidth: 1,
@@ -108,6 +110,7 @@ export default function Nameentry() {
       alignItems: 'center',
     },
     buttonText: {
+      fontFamily: 'Satoshi-Medium',
       color: '#fff',
       fontSize: 18,
     },
