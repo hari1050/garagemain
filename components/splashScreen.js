@@ -2,11 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useFonts} from 'expo-font';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export default function splashScreen() {
+
+    const [fontsLoaded] = useFonts({
+      'Satoshi-Regular': require('../assets/fonts/Satoshi-Regular.otf'),
+      'Satoshi-Bold': require('../assets/fonts/Satoshi-Bold.otf'),
+    });
+    if(!fontsLoaded){
+      console.log('no fonts found');
+    }else{
+      console.log(fontsLoaded);
+    }
     const navigation = useNavigation();
     const handleSplash = async() => {
       try {
@@ -60,6 +71,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
   },
   title: {
+      fontFamily:'Satoshi-Regular',
       fontSize: windowHeight * 0.025, // Percentage of window height
       fontWeight: 'bold',
       marginVertical: '2%', // Percentage of window height
