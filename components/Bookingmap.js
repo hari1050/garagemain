@@ -95,7 +95,7 @@ export default function Bookingmap() {
           </View>
         </ScrollView>
           <View>
-              <TouchableOpacity style={styles.customButton} onPress={navigateToConfirmation}>
+              <TouchableOpacity style={[styles.customButton,!selectedId && styles.disabledButton]} disabled={!selectedId} onPress={navigateToConfirmation}>
                 <Text style={styles.buttonText}>Confirm Booking</Text>
               </TouchableOpacity>
           </View>
@@ -165,6 +165,23 @@ export default function Bookingmap() {
       paddingRight: 24,
       // display: 'flex', // This is the default display style for React Native components, so it can be omitted
       // flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      bottom:'35%',
+    },
+    disabledButton: {
+      alignSelf:'center',
+      backgroundColor: '#646464', // Specify your color
+      height: 54,
+      width: '94%',
+      elevation: 4, // Android shadow
+      shadowColor: '#000', // iOS shadows
+      shadowOffset: { width: 0, height: 4 }, // iOS shadows
+      shadowOpacity: 0.25, // iOS shadows
+      shadowRadius: 6, // iOS shadows
+      borderRadius: 8,
+      paddingLeft: 24,
+      paddingRight: 24,
       justifyContent: 'center',
       alignItems: 'center',
       bottom:'35%',

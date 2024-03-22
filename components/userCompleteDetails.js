@@ -197,7 +197,7 @@ export default function userCompleteDetails() {
             
         </ScrollView>
           <View>
-              <TouchableOpacity style={styles.customButton} onPress={navigateToConfirmation}>
+              <TouchableOpacity style={[styles.customButton, (address.length !== 0 && registrationNumber.length !== 0) ? {} : styles.disabledButton]} onPress={navigateToConfirmation}>
                 <Text style={styles.buttonText}>Confirm Details</Text>
               </TouchableOpacity>
           </View>
@@ -285,5 +285,25 @@ export default function userCompleteDetails() {
         backgroundColor:'#F5F5F5',
         padding:4,
         borderRadius:12,
+    },
+    disabledButton: {
+      alignSelf:'center',
+      backgroundColor: '#646464', // Specify your color
+      height: 54,
+      width: '94%',
+      elevation: 4, // Android shadow
+      shadowColor: '#000', // iOS shadows
+      shadowOffset: { width: 0, height: 4 }, // iOS shadows
+      shadowOpacity: 0.25, // iOS shadows
+      shadowRadius: 6, // iOS shadows
+      borderRadius: 8,
+      paddingLeft: 24,
+      paddingRight: 24,
+      display: 'flex', // This is the default display style for React Native components, so it can be omitted
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      bottom: '5%'
+
     }
 });
