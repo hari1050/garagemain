@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator } from '@react-navigation/stack';
 import splashScreen from './components/splashScreen';
 import mobileAuth from './components/mobileAuth';
@@ -21,8 +23,34 @@ import Emergency from './components/Emergency';
 const Stack = createStackNavigator();
 
 function MyStackNavigator() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Add a loading state
+
+  useEffect(() => {
+    const checkUserData = async () => {
+      try {
+        const userData = await AsyncStorage.getItem('userData');
+        if (userData !== null) {
+          setIsLoggedIn(true);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false); // Set loading to false after checking AsyncStorage
+      }
+    };
+
+    checkUserData();
+ }, []);
+
+ if (isLoading) {
+    return <Customloadingicon />; // Assuming you have a loading screen component
+ }
+  
+
   return (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={isLoggedIn ? 'homeScreen' : 'splashScreen'}>
         <Stack.Screen name="splashScreen" component={splashScreen}/>
         <Stack.Screen name="Customloadingicon" component={Customloadingicon}/>
         <Stack.Screen name="phoneNoAuth" component={mobileAuth}/>

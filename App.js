@@ -20,6 +20,11 @@ export default function App() {
     'Satoshi-MediumItalic': require('./assets/fonts/Satoshi-MediumItalic.otf'),
   });
 
+  if (!fontsLoaded) {
+    // Return null if fonts are not loaded yet
+    return null;
+  }
+
   return (
     <>
     <StatusBar backgroundColor="#fff" barStyle="dark-content" />
