@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-// import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import axios from 'axios';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-// import auth from '@react-native-firebase/auth';
-import { auth } from '../firebaseConfig';
-import CheckBox from '@react-native-community/checkbox';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
-// import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 
 export default function mobileAuth() {
 
@@ -16,9 +12,26 @@ export default function mobileAuth() {
     const [agreeToTerms, setAgreeToTerms] = useState(false);
     
 
+    // const sendOtp = async (phoneNumber, apiKey, senderName, message) => {
+    //   const apiUrl = `https://api.textlocal.in/send/?apikey=${apiKey}&numbers=${phoneNumber}&message=${encodeURIComponent(message)}&sender=${senderName}`;
+    
+    //   try {
+    //     const response = await axios.get(apiUrl);
+    //     console.log(response.data);
+    //     // Handle success
+    //   } catch (error) {
+    //     console.error(error);
+    //     // Handle error
+    //   }
+    // };
+
     const handlePhone = () => {
-      if(phonenumber.length === 10){
-        navigation.navigate('otpverifyScreen',{ phonenumber: phonenumber });
+      if (phonenumber.length === 10) {
+        // const apiKey = 'NTE2MjRhMzU2NDUyNDU0ODQ3NDg1NzUyNTY2MzRmNmM='; // Replace with your Textlocal API Key
+        // const senderName = '600010'; // Replace with your sender name
+        // const message = 'Hi there, thank you for sending your first test message from Textlocal. See how you can send effective SMS campaigns here: https://tx.gl/r/2nGVj/'; // Replace with your message
+        // sendOtp(phonenumber, apiKey, senderName, message);
+        navigation.navigate('otpverifyScreen', { phonenumber: phonenumber });
       }
     };
 

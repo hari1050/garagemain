@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, BackHandler, ActivityIndicator } from 'react-native';
+import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-native';
 import Customloadingicon from './Customloadingicon'; // Import your custom loading indicator component
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function homeScreen() {
+    const isFocused = useIsFocused();
     const navigation = useNavigation();
-    const route = useRoute();
     const [backPressCount, setBackPressCount] = useState(0);
-    const [triggerFetch, setTriggerFetch] = useState(false);
     const [name, setName] = useState('');
     const [phonenumber, setPhoneNumber] = useState('');
-    const [servicetype, setServiceType] = useState('');
     const [carModels, setCarModels] = useState([]);
     const [carPrices, setCarPrices] = useState([]);
     const [pricesFetched, setPricesFetched] = useState(false); // Track if prices are fetched
     const [userDataLoaded, setUserDataLoaded] = useState(false); // Track if user data is loaded
+    const [isLoading, setIsLoading] = useState(true); // Track if data is currently being loaded
 
 
     useFocusEffect(
@@ -39,13 +38,15 @@ export default function homeScreen() {
      );
 
 
-    useEffect(() => {
+     useEffect(() => {
+        if(isFocused){
         const initializeUserData = async () => {
+            setIsLoading(true); // Start loading
             try {
                 const userDataString = await AsyncStorage.getItem('userData');
                 if (userDataString !== null) {
                     const userData = JSON.parse(userDataString);
-                    console.log(userData.carModels);
+                    console.log(userData.name)
                     setName(userData.name);
                     setCarModels(userData.carModels);
                     setPhoneNumber(userData.phonenumber);
@@ -54,14 +55,20 @@ export default function homeScreen() {
             } catch (error) {
                 console.log("Error retrieving user data from AsyncStorage:", error);
             }
-        };
+            setIsLoading(false); // End loading
 
+        };
+    
         initializeUserData();
-    }, [triggerFetch]); // Add triggerFetch as a dependency
+        }
+    }, [isFocused]); // Add userDataLoaded as a dependency
+    
 
     useEffect(() => {
         const fetchPrices = async () => {
+            setIsLoading(true); // Start loading
             try {
+                console.log("sup")
                 const carModelIds = carModels.map(model => model.id);
                 const { data, error } = await supabase
                     .from('Car_Model_Joined')
@@ -71,13 +78,15 @@ export default function homeScreen() {
                 if (error) {
                     throw error;
                 }
-                setTimeout(() => {
-                    setCarPrices(data || []);
-                    setPricesFetched(true); // Set pricesFetched to true after prices are fetched
-                }, 100);
+                setCarPrices(data || []);
+                setPricesFetched(true);
             } catch (error) {
                 console.error('Error fetching prices:', error.message);
             }
+            setTimeout(() => {
+                setIsLoading(false); // End loading
+            }, 100);
+            setIsLoading(false); // End loading
         };
 
         if (userDataLoaded) {
@@ -86,7 +95,7 @@ export default function homeScreen() {
     }, [userDataLoaded,carModels]); // Fetch prices when carModels change
 
     const navigateToClassicService = () => {
-        navigation.navigate('classicService', { name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype: "Classicservice" });
+        navigation.navigate('classicService', {carPrices: carPrices, servicetype: "Classicservice" });
     };
 
     const navigateToSummerService = () => {
@@ -109,7 +118,7 @@ export default function homeScreen() {
         navigation.navigate('Emergency',{name:name, carModels:carModels, phonenumber:phonenumber});
     };
 
-    if (!pricesFetched || !userDataLoaded) {
+    if (isLoading) {
         return <Customloadingicon />;
     }
 

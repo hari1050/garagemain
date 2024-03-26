@@ -21,16 +21,16 @@ export default function classicService() {
       currentDate.setHours(12, 0, 0, 0);
       return currentDate;
     });
-        const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
+    const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
     const [summerServiceAdded, setSummerServiceAdded] = useState(false);
     const [totalPrice, setTotalPrice] = useState(carPrices.length > 0 ? carPrices[0].Service_cost : 0);
     const summerServiceCost = 1500.00;
     const [countOFslots, setCountOFslots] = useState(0);
 
-    useEffect(()=> {
-      getCountOfSlot();
+    // useEffect(()=> {
+    //   getCountOfSlot();
       
-    },[]);
+    // },[]);
 
     useEffect(() => {
       const initializeUserData = async () => {
@@ -66,19 +66,19 @@ export default function classicService() {
 
     const getCountOfSlot = async() => {
       try {
-        const dateNow = new Date();
-        dateNow.setHours(0,0,0,0);
-        const year = dateNow.getFullYear();
-        const month = String(dateNow.getMonth() + 1).padStart(2, '0');
-        const day = String(dateNow.getDate()).padStart(2, '0');
-        const formattedDate = `${year}-${month}-${day}`;
-        const { count } = await supabase
-          .from('service_orders_table')
-          .select('count', { count: 'exact' })
-          .eq('servicedate', formattedDate);
-          setCountOFslots(count);
-      } catch(error){
-        console.log(error.message);
+        const { data: datesWith50OrMoreOrders, error } = await supabase
+          .from('service_date_numbers')
+          .select('service_date')
+          .gte('order_count', 1);
+    
+        if (error) {
+          throw error;
+        }
+        console.log(datesWith50OrMoreOrders)
+        return datesWith50OrMoreOrders;
+      } catch (error) {
+        console.error('Error fetching dates:', error.message);
+        return [];
       }
     }
 
@@ -113,8 +113,6 @@ export default function classicService() {
         setserviceDate(currentDate);
       };
       
-      
-      
 
     return (
         <View style={styles.viewContainer}>
@@ -147,7 +145,7 @@ export default function classicService() {
                     mode="date"
                     display="default"
                     onChange={handleDateChange}
-                    minimumDate={countOFslots > 50 ? tomorrow : today}
+                    minimumDate={today}
                 />
                     )}
                   <TouchableOpacity 
@@ -230,7 +228,7 @@ export default function classicService() {
     },
     
     header: {
-        paddingBottom:10,
+        paddingBottom:30,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

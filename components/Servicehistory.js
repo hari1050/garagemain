@@ -81,31 +81,26 @@ export default function Servicehistory() {
         <Text style={styles.headerText1}>Your Bookings</Text>
         <View style={styles.carddiv}>
                 {bookings.map((booking, index) => (
-                    <View key={index} style={styles.card}>
-                        <View style={styles.row}>
-                            <Text style={styles.label}>Price:</Text>
-                            <Text style={styles.value}>Rs. {booking.price[0].Service_cost}</Text>
+                    <View style={styles.card}>
+                    <View style={styles.row}>
+                        <View style={styles.priceTag}>
+                            <Text style={styles.priceText}>Rs. {booking.price[0].Service_cost}</Text>
                         </View>
-                        <View style={styles.row}>
-                            <Text style={styles.label}>Date:</Text>
-                            <Text style={styles.value}>{booking.servicedate}</Text>
+                        <View style={[styles.column, styles.dateContainer]}>
+                            <Text style={styles.valuest}>{booking.servicedate}</Text>
                         </View>
-                        <View style={styles.carModel}>
-                            <Text style={styles.label}>Car Model:</Text>
-                            <Text style={styles.value}>{booking.carmodel[0].name}</Text>
-                        </View>
-                        <View style={styles.row}>
-                            <Text style={styles.label}>Service Type:</Text>
-                            <Text style={styles.value}>{booking.servicetype}</Text>
-                        </View>
-                        <View style={styles.row}>
-                            <Text style={styles.label}>Registration Number:</Text>
-                            <Text style={styles.value}>{booking.car_reg_no}</Text>
-                        </View>
-                        <TouchableOpacity style={styles.secondaryButton} onPress={()=> cancelBooking(booking.id)}>
-                          <Text style={styles.buttonText}>Cancel Booking</Text>
-                        </TouchableOpacity>
                     </View>
+                    <View style={styles.carModel}>
+                        <Text style={styles.value}>{booking.carmodel[0].name}</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.valuest}>{booking.servicetype}</Text>
+                    </View>
+                    <TouchableOpacity style={styles.secondaryButton} onPress={()=> cancelBooking(booking.id)}>
+                        <Text style={styles.buttonText}>Cancel Booking</Text>
+                    </TouchableOpacity>
+                </View>
+                
                 ))}
           </View>
       </ScrollView>
@@ -156,21 +151,21 @@ const styles = StyleSheet.create({
     paddingTop:8,
     paddingBottom:8,
   },
-  secondaryButton: {
-    borderWidth:1,
-    borderColor:'#2C152A',
-    backgroundColor: '#fff', 
-    borderColor:'#2C152A',
-    height: 54,
-    width:'94%',
-    borderRadius: 8,
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingTop: 16,
-    paddingBottom: 16,
-    alignSelf:'center',
-    justifyContent: 'center',
-    alignItems: 'center',
+  dateContainer: {
+    marginTop: 5,
+    marginLeft: 'auto',
+  },
+  priceTag: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#2C152A',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 15,
+  },
+  priceText: {
+      fontFamily: 'Satoshi-Medium',
+      fontSize: 14,
+      color: '#fff'
   },
   logout: {
     borderWidth:1,
@@ -220,31 +215,41 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexWrap: 'wrap',
   },
+  column: {
+    alignItems: 'flex-end'
+  },
   label: {
     fontFamily: 'Satoshi-Bold',    // flex: 1,
   },
   value: {
     fontFamily: 'Satoshi-Medium',
     color: '#333',
+    fontSize: 13
     // flex: 2,
+  },
+  valuest :{
+    fontFamily: 'Satoshi-Medium',
+    color: '#333',
+    fontSize: 18
   },
   secondaryButton: {
     borderWidth:1,
+    marginTop: 10,
     borderColor:'#2C152A',
-    backgroundColor: '#fff', 
+    backgroundColor: '#9B0E0E', 
     borderColor:'#2C152A',
     height: 40,
-    width:'94%',
+    width:'100%',
     borderRadius: 8,
     paddingLeft: 24,
     paddingRight: 24,
-    alignSelf:'center',
+    alignSelf:'stretch',
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
     fontFamily: 'Satoshi-Medium',
-    color: '#2C152A',
+    color: '#fff',
     fontSize: 14,
   },
 });

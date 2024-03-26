@@ -14,16 +14,6 @@ export default function mobileAuth() {
     const route = useRoute();
     const { phonenumber } = route.params;
     
-    // const sendOtp = async () => {
-    //     const fullPhoneNumber = '+91' + phoneNumber;
-    //     try {
-    //         const recaptcha = new RecaptchaVerifier(auth,"recaptcha",{})
-    //         const confirmation = await signInWithPhoneNumber(auth,phoneNumber,recaptcha)
-    //         console.log(confirmation);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
 
     const handleOtp = async () => {
       if(otpNumber.length === 4){
@@ -36,7 +26,6 @@ export default function mobileAuth() {
               .single();
 
           if (error) {
-              console.log('no phone number');
               navigation.navigate('Nameentry',{phonenumber:phonenumber});
           }
 

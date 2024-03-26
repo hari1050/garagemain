@@ -18,10 +18,7 @@ export default function splashScreen() {
           // Check if userData contains the necessary attributes
           if (userData && 'name' in userData && 'carModels' in userData) {
             // User is logged in, navigate to MainScreen with userData as parameters
-            navigation.navigate('homeScreen', {
-              name: userData.name,
-              carModels: userData.carModels,
-            });
+            navigation.navigate('homeScreen');
           } else {
             // If userData does not contain the necessary attributes, navigate to LoginScreen
             navigation.navigate('phoneNoAuth');

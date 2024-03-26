@@ -30,8 +30,9 @@ function MyStackNavigator() {
   useEffect(() => {
     const checkUserData = async () => {
       try {
-        const userData = await AsyncStorage.getItem('userData');
-        if (userData !== null) {
+        const userDataString = await AsyncStorage.getItem('userData');
+        const userData = JSON.parse(userDataString);
+        if (userData && 'name' in userData && 'carModels' in userData) {
           setIsLoggedIn(true);
         }
       } catch (error) {

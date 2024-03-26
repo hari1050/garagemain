@@ -96,6 +96,7 @@ export default function editProfile() {
         // Save changes to table
           const { data: usertableData, error: userError } = await supabase.from('user_profiles').update(
             {
+              fullname:name,
               carmodels: carModels,
               address: address,
               user_dob: dob,
@@ -119,6 +120,7 @@ export default function editProfile() {
           // Merge existing data with new data
           const updatedUserData = {
               ...existingUserData, // Keep existing data
+              name: name || existingUserData.name,
               carModels: carModels || existingUserData.carModels, // Update carModels if provided, otherwise keep existing
               address: address || existingUserData.address, // Update address if provided, otherwise keep existing
               dob: dob || existingUserData.dob, // Update dob if provided, otherwise keep existing
@@ -172,7 +174,7 @@ export default function editProfile() {
                 style={styles.input1}
                 onChangeText={setName}
                 value={name}
-                editable={false}
+                placeholder='Name'
             />
           </View>
 
