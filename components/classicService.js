@@ -14,6 +14,7 @@ export default function classicService() {
     const [name, setName] = useState('');
     const [phonenumber, setPhoneNumber] = useState('');
     const [carModels, setCarModels] = useState([]);
+    const {selectedCarIndex, setSelectedCarIndex= []} = route.params;
     const {servicetype, carPrices = []} = route.params;
     const [serviceDate, setserviceDate] = useState(() => {
       // Create a new Date object for the current date with the time set to 12 PM (noon)
@@ -23,7 +24,7 @@ export default function classicService() {
     });
     const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
     const [summerServiceAdded, setSummerServiceAdded] = useState(false);
-    const [totalPrice, setTotalPrice] = useState(carPrices.length > 0 ? carPrices[0].Service_cost : 0);
+    const [totalPrice, setTotalPrice] = useState(carPrices.length > 0 ? carPrices[selectedCarIndex].Service_cost : 0);
     const summerServiceCost = 1500.00;
     const [countOFslots, setCountOFslots] = useState(0);
 
@@ -84,16 +85,18 @@ export default function classicService() {
 
 
     const navigatetoHome = () => {
-        navigation.navigate('homeScreen');
+        navigation.navigate('homeScreen', { selectedCarIndex: selectedCarIndex});
     }
     const navigateToProfile = () => {
       navigation.navigate('userProfile', { name: name, phonenumber: phonenumber });
     }
 
     const handleBookService = () => {
-        carPrices[0].Service_cost = totalPrice;
-        console.log(serviceDate)
-        navigation.navigate('userCompleteDetails',{name:name, carModels:carModels, carPrices:carPrices, servicetype:servicetype, serviceDate:serviceDate, phonenumber:phonenumber});
+        carPrices[selectedCarIndex].Service_cost = totalPrice;
+        // console.log(totalPrice,'totalPrice');
+        // console.log(serviceDate);
+        // console.log(selectedCarIndex);
+        navigation.navigate('userCompleteDetails',{name:name, carModels:carModels, carPrices:carPrices, servicetype:servicetype, serviceDate:serviceDate, phonenumber:phonenumber, selectedCarIndex:selectedCarIndex});
       }
 
       const today = new Date();

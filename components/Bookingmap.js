@@ -13,22 +13,25 @@ export default function Bookingmap() {
     const navigation = useNavigation();
     const route = useRoute();
     const [selectedOption, setSelectedOption] = useState(null);
-    const { name,phonenumber,serviceDate, carModels, servicetype,carPurchaseDate, registrationNumber, carPrices = []} = route.params;
+    const { name,phonenumber,serviceDate, carModels, servicetype,carPurchaseDate, registrationNumber, carPrices,selectedCarIndex = []} = route.params;
     const [pickupoption, setpickupoption] = useState('');
     const google = 'https://www.google.com/maps/place/Classic+car+Care/@19.3906961,72.7825159,17z/data=!4m6!3m5!1s0x3be7adea38f543f3:0x2e89d31efac7bdc1!8m2!3d19.3906961!4d72.7825159!16s%2Fg%2F11q3snm5lp?entry=ttu'
     const [selectedId, setSelectedId] = useState();
 
+
     const navigateToConfirmation = async () => {
       try {
         // Save order details in "order" table
+        console.log(carModels);
+        console.log([carModels[1]]);
         const { data: orderData, error: orderError } = await supabase.from('service_orders_table').insert([
           {
             servicetype: servicetype,
             servicedate: serviceDate,
             phonenumber: phonenumber,
             fullname: name,
-            carmodel: carModels,
-            price: carPrices,
+            carmodel: [carModels[selectedCarIndex]],
+            price: [carPrices[selectedCarIndex]],
             car_purchase_time: carPurchaseDate,
             car_reg_no: registrationNumber,
             vehiclePickUpType: selectedId === '1' ? 'Free Pick Up' : 'Self Drive In'
@@ -56,7 +59,7 @@ export default function Bookingmap() {
 
 
     const navigateTousercompletedetails = () => {
-        navigation.navigate('userCompleteDetails',{name:name, carModels:carModels, carPrices:carPrices, servicetype:servicetype, serviceDate:serviceDate, phonenumber:phonenumber});
+        navigation.navigate('userCompleteDetails',{name:name, carModels:carModels, carPrices:carPrices, servicetype:servicetype, serviceDate:serviceDate, phonenumber:phonenumber, selectedCarIndex:selectedCarIndex});
       }
 
       const radioButtons = useMemo(() => ([
@@ -117,7 +120,9 @@ export default function Bookingmap() {
       backgroundColor: '#fff',
     },
     radioGrp: {
-      alignItems:'flex-start',
+      backgroundColor:'#f5f5f5',
+      // flexDirection: 'column',
+      // alignItems:'space-around',
     },
     radioButtonText: {
       fontFamily: 'Satoshi-Medium', // Set the font family for radio button text

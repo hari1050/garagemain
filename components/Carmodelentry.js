@@ -1,133 +1,154 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 export default function Carmodelentry() {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { phonenumber, name } = route.params;
+  const [carModels, setCarModels] = useState([{ name: '', id: null }]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(null);
 
-    const navigation = useNavigation();
-    const route = useRoute();
-    const {phonenumber, name} = route.params;
-    const [carModels, setCarModels] = useState([{ name: '', id: null }]); // Initial state with one empty car model object
-    const [suggestions, setSuggestions] = useState([{ name: '', id: null }]); // New state for holding suggestions
+  const handleBack = () => {
+    navigation.navigate('phoneNoAuth');
+  };
 
-    const handleBack = () => {
-          navigation.navigate('phoneNoAuth');
-    };
-    
-    const navigateHome = async () => {
-        if(name.length != 0) {
-          try {
-            const userData = { 
-              name:name, 
-              carModels:carModels,
-              phonenumber: phonenumber
-            };
-            await AsyncStorage.setItem('userData', JSON.stringify(userData));
-            console.log('User data saved to AsyncStorage:', userData);
+  const navigateHome = async () => {
+    if (name.length !== 0) {
+      try {
+        const userData = {
+          name: name,
+          carModels: carModels,
+          phonenumber: phonenumber
+        };
+        await AsyncStorage.setItem('userData', JSON.stringify(userData));
+        console.log('User data saved to AsyncStorage:', userData);
 
-            const { data, error } = await supabase.from('user_profiles').insert([
-              {
-                phonenumber: phonenumber,
-                fullname: name,
-                carmodels: carModels,
-              }
-            ]);
-              if (error) {
-                console.error('Error saving details:', error.message);
-              } else {
-                console.log('Details saved successfully:', data);
-              }
-            
-          } catch (error) {
-            console.error('Error saving user data to AsyncStorage:', error);
+        const { data, error } = await supabase.from('user_profiles').insert([
+          {
+            phonenumber: phonenumber,
+            fullname: name,
+            carmodels: carModels,
           }
-            navigation.navigate('homeScreen');
+        ]);
+        if (error) {
+          console.error('Error saving details:', error.message);
+        } else {
+          console.log('Details saved successfully:', data);
         }
-    }
 
-    const handleCarModelChange = async (index, value) => {
-      const updatedCarModels = [...carModels];
-      updatedCarModels[index] = { ...updatedCarModels[index], name: value }; // Update only the name part
-      setCarModels(updatedCarModels);
-  
-      if (value.length > 1) { // Perform search if user has typed at least 2 characters
-        try {
-          const { data, error } = await supabase
-            .from('distinct_modelinfo')
-            .select('Car_Model_Fullname, Id')
-            .ilike('Car_Model_Fullname', `%${value}%`); // Search for similar car models
-          if (error) {
-            console.error('Error fetching car models:', error.message);
-          } else {
-            setSuggestions(data.map(item => ({
-              name: item.Car_Model_Fullname,
-              id: item.Id
+      } catch (error) {
+        console.error('Error saving user data to AsyncStorage:', error);
+      }
+      navigation.navigate('homeScreen');
+    }
+  };
+
+  const handleCarModelChange = async (index, value) => {
+    const updatedCarModels = [...carModels];
+    updatedCarModels[index] = { ...updatedCarModels[index], name: value };
+    setCarModels(updatedCarModels);
+
+    if (value.length > 1) {
+      try {
+        const { data, error } = await supabase
+          .from('distinct_modelinfo')
+          .select('Car_Model_Fullname, Id')
+          .ilike('Car_Model_Fullname', `%${value}%`);
+        if (error) {
+          console.error('Error fetching car models:', error.message);
+        } else {
+          setSuggestions(data.map(item => ({
+            name: item.Car_Model_Fullname,
+            id: item.Id
           })));
         }
-        } catch (error) {
-          console.error('Error fetching car models:', error.message);
-        }
-      } else {
-        setSuggestions([]); // Clear suggestions if input is cleared or too short
+      } catch (error) {
+        console.error('Error fetching car models:', error.message);
       }
-    };
+    } else {
+      setSuggestions([]);
+    }
+  };
 
-    const selectSuggestion = (index, suggestion) => {
-      const updatedCarModels = [...carModels];
-      updatedCarModels[index] = suggestion;
-      setCarModels(updatedCarModels);
-      setSuggestions([]); // Clear suggestions after selection
-    };
+  const selectSuggestion = (index, suggestion) => {
+    const updatedCarModels = [...carModels];
+    updatedCarModels[index] = suggestion;
+    setCarModels(updatedCarModels);
+    setSuggestions([]);
+  };
 
-    return (
-        
-      <View style={styles.container}>
-        <TouchableOpacity style={styles.caretLeft} onPress={handleBack}>
-            <CaretLeft/>
-        </TouchableOpacity>
+  const addCarModelInput = () => {
+    setCarModels([...carModels, { name: '', id: null }]);
+  };
 
-        <Text style={styles.headerText}>Let us know which car you rev up everyday</Text>
-        
-        <Text style={styles.subHeaderText}>
-          Please select your car model
-        </Text>
-        {carModels.map((carModel, index) => (
+  const handleInputFocus = (index) => {
+    setActiveIndex(index);
+  };
+
+  const removeCarModel = (index) => {
+    const updatedCarModels = [...carModels];
+    updatedCarModels.splice(index, 1);
+    setCarModels(updatedCarModels);
+  };
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.caretLeft} onPress={handleBack}>
+        <CaretLeft />
+      </TouchableOpacity>
+
+      <Text style={styles.headerText}>Let us know which cars you rev up everyday</Text>
+
+      <Text style={styles.subHeaderText}>
+        Please select your car models
+      </Text>
+
+      {carModels.map((carModel, index) => (
         <View key={index} style={styles.carModelContainer}>
-         <TextInput
-            style={styles.input} // Ensure this style matches other input fields
+          <TextInput
+            style={styles.input}
             placeholder={`Car Model ${index + 1}`}
             value={carModel.name}
             onChangeText={(value) => handleCarModelChange(index, value)}
+            onFocus={() => handleInputFocus(index)}
           />
-          {suggestions.length > 0 && carModel.name.length > 1 && (
-                <FlatList style={[styles.suggestionsContainer, styles.scrollContainer]}
-                    data={suggestions}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                              <TouchableOpacity onPress={() => selectSuggestion(index, item)}>
-                              <Text style={styles.suggestion}>{item.name}</Text>
-                              </TouchableOpacity>
-                     )}
-                     nestedScrollEnabled={true}
-                />
+          {index === activeIndex && suggestions.length > 0 && carModel.name.length > 1 && (
+            <FlatList
+              style={[styles.suggestionsContainer, styles.scrollContainer]}
+              data={suggestions}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => selectSuggestion(index, item)}>
+                  <Text style={styles.suggestion}>{item.name}</Text>
+                </TouchableOpacity>
               )}
-          
+              nestedScrollEnabled={true}
+            />
+          )}
+          <TouchableOpacity onPress={() => removeCarModel(index)} style={styles.removeButton}>
+            <Text style={styles.removeButtonText}>X</Text>
+          </TouchableOpacity>
         </View>
       ))}
-        
-        <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.customButton, (name.length != 0 && carModels.some(model => model.name.trim() !== '')) ? {} : styles.disabledButton]} onPress={navigateHome}>
-              <Text style={styles.buttonText}>Continue</Text>
-            </TouchableOpacity>
-        </View>
-        
+
+      <TouchableOpacity style={styles.addButton} onPress={addCarModelInput}>
+        <Text style={styles.buttonText}>Add Another Car Model</Text>
+      </TouchableOpacity>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={[styles.customButton, (name.length !== 0 && carModels.some(model => model.name.trim() !== '')) ? {} : styles.disabledButton]} onPress={navigateHome}>
+          <Text style={styles.buttonText}>Continue</Text>
+        </TouchableOpacity>
       </View>
-    );
-  };
+    </View>
+  );
+}
+
   
   const styles = StyleSheet.create({
     suggestionsContainer:{

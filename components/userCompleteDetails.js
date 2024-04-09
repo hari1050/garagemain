@@ -11,7 +11,7 @@ export default function userCompleteDetails() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const { name,phonenumber,serviceDate, carModels, servicetype, carPrices = []} = route.params;
+    const { name,phonenumber,serviceDate, carModels, servicetype, carPrices, selectedCarIndex = []} = route.params;
     const [showDatePicker, setShowDatePicker] = useState(false); 
     const [showDobPicker, setShowDobPicker] = useState(false);
     const [showCarPurchaseDatePicker, setShowCarPurchaseDatePicker] = useState(false);
@@ -48,7 +48,8 @@ export default function userCompleteDetails() {
   }, []);
 
     const navigateToClassicService = () => {
-      navigation.navigate('classicService', {carPrices:carPrices, servicetype:servicetype, serviceDate:serviceDate});
+      console.log(selectedCarIndex);
+      navigation.navigate('classicService', {carPrices:carPrices, servicetype:servicetype, serviceDate:serviceDate, selectedCarIndex:selectedCarIndex});
     }
 
     const navigateToConfirmation = async () => {
@@ -84,7 +85,6 @@ export default function userCompleteDetails() {
         };
         // Store updated userData in AsyncStorage
         await AsyncStorage.setItem('userData', JSON.stringify(updatedUserData));
-    
         // Navigate to the booking confirmation screen
         navigation.navigate('Bookingmap', {
           name: name,
@@ -94,7 +94,8 @@ export default function userCompleteDetails() {
           servicetype: servicetype,
           carPurchaseDate: carPurchaseDate,
           registrationNumber: registrationNumber,
-          carPrices: carPrices
+          carPrices: carPrices,
+          selectedCarIndex: selectedCarIndex,
         });
         
       } catch (error) {

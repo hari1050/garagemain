@@ -5,6 +5,8 @@ import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native'
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import { Picker } from '@react-native-picker/picker';
+
 
 export default function homeScreen() {
     const isFocused = useIsFocused();
@@ -17,6 +19,7 @@ export default function homeScreen() {
     const [pricesFetched, setPricesFetched] = useState(false); // Track if prices are fetched
     const [userDataLoaded, setUserDataLoaded] = useState(false); // Track if user data is loaded
     const [isLoading, setIsLoading] = useState(true); // Track if data is currently being loaded
+    const [selectedCarIndex, setSelectedCarIndex] = useState(0);
 
 
     useFocusEffect(
@@ -92,10 +95,10 @@ export default function homeScreen() {
         if (userDataLoaded) {
             fetchPrices();
         }
-    }, [userDataLoaded,carModels]); // Fetch prices when carModels change
+    }, [userDataLoaded,carModels,setSelectedCarIndex]); // Fetch prices when carModels change
 
     const navigateToClassicService = () => {
-        navigation.navigate('classicService', {carPrices: carPrices, servicetype: "Classicservice" });
+        navigation.navigate('classicService', {carPrices: carPrices, servicetype: "Classicservice", selectedCarIndex: selectedCarIndex });
     };
 
     const navigateToSummerService = () => {
@@ -117,6 +120,10 @@ export default function homeScreen() {
     const navigateToEmergency = async () => {
         navigation.navigate('Emergency',{name:name, carModels:carModels, phonenumber:phonenumber});
     };
+    
+    const handleChangeCar = (itemIndex) =>{
+        setSelectedCarIndex(itemIndex);
+    }
 
     if (isLoading) {
         return <Customloadingicon />;
@@ -136,6 +143,19 @@ export default function homeScreen() {
                     </TouchableOpacity>
                 </View>
 
+                <View style={styles.dropdownContainer}>
+                    <Text>Select Car:</Text>
+                    <Picker
+                        selectedValue={selectedCarIndex}
+                        onValueChange={(itemValue, itemIndex) =>
+                            handleChangeCar(itemValue)
+                        }>
+                        {carModels.map((car, index) => (
+                            <Picker.Item label={car.name} value={index} key={index} />
+                        ))}
+                    </Picker>
+                </View>
+
                     {carModels.length > 0 && (
                         <TouchableOpacity key={carModels[0].id} onPress={navigateToClassicService} style={styles.classicService}>
                         <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} />
@@ -143,7 +163,8 @@ export default function homeScreen() {
                             <View style={styles.priceTag}>
                                 {carPrices.length > 0 ? (
                                     <Text style={styles.priceText}>
-                                        Rs. {carPrices.map(price => price.Service_cost).join(', ')}
+                                        {/* Rs. {carPrices.map(price => price.Service_cost).join(', ')} */}
+                                        Rs. {carPrices[selectedCarIndex].Service_cost}
                                     </Text>
                                 ) : (
                                     <Text style={styles.priceText}>N/A</Text>
@@ -319,5 +340,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         bottom: '5%',
+    },
+    dropdownContainer: {
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginBottom: 20,
     },
 })
