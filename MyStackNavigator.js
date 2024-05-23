@@ -19,6 +19,7 @@ import summerService from './components/summerService';
 import winterService from './components/winterService';
 import monsoonService from './components/monsoonService';
 import Emergency from './components/Emergency';
+import otherServices from './components/otherServices';
 
 const Stack = createStackNavigator();
 
@@ -59,6 +60,7 @@ function MyStackNavigator() {
         <Stack.Screen name="Nameentry" component={Nameentry}/>
         <Stack.Screen name="Carmodelentry" component={Carmodelentry}/>
         <Stack.Screen name="homeScreen" component={homeScreen}/>
+        <Stack.Screen name="otherServices" component={otherServices}/>
         <Stack.Screen name="classicService" component={classicService}/>
         <Stack.Screen name="summerService" component={summerService}/>
         <Stack.Screen name="monsoonService" component={monsoonService}/>

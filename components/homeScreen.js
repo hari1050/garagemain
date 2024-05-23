@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image, BackHandler, FlatList } from 'react-native';
 import Customloadingicon from './Customloadingicon'; // Import your custom loading indicator component
 import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
-
 
 export default function homeScreen() {
     const isFocused = useIsFocused();
@@ -21,51 +20,47 @@ export default function homeScreen() {
     const [isLoading, setIsLoading] = useState(true); // Track if data is currently being loaded
     const [selectedCarIndex, setSelectedCarIndex] = useState(0);
 
-
     useFocusEffect(
         React.useCallback(() => {
-          const onBackPress = () => {
-            setBackPressCount(prevCount => prevCount + 1);
-            if (backPressCount >= 2) {
-              BackHandler.exitApp();
-            }
-            return true; // Prevent default back button behavior
-          };
-    
-          BackHandler.addEventListener('hardwareBackPress', onBackPress);
-    
-          return () => {
-            BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-          };
-        }, [backPressCount]) // Include backPressCount in the dependency array
-     );
-
-
-     useEffect(() => {
-        if(isFocused){
-        const initializeUserData = async () => {
-            setIsLoading(true); // Start loading
-            try {
-                const userDataString = await AsyncStorage.getItem('userData');
-                if (userDataString !== null) {
-                    const userData = JSON.parse(userDataString);
-                    console.log(userData.name)
-                    setName(userData.name);
-                    setCarModels(userData.carModels);
-                    setPhoneNumber(userData.phonenumber);
-                    setUserDataLoaded(true); // Set userDataLoaded to true after user data is loaded
+            const onBackPress = () => {
+                setBackPressCount(prevCount => prevCount + 1);
+                if (backPressCount >= 2) {
+                    BackHandler.exitApp();
                 }
-            } catch (error) {
-                console.log("Error retrieving user data from AsyncStorage:", error);
-            }
-            setIsLoading(false); // End loading
+                return true; // Prevent default back button behavior
+            };
 
-        };
-    
-        initializeUserData();
+            BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+            return () => {
+                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+            };
+        }, [backPressCount]) // Include backPressCount in the dependency array
+    );
+
+    useEffect(() => {
+        if (isFocused) {
+            const initializeUserData = async () => {
+                setIsLoading(true); // Start loading
+                try {
+                    const userDataString = await AsyncStorage.getItem('userData');
+                    if (userDataString !== null) {
+                        const userData = JSON.parse(userDataString);
+                        console.log(userData.name)
+                        setName(userData.name);
+                        setCarModels(userData.carModels);
+                        setPhoneNumber(userData.phonenumber);
+                        setUserDataLoaded(true); // Set userDataLoaded to true after user data is loaded
+                    }
+                } catch (error) {
+                    console.log("Error retrieving user data from AsyncStorage:", error);
+                }
+                setIsLoading(false); // End loading
+            };
+
+            initializeUserData();
         }
     }, [isFocused]); // Add userDataLoaded as a dependency
-    
 
     useEffect(() => {
         const fetchPrices = async () => {
@@ -95,22 +90,22 @@ export default function homeScreen() {
         if (userDataLoaded) {
             fetchPrices();
         }
-    }, [userDataLoaded,carModels,setSelectedCarIndex]); // Fetch prices when carModels change
+    }, [userDataLoaded, carModels, setSelectedCarIndex]); // Fetch prices when carModels change
 
     const navigateToClassicService = () => {
-        navigation.navigate('classicService', {carPrices: carPrices, servicetype: "Classicservice", selectedCarIndex: selectedCarIndex });
+        navigation.navigate('classicService', { carPrices: carPrices, servicetype: "Classicservice", selectedCarIndex: selectedCarIndex });
     };
 
     const navigateToSummerService = () => {
-        navigation.navigate('summerService',{ name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype:"Summerservice" });
+        navigation.navigate('summerService', { name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype: "Summerservice" });
     }
 
-    const navigateToWinterService = () => {
-        navigation.navigate('winterService',{ name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype:"Winterservice" });
+    const navigateToOtherService = () => {
+        navigation.navigate('otherServices', { carPrices: carPrices, servicetype: "Classicservice", selectedCarIndex: selectedCarIndex });
     }
 
     const navigateToMonsoonService = () => {
-        navigation.navigate('monsoonService',{ name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype:"Monsoonservice" });
+        navigation.navigate('monsoonService', { name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype: "Monsoonservice" });
     }
 
     const navigateToProfile = () => {
@@ -118,10 +113,10 @@ export default function homeScreen() {
     };
 
     const navigateToEmergency = async () => {
-        navigation.navigate('Emergency',{name:name, carModels:carModels, phonenumber:phonenumber});
+        navigation.navigate('Emergency', { name: name, carModels: carModels, phonenumber: phonenumber });
     };
-    
-    const handleChangeCar = (itemIndex) =>{
+
+    const handleChangeCar = (itemIndex) => {
         setSelectedCarIndex(itemIndex);
     }
 
@@ -129,9 +124,46 @@ export default function homeScreen() {
         return <Customloadingicon />;
     }
 
+    const images = [
+        require('../assets/monsoonService.png'),
+        require('../assets/summerService.png'),
+        require('../assets/winterService.png'),
+        require('../assets/winterService.png'),
+        require('../assets/winterService.png'),
+    ];
+
+    const Slideshow = () => {
+        const [currentIndex, setCurrentIndex] = useState(0);
+        const flatListRef = useRef(null);
+
+        useEffect(() => {
+            const interval = setInterval(() => {
+                setCurrentIndex((prevIndex) => {
+                    const nextIndex = prevIndex === images.length - 1 ? 0 : prevIndex + 1;
+                    flatListRef.current.scrollToIndex({ animated: true, index: nextIndex });
+                    return nextIndex;
+                });
+            }, 2000);
+            return () => clearInterval(interval);
+        }, []);
+
+        return (
+            <FlatList
+                ref={flatListRef}
+                data={images}
+                horizontal
+                pagingEnabled
+                scrollEnabled={false}
+                renderItem={({ item }) => (
+                    <Image source={item} style={styles.summerServiceImg} />
+                )}
+                keyExtractor={(_, index) => index.toString()}
+            />
+        );
+    };
+
     return (
         <View style={styles.viewContainer}>
-
             <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 120 }}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Hi {name}</Text>
@@ -144,7 +176,6 @@ export default function homeScreen() {
                 </View>
 
                 <View style={styles.dropdownContainer}>
-                    <Text>Select Car:</Text>
                     <Picker
                         selectedValue={selectedCarIndex}
                         onValueChange={(itemValue, itemIndex) =>
@@ -155,15 +186,13 @@ export default function homeScreen() {
                         ))}
                     </Picker>
                 </View>
-
-                    {carModels.length > 0 && (
-                        <TouchableOpacity key={carModels[0].id} onPress={navigateToClassicService} style={styles.classicService}>
-                        <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} />
+                {carModels.length > 0 && (
+                    <TouchableOpacity key={carModels[0].id} onPress={navigateToClassicService} style={styles.classicService}>
+                        <Image source={require('../assets/classicService1.jpeg')} style={styles.classicServiceImg} />
                         <View style={styles.textOverlay}>
                             <View style={styles.priceTag}>
                                 {carPrices.length > 0 ? (
                                     <Text style={styles.priceText}>
-                                        {/* Rs. {carPrices.map(price => price.Service_cost).join(', ')} */}
                                         Rs. {carPrices[selectedCarIndex].Service_cost}
                                     </Text>
                                 ) : (
@@ -177,53 +206,21 @@ export default function homeScreen() {
                         </View>
                     </TouchableOpacity>
                 )}
-
-                {/* <TouchableOpacity onPress={navigateToSummerService}>
+                <TouchableOpacity onPress={navigateToOtherService}>
                     <View style={styles.classicService}>
-                        <Image source={require('../assets/summerService.png')} style={styles.summerServiceImg} />
+                        <Slideshow />
                         <View style={styles.textOverlay}>
-                            <View style={styles.priceTag}>
-                                <Text style={styles.priceText}>Rs. 2999</Text>
-                            </View>
                             <View style={styles.bottomTextContainer}>
-                                <Text style={styles.serviceText}>Summer Service</Text>
-                                <Text style={styles.serviceDescription}>Free Ice pack and some accessory related to keeping drinks cool</Text>
+                                <Text style={styles.serviceText}>Clutch Work</Text>
+                                <Text style={styles.serviceDescription}>Book a free consultation for replacing clutch and get huge discounts on quotes.</Text>
                             </View>
                         </View>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={navigateToMonsoonService}>
-                    <View style={styles.classicService}>
-                        <Image source={require('../assets/monsoonService.png')} style={styles.summerServiceImg} />
-                        <View style={styles.textOverlay}>
-                            <View style={styles.priceTag}>
-                                <Text style={styles.priceText}>Rs. 2999</Text>
-                            </View>
-                            <View style={styles.bottomTextContainer}>
-                                <Text style={styles.serviceText}>Monsoon Service</Text>
-                                <Text style={styles.serviceDescription}>Free, anti-fog window treatment and CCC branded umbrella.</Text>
-                            </View>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={navigateToWinterService}>
-                    <View style={styles.classicService}>
-                        <Image source={require('../assets/winterService.png')} style={styles.summerServiceImg} />
-                        <View style={styles.textOverlay}>
-                            <View style={styles.priceTag}>
-                                <Text style={styles.priceText}>Rs. 2999</Text>
-                            </View>
-                            <View style={styles.bottomTextContainer}>
-                                <Text style={styles.serviceText}>Winter Service</Text>
-                                <Text style={styles.serviceDescription}>Free hot chocolate drink.</Text>
-                            </View>
-                        </View>
-                    </View>
-                </TouchableOpacity> */}
             </ScrollView>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.customButton} onPress={navigateToEmergency}>
-                    <Text style={styles.buttonText}>Emergency</Text>
+                    <Text style={styles.buttonText}>Emergency Car Services</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -346,6 +343,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         paddingHorizontal: 10,
+        marginTop:10,
         marginBottom: 20,
     },
 })

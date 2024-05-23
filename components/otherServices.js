@@ -7,7 +7,7 @@ import { Calendar, CaretRight, CaretLeft, PlusCircle } from 'phosphor-react-nati
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function classicService() {
+export default function otherServices() {
 
     const navigation = useNavigation();
     const route = useRoute();
@@ -151,14 +151,14 @@ export default function classicService() {
                     minimumDate={today}
                 />
                     )}
-                  {/* <TouchableOpacity 
+                  <TouchableOpacity 
                     style={[styles.summerService, summerServiceAdded && { backgroundColor: 'green' }]} 
                     onPress={handleSummerService}
                   >
                     <Text style={[{ color: summerServiceAdded ? 'white' : 'black', fontFamily: 'Satoshi-Medium', }]}>
                       {summerServiceAdded ? 'Summer Service Added' : 'Add Summer Service worth Rs.1500'}
                     </Text>
-                  </TouchableOpacity> */}
+                  </TouchableOpacity>
                   <View style={styles.priceTag}>
                       <Text style={styles.priceText}>
                       Rs. {totalPrice === null ? 'N/A': totalPrice}

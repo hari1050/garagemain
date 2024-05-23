@@ -109,7 +109,7 @@ export default function Carmodelentry() {
       </Text>
 
       {carModels.map((carModel, index) => (
-        <View key={index} style={styles.carModelContainer}>
+        <View key={index} style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             placeholder={`Car Model ${index + 1}`}
@@ -136,8 +136,8 @@ export default function Carmodelentry() {
         </View>
       ))}
 
-      <TouchableOpacity style={styles.addButton} onPress={addCarModelInput}>
-        <Text style={styles.buttonText}>Add Another Car Model</Text>
+      <TouchableOpacity style={styles.addCarButton} onPress={addCarModelInput}>
+        <Text style={styles.addcartext}>Add Another Car Model</Text>
       </TouchableOpacity>
 
       <View style={styles.buttonContainer}>
@@ -151,6 +151,13 @@ export default function Carmodelentry() {
 
   
   const styles = StyleSheet.create({
+    // inputContainer: {
+    //   flex:1,
+    // },
+    removeButton: {
+      marginLeft: 10,
+      justifyContent: 'center', // Aligns the button vertically centered
+    },
     suggestionsContainer:{
       backgroundColor:'#fff',
       borderRadius:4,
@@ -227,6 +234,24 @@ export default function Carmodelentry() {
       fontFamily: 'Satoshi-Medium',
       color: '#fff',
       fontSize: 18,
+    },
+    addcartext: {
+      fontFamily: 'Satoshi-Medium',
+      color: '#000',
+      fontSize: 18,
+    },
+    addCarButton:{
+      marginTop: 10,
+      alignSelf:'center',
+      height: 36,
+      width: '94%',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth:1,
+      borderColor:'#2C152A',
+      borderRadius:8,
     },
     customButton: {
       alignSelf:'center',

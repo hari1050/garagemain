@@ -11,7 +11,7 @@ export default function Emergency(){
     const navigateToHome = () => {
         navigation.navigate('homeScreen',{name: name, carModels: carModels});
     }
-    const batteryPhoneNo = '+917892446715';
+    const batteryPhoneNo = '+91';
     const handleCallButton = () => {
         Linking.openURL(`tel:${batteryPhoneNo}`);
     }
@@ -28,18 +28,18 @@ export default function Emergency(){
                         <Text style={styles.iconLabel}>Battery discharged</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleCallButton}>
+                {/* <TouchableOpacity onPress={handleCallButton}>
                     <View style={styles.individualTopic}>
                         <PoliceCar size={32} weight="fill"></PoliceCar>
                         <Text style={styles.iconLabel}>Accident</Text>
                     </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleCallButton}>
+                </TouchableOpacity> */}
+                {/* <TouchableOpacity onPress={handleCallButton}>
                     <View style={styles.individualTopic}>
                         <ChargingStation size={32} weight="fill"></ChargingStation>
                         <Text style={styles.iconLabel}>Fuel Problem</Text>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity onPress={handleCallButton}>
                     <View style={styles.individualTopic}>
                         <Key size={32} weight="fill"></Key>
