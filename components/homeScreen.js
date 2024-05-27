@@ -135,32 +135,62 @@ export default function homeScreen() {
     const Slideshow = () => {
         const [currentIndex, setCurrentIndex] = useState(0);
         const flatListRef = useRef(null);
-
-        useEffect(() => {
-            const interval = setInterval(() => {
-                setCurrentIndex((prevIndex) => {
-                    const nextIndex = prevIndex === images.length - 1 ? 0 : prevIndex + 1;
-                    flatListRef.current.scrollToIndex({ animated: true, index: nextIndex });
-                    return nextIndex;
-                });
+        const scrollIntervalRef = useRef(null);
+        const isUserScrollingRef = useRef(false);
+    
+        const startAutoScroll = () => {
+            scrollIntervalRef.current = setInterval(() => {
+                if (!isUserScrollingRef.current) {
+                    setCurrentIndex((prevIndex) => {
+                        const nextIndex = prevIndex === images.length - 1 ? 0 : prevIndex + 1;
+                        flatListRef.current.scrollToIndex({ animated: true, index: nextIndex });
+                        return nextIndex;
+                    });
+                }
             }, 2000);
-            return () => clearInterval(interval);
+        };
+    
+        const stopAutoScroll = () => {
+            if (scrollIntervalRef.current) {
+                clearInterval(scrollIntervalRef.current);
+            }
+        };
+    
+        useEffect(() => {
+            startAutoScroll();
+            return () => stopAutoScroll();
         }, []);
-
+    
         return (
             <FlatList
                 ref={flatListRef}
                 data={images}
                 horizontal
                 pagingEnabled
-                scrollEnabled={false}
+                scrollEnabled
+                onTouchStart={() => {
+                    isUserScrollingRef.current = true;
+                    stopAutoScroll();
+                }}
+                onTouchEnd={() => {
+                    isUserScrollingRef.current = false;
+                    startAutoScroll();
+                }}
+                onMomentumScrollEnd={(event) => {
+                    const index = Math.round(event.nativeEvent.contentOffset.x / event.nativeEvent.layoutMeasurement.width);
+                    setCurrentIndex(index);
+                }}
                 renderItem={({ item }) => (
-                    <Image source={item} style={styles.summerServiceImg} />
+                    <TouchableOpacity onPress={navigateToOtherService}>
+                        <Image source={item} style={styles.summerServiceImg} />
+                    </TouchableOpacity>
                 )}
                 keyExtractor={(_, index) => index.toString()}
             />
         );
     };
+    
+    
 
     return (
         <View style={styles.viewContainer}>
@@ -206,7 +236,6 @@ export default function homeScreen() {
                         </View>
                     </TouchableOpacity>
                 )}
-                <TouchableOpacity onPress={navigateToOtherService}>
                     <View style={styles.classicService}>
                         <Slideshow />
                         <View style={styles.textOverlay}>
@@ -216,7 +245,6 @@ export default function homeScreen() {
                             </View>
                         </View>
                     </View>
-                </TouchableOpacity>
             </ScrollView>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.customButton} onPress={navigateToEmergency}>
