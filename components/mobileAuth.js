@@ -38,7 +38,7 @@ export default function mobileAuth() {
       if (phonenumber.length === 10) {
         OTP = generateOTP();
         console.log(OTP);
-        // sendOTP(phonenumber,OTP);
+        sendOTP(phonenumber,OTP);
         navigation.navigate('otpverifyScreen', { phonenumber: phonenumber, OTP: OTP });
       }
     };
