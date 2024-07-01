@@ -1,37 +1,45 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
+import axios from 'axios';
 
 export default function mobileAuth() {
 
     const navigation = useNavigation();
     const [phonenumber, setPhoneNumber] = useState('');
     const [agreeToTerms, setAgreeToTerms] = useState(false);
-    
+    let OTP = 1;
 
-    // const sendOtp = async (phoneNumber, apiKey, senderName, message) => {
-    //   const apiUrl = `https://api.textlocal.in/send/?apikey=${apiKey}&numbers=${phoneNumber}&message=${encodeURIComponent(message)}&sender=${senderName}`;
+    const sendOTP = async (phoneNumber, otp) => {
+      const username = 'DG35-classiccar';
+      const password = 'digimile';
+      const type = '0';
+      const dlr = '1';
+      const source = 'CLSCAR';
+      const message = `Dear Customer, Your OTP for login on CLASSIC CAR CARE app is ${otp} and do not share it with anyone. Thank you.`;
+      const entityid = '1701171828107767374';
+      const tempid = '1707171932098937701';
     
-    //   try {
-    //     const response = await axios.get(apiUrl);
-    //     console.log(response.data);
-    //     // Handle success
-    //   } catch (error) {
-    //     console.error(error);
-    //     // Handle error
-    //   }
-    // };
+      const url = `https://rslri.connectbind.com:8443/bulksms/bulksms?username=${username}&password=${password}&type=${type}&dlr=${dlr}&destination=${phoneNumber}&source=${source}&message=${encodeURIComponent(message)}&entityid=${entityid}&tempid=${tempid}`;
+      try {
+        const response = await axios.get(url);
+        console.log('SMS Sent', response.data);
+      } catch (error) {
+        console.error('Error sending SMS', error);
+      }
+    };
+
+    const generateOTP = () => {
+        return Math.floor(1000*Math.random()*9000).toString().slice(0,4);
+    }
 
     const handlePhone = () => {
       if (phonenumber.length === 10) {
-        // const apiKey = 'NTE2MjRhMzU2NDUyNDU0ODQ3NDg1NzUyNTY2MzRmNmM='; // Replace with your Textlocal API Key
-        // const senderName = '600010'; // Replace with your sender name
-        // const message = 'Hi there, thank you for sending your first test message from Textlocal. See how you can send effective SMS campaigns here: https://tx.gl/r/2nGVj/'; // Replace with your message
-        // sendOtp(phonenumber, apiKey, senderName, message);
-        navigation.navigate('otpverifyScreen', { phonenumber: phonenumber });
+        OTP = generateOTP();
+        console.log(OTP);
+        // sendOTP(phonenumber,OTP);
+        navigation.navigate('otpverifyScreen', { phonenumber: phonenumber, OTP: OTP });
       }
     };
 

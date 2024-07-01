@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 // import { Dropdown } from "react-native-material-dropdown";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -115,6 +115,81 @@ export default function classicService() {
         setShowDatePicker(false); 
         setserviceDate(currentDate);
       };
+
+
+      const images = [
+        require('../assets/coolant-top-up.png'),
+        require('../assets/wiper-fluid.png'),
+        require('../assets/rear-lightck.png'),
+        require('../assets/spark-plug.png'),
+        require('../assets/frontlight-ck.png'),
+        require('../assets/brake-fluid.png'),
+        require('../assets/brakepad.png'),
+        require('../assets/foamwash.png'),
+        require('../assets/engineoil.png'),
+        require('../assets/newegoil.png'),
+        require('../assets/eg-oildrained.png'),
+        require('../assets/water-mist.png'),
+        require('../assets/underbodyInspected.png'),
+    ];
+
+    const Slideshow = () => {
+        const [currentIndex, setCurrentIndex] = useState(0);
+        const flatListRef = useRef(null);
+        const scrollIntervalRef = useRef(null);
+        const isUserScrollingRef = useRef(false);
+    
+        const startAutoScroll = () => {
+            scrollIntervalRef.current = setInterval(() => {
+                if (!isUserScrollingRef.current) {
+                    setCurrentIndex((prevIndex) => {
+                        const nextIndex = prevIndex === images.length - 1 ? 0 : prevIndex + 1;
+                        flatListRef.current.scrollToIndex({ animated: true, index: nextIndex });
+                        return nextIndex;
+                    });
+                }
+            }, 2000);
+        };
+    
+        const stopAutoScroll = () => {
+            if (scrollIntervalRef.current) {
+                clearInterval(scrollIntervalRef.current);
+            }
+        };
+    
+        useEffect(() => {
+            startAutoScroll();
+            return () => stopAutoScroll();
+        }, []);
+    
+        return (
+            <FlatList
+                ref={flatListRef}
+                data={images}
+                horizontal
+                pagingEnabled
+                scrollEnabled
+                onTouchStart={() => {
+                    isUserScrollingRef.current = true;
+                    stopAutoScroll();
+                }}
+                onTouchEnd={() => {
+                    isUserScrollingRef.current = false;
+                    startAutoScroll();
+                }}
+                onMomentumScrollEnd={(event) => {
+                    const index = Math.round(event.nativeEvent.contentOffset.x / event.nativeEvent.layoutMeasurement.width);
+                    setCurrentIndex(index);
+                }}
+                renderItem={({ item }) => (
+                    <View>
+                        <Image source={item} style={styles.classicServiceImg} />
+                    </View>
+                )}
+                keyExtractor={(_, index) => index.toString()}
+            />
+        );
+    };
       
 
     return (
@@ -133,7 +208,8 @@ export default function classicService() {
                   />
               </TouchableOpacity>
           </View>
-            <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} />
+          <Slideshow/>
+            {/* <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} /> */}
               <View>
                 <View style={styles.classicService}>
                 <Text style={styles.selectDate}>Select Service Date</Text>
@@ -250,8 +326,8 @@ export default function classicService() {
     },
     classicServiceImg: {
         borderRadius: 12,
-        width: '100%',
         height: 396,
+        width: 345,
     },
     priceTag: {
         alignSelf: 'flex-start',

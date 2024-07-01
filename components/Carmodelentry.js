@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
+import { Trash } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -119,9 +120,9 @@ export default function Carmodelentry() {
           />
           {index === activeIndex && suggestions.length > 0 && carModel.name.length > 1 && (
             <FlatList
-              style={[styles.suggestionsContainer, styles.scrollContainer]}
+              style={styles.suggestionsContainer}
               data={suggestions}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={(item, idx) => idx.toString()}
               renderItem={({ item }) => (
                 <TouchableOpacity onPress={() => selectSuggestion(index, item)}>
                   <Text style={styles.suggestion}>{item.name}</Text>
@@ -130,9 +131,11 @@ export default function Carmodelentry() {
               nestedScrollEnabled={true}
             />
           )}
-          <TouchableOpacity onPress={() => removeCarModel(index)} style={styles.removeButton}>
-            <Text style={styles.removeButtonText}>X</Text>
-          </TouchableOpacity>
+          {index > 0 && (
+            <TouchableOpacity onPress={() => removeCarModel(index)} style={styles.removeButton}>
+              <Trash />
+            </TouchableOpacity>
+          )}
         </View>
       ))}
 
@@ -149,155 +152,149 @@ export default function Carmodelentry() {
   );
 }
 
-  
-  const styles = StyleSheet.create({
-    // inputContainer: {
-    //   flex:1,
-    // },
-    removeButton: {
-      marginLeft: 10,
-      justifyContent: 'center', // Aligns the button vertically centered
-    },
-    suggestionsContainer:{
-      backgroundColor:'#fff',
-      borderRadius:4,
-      borderWidth:1,
-      borderColor:'#ddd',
-      elevation:4,
-      maxHeight: 300, // Set a max height to enable scrolling
-      overflow: 'scroll', // Enable scrolling
-      width: '100%'
-    },
-    scrollContainer: {
-      paddingBottom: 6, // Add some padding to the bottom to ensure the content is not clipped
-    },
-    suggestion:{
-      fontFamily: 'Satoshi-Medium',
-      padding:6,
-    },
-    container: {
-      flex: 1,
-      padding: 20,
-      paddingTop: 30,
-      backgroundColor: '#fff',
-    },
-    caretLeft: {
-        marginTop:0,
-        marginBottom:20,
-    },
-    buttonContainer:{
-      flex: 1,
-      justifyContent: 'flex-end', // Centers children vertically in the container
-      alignItems: 'center', 
-    },
-    headerText: {
-      fontFamily: 'Satoshi-Bold',
-      fontSize: 22,
-      color: '#732753',
-      textAlign: 'left',
-    },
-    subHeaderText: {
-      fontFamily: 'Satoshi-Medium',
-      fontSize: 16,
-      color: '#000', 
-      marginTop: 30,
-      textAlign: 'left',
-    },
-    input: {
-      fontFamily: 'Satoshi-Medium',
-      marginTop: 10,
-      padding: 10,
-      borderWidth: 1,
-      borderColor: '#ddd',
-      borderRadius: 5,
-    },
-    termsContainer: {
-      flexDirection: 'row',
-      marginTop: 30,
-      alignItems: 'center',
-    },
-    checkbox: {
-      marginRight: 10,
-    },
-    termsText: {
-      flex: 1,
-      fontSize: 14,
-    },
-    button: {
-      backgroundColor: '#800080', // Purple color
-      borderRadius: 5,
-      padding: 15,
-      marginTop: 30,
-      alignItems: 'center',
-    },
-    buttonText: {
-      fontFamily: 'Satoshi-Medium',
-      color: '#fff',
-      fontSize: 18,
-    },
-    addcartext: {
-      fontFamily: 'Satoshi-Medium',
-      color: '#000',
-      fontSize: 18,
-    },
-    addCarButton:{
-      marginTop: 10,
-      alignSelf:'center',
-      height: 36,
-      width: '94%',
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderWidth:1,
-      borderColor:'#2C152A',
-      borderRadius:8,
-    },
-    customButton: {
-      alignSelf:'center',
-      backgroundColor: '#2C152A', // Specify your color
-      height: 54,
-      width: '94%',
-      elevation: 4, // Android shadow
-      shadowColor: '#000', // iOS shadows
-      shadowOffset: { width: 0, height: 4 }, // iOS shadows
-      shadowOpacity: 0.25, // iOS shadows
-      shadowRadius: 6, // iOS shadows
-      borderRadius: 8,
-      paddingLeft: 24,
-      paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 16,
-      display: 'flex', // This is the default display style for React Native components, so it can be omitted
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      // position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts.
-    },
-    disabledButton: {
-      alignSelf:'center',
-      backgroundColor: '#646464', // Specify your color
-      height: 54,
-      width: '94%',
-      elevation: 4, // Android shadow
-      shadowColor: '#000', // iOS shadows
-      shadowOffset: { width: 0, height: 4 }, // iOS shadows
-      shadowOpacity: 0.25, // iOS shadows
-      shadowRadius: 6, // iOS shadows
-      borderRadius: 8,
-      paddingLeft: 24,
-      paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 16,
-      display: 'flex', // This is the default display style for React Native components, so it can be omitted
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      // position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts
-    },
-    resendLink: {
-      color: '#732753', // Specify the color for the link
-      textDecorationLine: 'underline', // Underline the link
-    },
+const styles = StyleSheet.create({
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  removeButton: {
+    marginLeft: 10,
+    justifyContent: 'center',
+  },
+  suggestionsContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    elevation: 4,
+    maxHeight: 300, // Set a max height to enable scrolling
+    position: 'absolute',
+    top: 50, // Position it below the input field
+    width: '100%',
+    zIndex: 1, // Ensure it appears above other elements
+  },
+  suggestion: {
+    fontFamily: 'Satoshi-Medium',
+    padding: 6,
+  },
+  container: {
+    flex: 1,
+    padding: 20,
+    paddingTop: 30,
+    backgroundColor: '#fff',
+  },
+  caretLeft: {
+    marginTop: 0,
+    marginBottom: 20,
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: 'flex-end', // Centers children vertically in the container
+    alignItems: 'center',
+  },
+  headerText: {
+    fontFamily: 'Satoshi-Bold',
+    fontSize: 22,
+    color: '#732753',
+    textAlign: 'left',
+  },
+  subHeaderText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: '#000',
+    marginTop: 30,
+    textAlign: 'left',
+  },
+  input: {
+    flex: 1,
+    fontFamily: 'Satoshi-Medium',
+    marginTop: 10,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
+  },
+  termsContainer: {
+    flexDirection: 'row',
+    marginTop: 30,
+    alignItems: 'center',
+  },
+  checkbox: {
+    marginRight: 10,
+  },
+  termsText: {
+    flex: 1,
+    fontSize: 14,
+  },
+  button: {
+    backgroundColor: '#800080', // Purple color
+    borderRadius: 5,
+    padding: 15,
+    marginTop: 30,
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontFamily: 'Satoshi-Medium',
+    color: '#fff',
+    fontSize: 18,
+  },
+  addcartext: {
+    fontFamily: 'Satoshi-Medium',
+    color: '#000',
+    fontSize: 18,
+  },
+  addCarButton: {
+    marginTop: 10,
+    alignSelf: 'center',
+    height: 36,
+    width: '94%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#2C152A',
+    borderRadius: 8,
+  },
+  customButton: {
+    alignSelf: 'center',
+    backgroundColor: '#2C152A', // Specify your color
+    height: 54,
+    width: '94%',
+    elevation: 4, // Android shadow
+    shadowColor: '#000', // iOS shadows
+    shadowOffset: { width: 0, height: 4 }, // iOS shadows
+    shadowOpacity: 0.25, // iOS shadows
+    shadowRadius: 6, // iOS shadows
+    borderRadius: 8,
+    paddingLeft: 24,
+    paddingRight: 24,
+    display: 'flex', // This is the default display style for React Native components, so it can be omitted
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  disabledButton: {
+    alignSelf: 'center',
+    backgroundColor: '#646464', // Specify your color
+    height: 54,
+    width: '94%',
+    elevation: 4, // Android shadow
+    shadowColor: '#000', // iOS shadows
+    shadowOffset: { width: 0, height: 4 }, // iOS shadows
+    shadowOpacity: 0.25, // iOS shadows
+    shadowRadius: 6, // iOS shadows
+    borderRadius: 8,
+    paddingLeft: 24,
+    paddingRight: 24,
+    display: 'flex', // This is the default display style for React Native components, so it can be omitted
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  resendLink: {
+    color: '#732753', // Specify the color for the link
+    textDecorationLine: 'underline', // Underline the link
+  },
 });
-
