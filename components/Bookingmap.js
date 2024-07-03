@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { CaretLeft } from 'phosphor-react-native';
+import { CaretLeft, Leaf } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RadioGroup from 'react-native-radio-buttons-group';
@@ -82,7 +82,7 @@ export default function Bookingmap() {
   const radioButtons = useMemo(() => ([
     {
       id: '1',
-      label: <Text style={styles.radioButtonText}>  Free Pick Up</Text>, // Style the radio button text here
+      label: <Text style={styles.radioButtonText}>  Free Pick Up</Text>,
       value: 'Pick Up'
     },
     {
@@ -108,6 +108,7 @@ export default function Bookingmap() {
               radioButtons={radioButtons}
               onPress={setSelectedId}
               selectedId={selectedId}
+              containerStyle={{ flexDirection: 'column',  alignItems: 'flex-start',}}
               fontFamily="Satoshi-Regular"
             />
           </View>
@@ -137,12 +138,23 @@ export default function Bookingmap() {
               <Text style={styles.closeText}>X</Text>
             </TouchableOpacity>
             <Text style={styles.modalText}>Get your car monsoon-ready for just Rs. 1500! Ready to splash into this rainy service upgrade?</Text>
+            <Text style={styles.serviceDescription}>
+            {'\u2022'} Free, anti-fog window treatment and CCC branded umbrella. {'\n'}
+            {'\u2022'} Classic service is done{'\n'}
+            {'\u2022'} Wipers are replaced{'\n'}
+            {'\u2022'} Defogger and AC unit is checked and inspected for effectiveness{'\n'}
+            {'\u2022'} Tyres are checked for thread wear {'\n'}
+            {'\u2022'} Joints are greased with water resistant grease. {'\n'}
+            {'\u2022'} Additional wiper washer fluid is provided. {'\n'}
+            {'\u2022'} Anti Rat treatment on demand {'\n'}
+            {'\u2022'} Underbody coating using rubber based paint for anti rust and chipping protection.{'\n'} 
+            </Text>
             <View style={styles.modalButtons}>
               <TouchableOpacity style={styles.modalButton} onPress={handleCancelFromModal}>
-                <Text style={styles.modalButtonText}>Cancel</Text>
+                <Text style={styles.modalButtonText}>No, Thanks</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.modalButton} onPress={handleSaveFromModal}>
-                <Text style={styles.modalButtonTextSave}>Save</Text>
+                <Text style={styles.modalButtonTextSave}>Sure</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -165,11 +177,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   radioGrp: {
-    flexDirection: 'column',
+    marginTop: '3%',
+    flexDirection: 'row',
     alignItems: 'flex-start',
   },
   radioButtonText: {
     fontFamily: 'Satoshi-Medium',
+    fontSize: 18
   },
   header: {
     paddingTop: 10,
@@ -181,7 +195,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontFamily: 'Satoshi-Bold',
     paddingTop: 10,
-    fontSize: 18,
+    fontSize: 22,
     color: '#732753',
     textAlign: 'left',
   },
@@ -190,6 +204,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
   },
+  serviceDescription: {
+    marginTop: 8,
+    fontFamily: 'Satoshi-Medium',
+    marginBottom:8,
+    fontSize: 15,
+    color: '#000',
+    opacity: 0.8,
+    textAlign: 'left',
+},
   customButton: {
     alignSelf: 'center',
     backgroundColor: '#2C152A',

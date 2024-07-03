@@ -326,7 +326,7 @@ export default function classicService() {
     },
     classicServiceImg: {
         borderRadius: 12,
-        height: 396,
+        height: 430,
         width: 345,
     },
     priceTag: {

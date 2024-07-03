@@ -232,7 +232,7 @@ export default function homeScreen() {
                 </View>
                 {carModels.length > 0 && (
                     <TouchableOpacity key={carModels[0].id} onPress={navigateToClassicService} style={styles.classicService}>
-                        <Image source={require('../assets/classicserviceMain.png')} style={styles.classicServiceImg} />
+                        <Image source={require('../assets/classicserviceDark.png')} style={styles.classicServiceImg} />
                         <View style={styles.textOverlay}>
                             <View style={styles.priceTag}>
                                 {carPrices.length > 0 ? (
