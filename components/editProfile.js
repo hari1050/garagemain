@@ -2,6 +2,7 @@ import React, { useState , useEffect} from 'react';
 import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Calendar,CaretLeft } from 'phosphor-react-native';
+import { Trash } from 'phosphor-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import supabase from '../supabaseConfig';
@@ -24,6 +25,7 @@ export default function editProfile() {
     const [carModelname, setcarModelname] = useState('');
     const [carModels, setCarModels] = useState([{ name: '', id: null }]); // Initial state with one empty car model object
     const [suggestions, setSuggestions] = useState([{ name: '', id: null }]); // New state for holding suggestions
+    const [activeIndex, setActiveIndex] = useState(null);
 
 
     useEffect(() => {
@@ -89,6 +91,19 @@ export default function editProfile() {
       updatedCarModels[index] = suggestion;
       setCarModels(updatedCarModels);
       setSuggestions([]); // Clear suggestions after selection
+    };
+    const addCarModelInput = () => {
+      setCarModels([...carModels, { name: '', id: null }]);
+    };
+  
+    const handleInputFocus = (index) => {
+      setActiveIndex(index);
+    };
+  
+    const removeCarModel = (index) => {
+      const updatedCarModels = [...carModels];
+      updatedCarModels.splice(index, 1);
+      setCarModels(updatedCarModels);
     };
 
     const navigateToConfirmation = async () => {
@@ -162,7 +177,7 @@ export default function editProfile() {
     return (
         <View style={styles.viewContainer}>
 
-        <ScrollView style={styles.container}contentContainerStyle={{ paddingBottom: 80 }}>
+        <ScrollView style={styles.container}contentContainerStyle={{ paddingBottom: 80, paddingTop:10 }}>
            <TouchableOpacity style={styles.caretLeft} onPress={navigateToProfile}>
             <CaretLeft></CaretLeft>
            </TouchableOpacity>
@@ -201,8 +216,9 @@ export default function editProfile() {
                 placeholder={`Car Model ${index + 1}`}
                 value={carModel.name}
                 onChangeText={(value) => handleCarModelChange(index, value)}
+                onFocus={() => handleInputFocus(index)}
               />
-              {suggestions.length > 0 && typing && carModel.name.length > 1 && (
+              {index === activeIndex && suggestions.length > 0 && typing && carModel.name.length > 1 && (
                 <FlatList style={[styles.suggestionsContainer, styles.scrollContainer]}
                     data={suggestions}
                     keyExtractor={(item, index) => index.toString()}
@@ -214,8 +230,17 @@ export default function editProfile() {
                      nestedScrollEnabled={true}
                 />
               )}
+            {index > 0 && (
+              <TouchableOpacity onPress={() => removeCarModel(index)} style={styles.removeButton}>
+                <Trash />
+              </TouchableOpacity>
+            )}
             </View>
           ))}
+
+          <TouchableOpacity style={styles.addCarButton} onPress={addCarModelInput}>
+            <Text style={styles.addcartext}>Add Another Car Model</Text>
+          </TouchableOpacity>
 
           <View style={styles.inputFieldContainer}>
             <Text style={styles.inputLabel}>
@@ -296,10 +321,14 @@ export default function editProfile() {
       borderColor: '#ddd',
       elevation: 4,
       zIndex: 99,
-      maxHeight: 150, // Set a max height to enable scrolling
       overflow: 'scroll', // Enable scrolling
       width: '100%',
-      maxHeight: 200, // Adjust this value as needed
+      maxHeight: 220, // Adjust this value as needed
+     },
+     carModelContainer:{
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 10,
      },
       scrollContainer: {
         paddingBottom: 6, // Add some padding to the bottom to ensure the content is not clipped
@@ -358,7 +387,28 @@ export default function editProfile() {
       justifyContent: 'center',
       alignItems: 'center',
       bottom: '10%', 
-
+    },
+    addCarButton: {
+      marginTop: 10,
+      alignSelf: 'center',
+      height: 36,
+      width: '94%',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: '#2C152A',
+      borderRadius: 8,
+    },
+    removeButton: {
+      marginLeft: 10,
+      justifyContent: 'center',
+    },
+    addcartext: {
+      fontFamily: 'Satoshi-Medium',
+      color: '#000',
+      fontSize: 18,
     },
     calendar: {
         flexDirection:'row',

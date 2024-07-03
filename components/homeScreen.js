@@ -129,7 +129,6 @@ export default function homeScreen() {
         require('../assets/summerService.png'),
         require('../assets/winterService.png'),
         require('../assets/winterService.png'),
-        require('../assets/winterService.png'),
     ];
 
     const Slideshow = () => {
@@ -160,6 +159,19 @@ export default function homeScreen() {
             startAutoScroll();
             return () => stopAutoScroll();
         }, []);
+
+        const getItemLayout = (data, index) => ({
+            length: 345, // width of each image in pixels
+            offset: 345 * index,
+            index,
+        });
+    
+        const handleScrollToIndexFailed = (info) => {
+            const wait = new Promise((resolve) => setTimeout(resolve, 500));
+            wait.then(() => {
+                flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
+            });
+        };
     
         return (
             <FlatList
@@ -168,6 +180,8 @@ export default function homeScreen() {
                 horizontal
                 pagingEnabled
                 scrollEnabled
+                getItemLayout={getItemLayout}
+                onScrollToIndexFailed={handleScrollToIndexFailed}
                 onTouchStart={() => {
                     isUserScrollingRef.current = true;
                     stopAutoScroll();
@@ -212,7 +226,7 @@ export default function homeScreen() {
                             handleChangeCar(itemValue)
                         }>
                         {carModels.map((car, index) => (
-                            <Picker.Item label={car.name} value={index} key={index} />
+                            <Picker.Item style = {styles.dropdownpicker} label={car.name} value={index} key={index} />
                         ))}
                     </Picker>
                 </View>
@@ -369,9 +383,13 @@ const styles = StyleSheet.create({
     dropdownContainer: {
         borderColor: '#ccc',
         borderWidth: 1,
-        borderRadius: 5,
+        borderRadius: 10,
         paddingHorizontal: 10,
-        marginTop:10,
-        marginBottom: 20,
+        marginTop:20,
     },
+
+    dropdownpicker:{
+        fontFamily: 'Satoshi-Medium',
+        fontSize: 16,
+    }
 })

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
 import { Trash } from 'phosphor-react-native';
@@ -15,7 +15,7 @@ export default function Carmodelentry() {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const handleBack = () => {
-    navigation.navigate('phoneNoAuth');
+    navigation.navigate('Nameentry');
   };
 
   const navigateHome = async () => {
@@ -23,7 +23,7 @@ export default function Carmodelentry() {
       try {
         const userData = {
           name: name,
-          carModels: carModels,
+          carModels: carModels.filter(x => x.name!== ''),
           phonenumber: phonenumber
         };
         await AsyncStorage.setItem('userData', JSON.stringify(userData));
@@ -33,7 +33,7 @@ export default function Carmodelentry() {
           {
             phonenumber: phonenumber,
             fullname: name,
-            carmodels: carModels,
+            carModels: carModels.filter(x => x.name!== ''),
           }
         ]);
         if (error) {
@@ -98,7 +98,8 @@ export default function Carmodelentry() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.viewContainer}>
+    <ScrollView style={styles.container}contentContainerStyle={{ paddingBottom: 80, paddingTop:10 }}>
       <TouchableOpacity style={styles.caretLeft} onPress={handleBack}>
         <CaretLeft />
       </TouchableOpacity>
@@ -142,12 +143,12 @@ export default function Carmodelentry() {
       <TouchableOpacity style={styles.addCarButton} onPress={addCarModelInput}>
         <Text style={styles.addcartext}>Add Another Car Model</Text>
       </TouchableOpacity>
+      </ScrollView>
 
-      <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.customButton, (name.length !== 0 && carModels.some(model => model.name.trim() !== '')) ? {} : styles.disabledButton]} onPress={navigateHome}>
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
-      </View>
+
     </View>
   );
 }
@@ -177,6 +178,11 @@ const styles = StyleSheet.create({
   suggestion: {
     fontFamily: 'Satoshi-Medium',
     padding: 6,
+  },
+  viewContainer: {
+    flexGrow: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'center', // Center children vertically
   },
   container: {
     flex: 1,
@@ -258,22 +264,23 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   customButton: {
-    alignSelf: 'center',
-    backgroundColor: '#2C152A', // Specify your color
-    height: 54,
-    width: '94%',
-    elevation: 4, // Android shadow
-    shadowColor: '#000', // iOS shadows
-    shadowOffset: { width: 0, height: 4 }, // iOS shadows
-    shadowOpacity: 0.25, // iOS shadows
-    shadowRadius: 6, // iOS shadows
-    borderRadius: 8,
-    paddingLeft: 24,
-    paddingRight: 24,
-    display: 'flex', // This is the default display style for React Native components, so it can be omitted
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+      alignSelf:'center',
+      backgroundColor: '#2C152A', 
+      height: 54,
+      width: '94%',
+      elevation: 8, 
+      shadowColor: '#000', 
+      shadowOffset: { width: 0, height: 4 }, 
+      shadowOpacity: 0.5, 
+      shadowRadius: 10, 
+      borderRadius: 8,
+      paddingLeft: 24,
+      paddingRight: 24,
+      display: 'flex', 
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      bottom: '10%',
   },
   disabledButton: {
     alignSelf: 'center',
