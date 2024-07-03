@@ -82,7 +82,7 @@ export default function Bookingmap() {
   const radioButtons = useMemo(() => ([
     {
       id: '1',
-      label: <Text style={styles.radioButtonText}>  Free Pick Up</Text>,
+      label: <Text style={styles.radioButtonText}>  Free Pick Up</Text>, // Style the radio button text here
       value: 'Pick Up'
     },
     {
