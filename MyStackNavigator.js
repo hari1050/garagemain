@@ -20,6 +20,12 @@ import winterService from './components/winterService';
 import monsoonService from './components/monsoonService';
 import Emergency from './components/Emergency';
 import otherServices from './components/otherServices';
+import AboutUs from './components/AboutUs';
+import Terms from './components/Terms';
+import Clutch from './components/Clutch';
+import Engine from './components/Engine';
+import Suspension from './components/Suspension';
+import Painting from './components/Painting';
 
 const Stack = createStackNavigator();
 
@@ -72,6 +78,12 @@ function MyStackNavigator() {
         <Stack.Screen name="editProfile" component={editProfile}/>
         <Stack.Screen name="Servicehistory" component={Servicehistory}/>
         <Stack.Screen name="Emergency" component={Emergency}/>
+        <Stack.Screen name="AboutUs" component={AboutUs}/>
+        <Stack.Screen name="Terms" component={Terms}/>
+        <Stack.Screen name="Clutch" component={Clutch}/>
+        <Stack.Screen name="Painting" component={Painting}/>
+        <Stack.Screen name="Suspension" component={Suspension}/>
+        <Stack.Screen name="Engine" component={Engine}/>
       </Stack.Navigator>
   );
 }

@@ -11,7 +11,7 @@ export default function Emergency(){
     const navigateToHome = () => {
         navigation.navigate('homeScreen',{name: name, carModels: carModels});
     }
-    const batteryPhoneNo = '+91';
+    const batteryPhoneNo = '+919890135566';
     const handleCallButton = () => {
         Linking.openURL(`tel:${batteryPhoneNo}`);
     }

@@ -36,7 +36,7 @@ export default function splashScreen() {
     <View style={styles.container}>
       <Image
         style={styles.svgImage}
-        source={require('../assets/SureFix.png')} 
+        source={require('../assets/logo.png')} 
       />
       <Text style={styles.title}>Crafted Vehicle Solutions</Text>
       <Image
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   svgImage: {
       width: '80%', // 80% of window width
-      height: windowHeight * 0.1, // 10% of window height
+      height: '20%', // 10% of window height
       resizeMode: 'contain',
   },
   buttonText: {

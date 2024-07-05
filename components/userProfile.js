@@ -39,6 +39,14 @@ export default function userProfile() {
       navigation.navigate('Servicehistory', {name:name, phonenumber:phonenumber});
   }
 
+    const navigateToAboutUs = () => {
+      navigation.navigate('AboutUs',{name:name});
+    }
+
+    const navigateToTerms = () => {
+      navigation.navigate('Terms',{name: name});
+    }
+
     const navigatelogout = async () => {
       try {
         // Remove userData from AsyncStorage
@@ -67,11 +75,11 @@ export default function userProfile() {
             <TouchableOpacity style={styles.secondaryButton} onPress={navigateToMyBookings}>
                   <Text style={styles.buttonText}>My Bookings</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.secondaryButton}>
+            <TouchableOpacity style={styles.secondaryButton} onPress = {navigateToAboutUs}>
                   <Text style={styles.buttonText}>About Us</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.secondaryButton}>
-                  <Text style={styles.buttonText}>Contact Us</Text>
+            <TouchableOpacity style={styles.secondaryButton} onPress = {navigateToTerms}>
+                  <Text style={styles.buttonText}>Terms And Conditions</Text>
             </TouchableOpacity>
         </View>
       </ScrollView>

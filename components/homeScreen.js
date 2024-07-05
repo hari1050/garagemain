@@ -116,6 +116,22 @@ export default function homeScreen() {
         navigation.navigate('Emergency', { name: name, carModels: carModels, phonenumber: phonenumber });
     };
 
+    const navigateToClutch = async () => {
+        navigation.navigate('Clutch', { carPrices: carPrices, servicetype: "Clutch Service", selectedCarIndex: selectedCarIndex });
+    };
+
+    const navigateToEngine = async () => {
+        navigation.navigate('Engine', { carPrices: carPrices, servicetype: "Engine Service", selectedCarIndex: selectedCarIndex });
+    };
+
+    const navigateToPainting = async () => {
+        navigation.navigate('Painting', { carPrices: carPrices, servicetype: "Painting Service", selectedCarIndex: selectedCarIndex });
+    };
+
+    const navigateToSuspension = async () => {
+        navigation.navigate('Suspension', { carPrices: carPrices, servicetype: "Suspension Service", selectedCarIndex: selectedCarIndex });
+    };
+
     const handleChangeCar = (itemIndex) => {
         setSelectedCarIndex(itemIndex);
     }
@@ -125,10 +141,10 @@ export default function homeScreen() {
     }
 
     const images = [
-        require('../assets/monsoonService.png'),
-        require('../assets/summerService.png'),
-        require('../assets/winterService.png'),
-        require('../assets/winterService.png'),
+        { image: require('../assets/clth.png'), onPress: navigateToClutch },
+        { image: require('../assets/engine.png'), onPress: navigateToEngine },
+        { image: require('../assets/paint.png'), onPress: navigateToPainting },
+        { image: require('../assets/suspension.png'), onPress: navigateToSuspension },
     ];
 
     const Slideshow = () => {
@@ -194,9 +210,9 @@ export default function homeScreen() {
                     const index = Math.round(event.nativeEvent.contentOffset.x / event.nativeEvent.layoutMeasurement.width);
                     setCurrentIndex(index);
                 }}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={navigateToOtherService}>
-                        <Image source={item} style={styles.summerServiceImg} />
+                renderItem={({ item, index }) => (
+                    <TouchableOpacity onPress={item.onPress} key={index}>
+                        <Image source={item.image} style={styles.summerServiceImg} />
                     </TouchableOpacity>
                 )}
                 keyExtractor={(_, index) => index.toString()}
@@ -226,7 +242,7 @@ export default function homeScreen() {
                             handleChangeCar(itemValue)
                         }>
                         {carModels.map((car, index) => (
-                            <Picker.Item style = {styles.dropdownpicker} label={car.name} value={index} key={index} />
+                            <Picker.Item style={styles.dropdownpicker} label={car.name} value={index} key={index} />
                         ))}
                     </Picker>
                 </View>
@@ -250,15 +266,9 @@ export default function homeScreen() {
                         </View>
                     </TouchableOpacity>
                 )}
-                    <View style={styles.classicService}>
-                        <Slideshow />
-                        <View style={styles.textOverlay}>
-                            <View style={styles.bottomTextContainer}>
-                                <Text style={styles.serviceText}>Clutch Work</Text>
-                                <Text style={styles.serviceDescription}>Book a free consultation for replacing clutch and get huge discounts on quotes.</Text>
-                            </View>
-                        </View>
-                    </View>
+                <View style={styles.classicService}>
+                    <Slideshow />
+                </View>
             </ScrollView>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.customButton} onPress={navigateToEmergency}>
@@ -362,7 +372,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     customButton: {
-        alignSelf:'center',
+        alignSelf: 'center',
         backgroundColor: '#9B0E0E',
         height: 54,
         width: '94%',
@@ -385,11 +395,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         paddingHorizontal: 10,
-        marginTop:20,
+        marginTop: 20,
     },
 
-    dropdownpicker:{
+    dropdownpicker: {
         fontFamily: 'Satoshi-Medium',
         fontSize: 16,
     }
-})
+});

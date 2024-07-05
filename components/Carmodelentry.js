@@ -19,12 +19,12 @@ export default function Carmodelentry() {
   };
 
   const navigateHome = async () => {
-    if (name.length !== 0) {
+    if (name.length !== 0 && carModels.every(carModel => carModel.name.trim() !== '')) {
       try {
         const userData = {
           name: name,
-          carModels: carModels.filter(x => x.name!== ''),
-          phonenumber: phonenumber
+          carModels: carModels.filter(x => x.name !== ''),
+          phonenumber: phonenumber,
         };
         await AsyncStorage.setItem('userData', JSON.stringify(userData));
         console.log('User data saved to AsyncStorage:', userData);
@@ -33,15 +33,14 @@ export default function Carmodelentry() {
           {
             phonenumber: phonenumber,
             fullname: name,
-            carModels: carModels.filter(x => x.name!== ''),
-          }
+            carModels: carModels.filter(x => x.name !== ''),
+          },
         ]);
         if (error) {
           console.error('Error saving details:', error.message);
         } else {
           console.log('Details saved successfully:', data);
         }
-
       } catch (error) {
         console.error('Error saving user data to AsyncStorage:', error);
       }
@@ -65,7 +64,7 @@ export default function Carmodelentry() {
         } else {
           setSuggestions(data.map(item => ({
             name: item.Car_Model_Fullname,
-            id: item.Id
+            id: item.Id,
           })));
         }
       } catch (error) {
@@ -97,92 +96,77 @@ export default function Carmodelentry() {
     setCarModels(updatedCarModels);
   };
 
+  const isContinueButtonDisabled = name.length === 0 || carModels.some(carModel => carModel.name.trim() === '');
+
   return (
     <View style={styles.viewContainer}>
-    <ScrollView style={styles.container}contentContainerStyle={{ paddingBottom: 80, paddingTop:10 }}>
-      <TouchableOpacity style={styles.caretLeft} onPress={handleBack}>
-        <CaretLeft />
-      </TouchableOpacity>
-
-      <Text style={styles.headerText}>Let us know which cars you rev up everyday</Text>
-
-      <Text style={styles.subHeaderText}>
-        Please select your car models
-      </Text>
-
-      {carModels.map((carModel, index) => (
-        <View key={index} style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder={`Car Model ${index + 1}`}
-            value={carModel.name}
-            onChangeText={(value) => handleCarModelChange(index, value)}
-            onFocus={() => handleInputFocus(index)}
-          />
-          {index === activeIndex && suggestions.length > 0 && carModel.name.length > 1 && (
-            <FlatList
-              style={styles.suggestionsContainer}
-              data={suggestions}
-              keyExtractor={(item, idx) => idx.toString()}
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => selectSuggestion(index, item)}>
-                  <Text style={styles.suggestion}>{item.name}</Text>
-                </TouchableOpacity>
-              )}
-              nestedScrollEnabled={true}
-            />
-          )}
-          {index > 0 && (
-            <TouchableOpacity onPress={() => removeCarModel(index)} style={styles.removeButton}>
-              <Trash />
-            </TouchableOpacity>
-          )}
-        </View>
-      ))}
-
-      <TouchableOpacity style={styles.addCarButton} onPress={addCarModelInput}>
-        <Text style={styles.addcartext}>Add Another Car Model</Text>
-      </TouchableOpacity>
-      </ScrollView>
-
-        <TouchableOpacity style={[styles.customButton, (name.length !== 0 && carModels.some(model => model.name.trim() !== '')) ? {} : styles.disabledButton]} onPress={navigateHome}>
-          <Text style={styles.buttonText}>Continue</Text>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 80, paddingTop: 10 }}>
+        <TouchableOpacity style={styles.caretLeft} onPress={handleBack}>
+          <CaretLeft />
         </TouchableOpacity>
 
+        <Text style={styles.headerText}>Let us know which cars you rev up everyday</Text>
+
+        <Text style={styles.subHeaderText}>
+          Please select your car models
+        </Text>
+
+        {carModels.map((carModel, index) => (
+          <View key={index} style={styles.carModelContainer}>
+            <View style={styles.carModelRow}>
+              <TextInput
+                style={styles.input}
+                placeholder={`Car Model ${index + 1}`}
+                value={carModel.name}
+                onChangeText={(value) => handleCarModelChange(index, value)}
+                onFocus={() => handleInputFocus(index)}
+              />
+              {index > 0 && (
+                <TouchableOpacity onPress={() => removeCarModel(index)} style={styles.removeButton}>
+                  <Trash />
+                </TouchableOpacity>
+              )}
+            </View>
+            {index === activeIndex && suggestions.length > 0 && carModel.name.length > 1 && (
+              <FlatList
+                style={styles.suggestionsContainer}
+                data={suggestions}
+                keyExtractor={(item, idx) => idx.toString()}
+                renderItem={({ item }) => (
+                  <TouchableOpacity onPress={() => selectSuggestion(index, item)}>
+                    <Text style={styles.suggestion}>{item.name}</Text>
+                  </TouchableOpacity>
+                )}
+                nestedScrollEnabled={true}
+              />
+            )}
+            {index > 0 && carModel.name === '' && (
+              <Text style={styles.errorText}>Please select a car</Text>
+            )}
+          </View>
+        ))}
+
+        <TouchableOpacity style={styles.addCarButton} onPress={addCarModelInput}>
+          <Text style={styles.addcartext}>Add Another Car Model</Text>
+        </TouchableOpacity>
+      </ScrollView>
+
+      <TouchableOpacity
+        style={[styles.customButton, isContinueButtonDisabled && styles.disabledButton]}
+        onPress={navigateHome}
+        disabled={isContinueButtonDisabled}
+      >
+        <Text style={styles.buttonText}>Continue</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  removeButton: {
-    marginLeft: 10,
-    justifyContent: 'center',
-  },
-  suggestionsContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    elevation: 4,
-    maxHeight: 300, // Set a max height to enable scrolling
-    position: 'absolute',
-    top: 50, // Position it below the input field
-    width: '100%',
-    zIndex: 1, // Ensure it appears above other elements
-  },
-  suggestion: {
-    fontFamily: 'Satoshi-Medium',
-    padding: 6,
-  },
   viewContainer: {
     flexGrow: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center', // Center children vertically
+    justifyContent: 'center',
   },
   container: {
     flex: 1,
@@ -193,11 +177,6 @@ const styles = StyleSheet.create({
   caretLeft: {
     marginTop: 0,
     marginBottom: 20,
-  },
-  buttonContainer: {
-    flex: 1,
-    justifyContent: 'flex-end', // Centers children vertically in the container
-    alignItems: 'center',
   },
   headerText: {
     fontFamily: 'Satoshi-Bold',
@@ -212,6 +191,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
     textAlign: 'left',
   },
+  carModelContainer: {
+    marginBottom: 10,
+  },
+  carModelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   input: {
     flex: 1,
     fontFamily: 'Satoshi-Medium',
@@ -221,34 +207,30 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 5,
   },
-  termsContainer: {
-    flexDirection: 'row',
-    marginTop: 30,
-    alignItems: 'center',
+  suggestionsContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    elevation: 4,
+    maxHeight: 300,
+    position: 'absolute',
+    top: 50,
+    width: '100%',
+    zIndex: 1,
   },
-  checkbox: {
-    marginRight: 10,
-  },
-  termsText: {
-    flex: 1,
-    fontSize: 14,
-  },
-  button: {
-    backgroundColor: '#800080', // Purple color
-    borderRadius: 5,
-    padding: 15,
-    marginTop: 30,
-    alignItems: 'center',
-  },
-  buttonText: {
+  suggestion: {
     fontFamily: 'Satoshi-Medium',
-    color: '#fff',
-    fontSize: 18,
+    padding: 6,
   },
-  addcartext: {
+  removeButton: {
+    marginLeft: 10,
+    justifyContent: 'center',
+  },
+  errorText: {
+    color: 'red',
+    marginTop: 5,
     fontFamily: 'Satoshi-Medium',
-    color: '#000',
-    fontSize: 18,
   },
   addCarButton: {
     marginTop: 10,
@@ -263,45 +245,36 @@ const styles = StyleSheet.create({
     borderColor: '#2C152A',
     borderRadius: 8,
   },
-  customButton: {
-      alignSelf:'center',
-      backgroundColor: '#2C152A', 
-      height: 54,
-      width: '94%',
-      elevation: 8, 
-      shadowColor: '#000', 
-      shadowOffset: { width: 0, height: 4 }, 
-      shadowOpacity: 0.5, 
-      shadowRadius: 10, 
-      borderRadius: 8,
-      paddingLeft: 24,
-      paddingRight: 24,
-      display: 'flex', 
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      bottom: '10%',
+  addcartext: {
+    fontFamily: 'Satoshi-Medium',
+    color: '#000',
+    fontSize: 18,
   },
-  disabledButton: {
+  customButton: {
     alignSelf: 'center',
-    backgroundColor: '#646464', // Specify your color
+    backgroundColor: '#2C152A',
     height: 54,
     width: '94%',
-    elevation: 4, // Android shadow
-    shadowColor: '#000', // iOS shadows
-    shadowOffset: { width: 0, height: 4 }, // iOS shadows
-    shadowOpacity: 0.25, // iOS shadows
-    shadowRadius: 6, // iOS shadows
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
     borderRadius: 8,
     paddingLeft: 24,
     paddingRight: 24,
-    display: 'flex', // This is the default display style for React Native components, so it can be omitted
+    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    bottom: '10%',
   },
-  resendLink: {
-    color: '#732753', // Specify the color for the link
-    textDecorationLine: 'underline', // Underline the link
+  buttonText: {
+    fontFamily: 'Satoshi-Medium',
+    color: '#fff',
+    fontSize: 18,
+  },
+  disabledButton: {
+    backgroundColor: '#A9A9A9',
   },
 });
