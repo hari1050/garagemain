@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import { CaretLeft } from 'phosphor-react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
@@ -17,7 +17,8 @@ const AboutUs = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={styles.viewContainer}>
+        <ScrollView style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity onPress={navigateToProfile}>
                     <CaretLeft />
@@ -46,16 +47,23 @@ const AboutUs = () => {
                 Arnala-Vasai Road, Bhuigaon,
                 {"\n"}
                 Vasai West - 401201
-                {"\n\n"}
+                {"\n"}
                 Contact: Robert Correia - 9503602824
             </Text>
+        </ScrollView>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    viewContainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+        position: 'relative', 
+      },
     container: {
         flex: 1,
+        paddingTop: 30,
         paddingHorizontal: '5%',
         backgroundColor: '#fff',
     },

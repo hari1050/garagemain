@@ -24,7 +24,7 @@ export default function Painting() {
     });
     const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
     const [summerServiceAdded, setSummerServiceAdded] = useState(false);
-    const [totalPrice, setTotalPrice] = useState("2399.00");
+    const [totalPrice, setTotalPrice] = useState("2399");
     const summerServiceCost = 1500.00;
     const [countOFslots, setCountOFslots] = useState(0);
 
@@ -47,39 +47,7 @@ export default function Painting() {
       initializeUserData();
     }, []);
 
-    const handleSummerService = () => {
-      const numericTotalPrice = parseFloat(totalPrice.replace(/,/g, ''));
-      if(!summerServiceAdded){
-        setSummerServiceAdded(true);
-        const updatedTotalPrice = numericTotalPrice + parseFloat(summerServiceCost);
-        setTotalPrice(updatedTotalPrice.toFixed(2));
-      } else if(summerServiceAdded){
-        console.log(totalPrice);
-        setSummerServiceAdded(false);
-        const updatedTotalPrice = numericTotalPrice - parseFloat(summerServiceCost);
-        setTotalPrice(updatedTotalPrice.toFixed(2));
-      }
-    }
-
-    const getCountOfSlot = async() => {
-      try {
-        const { data: datesWith50OrMoreOrders, error } = await supabase
-          .from('service_date_numbers')
-          .select('service_date')
-          .gte('order_count', 1);
-    
-        if (error) {
-          throw error;
-        }
-        console.log(datesWith50OrMoreOrders)
-        return datesWith50OrMoreOrders;
-      } catch (error) {
-        console.error('Error fetching dates:', error.message);
-        return [];
-      }
-    }
-
-
+ 
     const navigatetoHome = () => {
         navigation.navigate('homeScreen', { selectedCarIndex: selectedCarIndex});
     }
@@ -113,81 +81,6 @@ export default function Painting() {
       };
 
 
-      const images = [
-        require('../assets/coolant-top-up.png'),
-        require('../assets/wiper-fluid.png'),
-        require('../assets/rear-lightck.png'),
-        require('../assets/spark-plug.png'),
-        require('../assets/frontlight-ck.png'),
-        require('../assets/brake-fluid.png'),
-        require('../assets/brakepad.png'),
-        require('../assets/foamwash.png'),
-        require('../assets/engineoil.png'),
-        require('../assets/newegoil.png'),
-        require('../assets/eg-oildrained.png'),
-        require('../assets/water-mist.png'),
-        require('../assets/underbodyInspected.png'),
-    ];
-
-    const Slideshow = () => {
-        const [currentIndex, setCurrentIndex] = useState(0);
-        const flatListRef = useRef(null);
-        const scrollIntervalRef = useRef(null);
-        const isUserScrollingRef = useRef(false);
-    
-        const startAutoScroll = () => {
-            scrollIntervalRef.current = setInterval(() => {
-                if (!isUserScrollingRef.current) {
-                    setCurrentIndex((prevIndex) => {
-                        const nextIndex = prevIndex === images.length - 1 ? 0 : prevIndex + 1;
-                        flatListRef.current.scrollToIndex({ animated: true, index: nextIndex });
-                        return nextIndex;
-                    });
-                }
-            }, 2000);
-        };
-    
-        const stopAutoScroll = () => {
-            if (scrollIntervalRef.current) {
-                clearInterval(scrollIntervalRef.current);
-            }
-        };
-    
-        useEffect(() => {
-            startAutoScroll();
-            return () => stopAutoScroll();
-        }, []);
-    
-        return (
-            <FlatList
-                ref={flatListRef}
-                data={images}
-                horizontal
-                pagingEnabled
-                scrollEnabled
-                onTouchStart={() => {
-                    isUserScrollingRef.current = true;
-                    stopAutoScroll();
-                }}
-                onTouchEnd={() => {
-                    isUserScrollingRef.current = false;
-                    startAutoScroll();
-                }}
-                onMomentumScrollEnd={(event) => {
-                    const index = Math.round(event.nativeEvent.contentOffset.x / event.nativeEvent.layoutMeasurement.width);
-                    setCurrentIndex(index);
-                }}
-                renderItem={({ item }) => (
-                    <View>
-                        <Image source={item} style={styles.classicServiceImg} />
-                    </View>
-                )}
-                keyExtractor={(_, index) => index.toString()}
-            />
-        );
-    };
-      
-
     return (
         <View style={styles.viewContainer}>
 
@@ -207,7 +100,7 @@ export default function Painting() {
           {/* <Slideshow/> */}
           <Image
                   style={styles.imgMain}
-                  source={require('../assets/clth.png')} 
+                  source={require('../assets/paint.png')} 
                   />
             {/* <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} /> */}
               <View>
@@ -229,7 +122,7 @@ export default function Painting() {
                     )}
                   <View style={styles.priceTag}>
                       <Text style={styles.priceText}>
-                      Rs. {totalPrice === null ? 'N/A': totalPrice}
+                      From Rs. {totalPrice === null ? 'N/A': totalPrice} only per panel
                       {/* Rs. {carPrices.length > 0 ? carPrices[0].Service_cost : 'N/A'} */}
                       </Text>
                   </View>

@@ -47,9 +47,9 @@ export default function userCompleteDetails() {
       fetchData(); // Fetch data when component mounts
   }, []);
 
-    const navigateToClassicService = () => {
+    const navigateToPreviousService = () => {
       console.log(selectedCarIndex);
-      navigation.navigate('classicService', {carPrices:carPrices, servicetype:servicetype, serviceDate:serviceDate, selectedCarIndex:selectedCarIndex});
+      navigation.goBack();
     }
 
     const navigateToConfirmation = async () => {
@@ -124,7 +124,7 @@ export default function userCompleteDetails() {
         <View style={styles.viewContainer}>
 
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 80 }}>
-           <TouchableOpacity style={styles.caretLeft} onPress={navigateToClassicService}>
+           <TouchableOpacity style={styles.caretLeft} onPress={navigateToPreviousService}>
             <CaretLeft></CaretLeft>
            </TouchableOpacity>
           <View style={styles.header}>

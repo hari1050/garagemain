@@ -16,6 +16,7 @@ export default function Bookingmap() {
   const [pickupoption, setpickupoption] = useState('');
   const [selectedId, setSelectedId] = useState();
   const [modalVisible, setModalVisible] = useState(false);
+  const [isSeasonalServiceAdded, setSeasonalservice] = useState(null);
 
   const navigateToConfirmation = async () => {
     try {
@@ -32,7 +33,8 @@ export default function Bookingmap() {
           price: [carPrices[selectedCarIndex]],
           car_purchase_time: carPurchaseDate,
           car_reg_no: registrationNumber,
-          vehiclePickUpType: selectedId === '1' ? 'Free Pick Up' : 'Self Drive In'
+          vehiclePickUpType: selectedId === '1' ? 'Free Pick Up' : 'Self Drive In',
+          Is_Seasonal_service_added: isSeasonalServiceAdded
         }
       ]);
 
@@ -53,6 +55,7 @@ export default function Bookingmap() {
     } catch (error) {
       console.error('Error saving details:', error.message);
     }
+    console.log(isSeasonalServiceAdded)
   }
 
   const navigateTousercompletedetails = () => {
@@ -70,14 +73,22 @@ export default function Bookingmap() {
     var formattedNumber = increasedPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     carPrices[selectedCarIndex]["Service_cost"] = formattedNumber;
     console.log(carPrices[selectedCarIndex]);
-    setModalVisible(false);
-    navigateToConfirmation();
+  
+    setSeasonalservice(true);
   };
 
   const handleCancelFromModal = () => {
     setModalVisible(false);
     navigateToConfirmation();
   }
+
+
+  useEffect(() => {
+    if (isSeasonalServiceAdded) {
+      setModalVisible(false);
+      navigateToConfirmation();
+    }
+  }, [isSeasonalServiceAdded]);
 
   const radioButtons = useMemo(() => ([
     {

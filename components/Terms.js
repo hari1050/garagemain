@@ -17,7 +17,8 @@ const Terms = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={styles.viewContainer}>
+        <ScrollView style={styles.container}>
             <View style={styles.header}>
                 <TouchableOpacity onPress={navigateToProfile}>
                     <CaretLeft />
@@ -33,13 +34,20 @@ const Terms = () => {
                 {"\n\n"}
                 3. Goods and Services Tax (GST) is applicable on all services provided.
             </Text>
+        </ScrollView>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    viewContainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+        position: 'relative', 
+      },
     container: {
         flex: 1,
+        paddingTop: 30,
         paddingHorizontal: '5%',
         backgroundColor: '#fff',
     },

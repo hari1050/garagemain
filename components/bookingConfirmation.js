@@ -88,6 +88,7 @@ export default function bookingConfirmation() {
       paddingBottom: 60
     },
     buttoncontainer: {
+      paddingTop: '5%',
       paddingBottom: 70
     },
     header: {

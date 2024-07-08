@@ -65,23 +65,23 @@ export default function classicService() {
       }
     }
 
-    const getCountOfSlot = async() => {
-      try {
-        const { data: datesWith50OrMoreOrders, error } = await supabase
-          .from('service_date_numbers')
-          .select('service_date')
-          .gte('order_count', 1);
+    // const getCountOfSlot = async() => {
+    //   try {
+    //     const { data: datesWith50OrMoreOrders, error } = await supabase
+    //       .from('service_date_numbers')
+    //       .select('service_date')
+    //       .gte('order_count', 1);
     
-        if (error) {
-          throw error;
-        }
-        console.log(datesWith50OrMoreOrders)
-        return datesWith50OrMoreOrders;
-      } catch (error) {
-        console.error('Error fetching dates:', error.message);
-        return [];
-      }
-    }
+    //     if (error) {
+    //       throw error;
+    //     }
+    //     console.log(datesWith50OrMoreOrders)
+    //     return datesWith50OrMoreOrders;
+    //   } catch (error) {
+    //     console.error('Error fetching dates:', error.message);
+    //     return [];
+    //   }
+    // }
 
 
     const navigatetoHome = () => {

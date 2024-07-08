@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, BackHandler } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, BackHandler, Modal } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
@@ -10,6 +10,9 @@ export default function Servicehistory() {
   const route = useRoute();
   const { name, phonenumber } = route.params;
   const [bookings, setBookings] = useState([]);
+  const [bookingid, setBookingId] = useState('')
+  const [modalVisible, setModalVisible] = useState(false);
+
 
   useFocusEffect(
     React.useCallback(() => {
@@ -49,7 +52,12 @@ export default function Servicehistory() {
     fetchBookings(); // Fetch bookings when component mounts
   }, [phonenumber]);
 
-  const cancelBooking = async (bookingId) => {
+  const opencancelmodal = async (bookingid) => {
+    setBookingId(bookingid);
+    setModalVisible(true);
+  }
+
+  const handleyesCancelFromModal = async (bookingId) => {
     try {
       const { error } = await supabase
         .from('service_orders_table')
@@ -62,10 +70,16 @@ export default function Servicehistory() {
     } catch (ex) {
       console.log('error', ex.message);
     }
+    setModalVisible(false);
+    setBookingId('');
   };
 
   const navigateToUserProfile = () => {
     navigation.navigate('userProfile', { name, phonenumber });
+  };
+
+  const handleNoFromModal = () => {
+    setModalVisible(false);
   };
 
   return (
@@ -95,9 +109,14 @@ export default function Servicehistory() {
                   <Text style={styles.value}>{booking.carmodel && booking.carmodel[0] ? booking.carmodel[0].name : 'Unknown Model'}</Text>
                 </View>
                 <View style={styles.row}>
-                  <Text style={styles.valuest}>{booking.servicetype}</Text>
+                  <Text style={styles.valuest}>
+                    {booking.servicetype}
+                    {booking.Is_Seasonal_service_added ? (
+                      <Text style={styles.greenText}>{'\n'}Seasonal Service Added</Text>
+                    ) : ('')}
+                  </Text>
                 </View>
-                <TouchableOpacity style={styles.secondaryButton} onPress={() => cancelBooking(booking.id)}>
+                <TouchableOpacity style={styles.secondaryButton} onPress={()=> opencancelmodal(booking.id)}>
                   <Text style={styles.buttonText}>Cancel Booking</Text>
                 </TouchableOpacity>
               </View>
@@ -105,6 +124,29 @@ export default function Servicehistory() {
           })}
         </View>
       </ScrollView>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalView}>
+            <TouchableOpacity style={styles.closeIcon} onPress={() => setModalVisible(false)}>
+              <Text style={styles.closeText}>X</Text>
+            </TouchableOpacity>
+            <Text style={styles.modalText}>Do you want to cancel your service ?</Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity style={styles.modalButton} onPress={handleNoFromModal}>
+                <Text style={styles.modalButtonText}>No</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalButton} onPress={()=> handleyesCancelFromModal(bookingid)}>
+                <Text style={styles.modalButtonTextSave}>Yes, cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -234,6 +276,11 @@ const styles = StyleSheet.create({
     color: '#333',
     fontSize: 18,
   },
+  greenText: {
+    fontFamily: 'Satoshi-Medium',
+    color: 'green',
+    fontSize: 16,
+  },
   secondaryButton: {
     borderWidth: 1,
     marginTop: 10,
@@ -254,4 +301,57 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalView: {
+    width: 300,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  closeIcon: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+  closeText: {
+    fontSize: 18,
+    color: '#000',
+  },
+  modalText: {
+    marginBottom: 20,
+    textAlign: 'center',
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  modalButton: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 10,
+  },
+  modalButtonText: {
+    color: '#0000ff',
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+  },
+  modalButtonTextSave: {
+    color: '#CB142B',
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+  }
 });
