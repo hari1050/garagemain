@@ -96,9 +96,9 @@ export default function Engine() {
           </View>
           {/* <Slideshow/> */}
           <Image
-                  style={styles.imgMain}
-                  source={require('../assets/engine.png')} 
-                  />
+            style={styles.imgMain}
+            source={{ uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/engine.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvZW5naW5lLnBuZyIsImlhdCI6MTcyMDU4Njg1NSwiZXhwIjoxODQ2NzMwODU1fQ.zW4U1SUy0Sde4T_AhRcWIzK0q7ljxtSvFnloy70ChXE&t=2024-07-10T04%3A47%3A35.394Z' }} 
+          />
             {/* <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} /> */}
               <View>
                 <View style={styles.classicService}>

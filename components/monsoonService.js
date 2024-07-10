@@ -53,7 +53,7 @@ export default function monsoonService() {
                   />
               </TouchableOpacity>
           </View>
-            <Image source={require('../assets/monsoonService.png')} style={styles.classicServiceImg} />
+            {/* <Image source={require('../assets/monsoonService.png')} style={styles.classicServiceImg} /> */}
               <View>
                 <View style={styles.classicService}>
                 <Text style={styles.selectDate}>Select Service Date</Text>

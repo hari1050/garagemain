@@ -133,7 +133,6 @@ export default function otherServices() {
                   />
               </TouchableOpacity>
           </View>
-            <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} />
               <View>
                 <View style={styles.classicService}>
                 <Text style={styles.selectDate}>Select Service Date</Text>

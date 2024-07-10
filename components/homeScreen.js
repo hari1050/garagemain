@@ -140,11 +140,25 @@ export default function homeScreen() {
         return <Customloadingicon />;
     }
 
+
+    //Images link will expire on 10 July 2028
     const images = [
-        { image: require('../assets/clth.png'), onPress: navigateToClutch },
-        { image: require('../assets/engine.png'), onPress: navigateToEngine },
-        { image: require('../assets/paint.png'), onPress: navigateToPainting },
-        { image: require('../assets/suspension.png'), onPress: navigateToSuspension },
+        {
+            image: { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/clth.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvY2x0aC5wbmciLCJpYXQiOjE3MjA1ODY2MzUsImV4cCI6MTg0NjczMDYzNX0.BFWzDSMjG5GmCQgyEnVAW6fjXLsWjKCIdnUVw19ZxNE&t=2024-07-10T04%3A43%3A55.742Z' },
+            onPress: navigateToClutch
+        },
+        {
+            image: { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/engine.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvZW5naW5lLnBuZyIsImlhdCI6MTcyMDU4Njg1NSwiZXhwIjoxODQ2NzMwODU1fQ.zW4U1SUy0Sde4T_AhRcWIzK0q7ljxtSvFnloy70ChXE&t=2024-07-10T04%3A47%3A35.394Z' },
+            onPress: navigateToEngine
+        },
+        {
+            image: { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/paint.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvcGFpbnQucG5nIiwiaWF0IjoxNzIwNTg2ODk5LCJleHAiOjE4NDY3MzA4OTl9.ATdRM5TPvPEKfMMlFWHTlEv2f2QHTRsczG3flIf4lAQ&t=2024-07-10T04%3A48%3A19.749Z' },
+            onPress: navigateToPainting
+        },
+        {
+            image: { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/suspension.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2Uvc3VzcGVuc2lvbi5wbmciLCJpYXQiOjE3MjA1ODY5MTcsImV4cCI6MTg0NjczMDkxN30.EuizHbJDm90zb_YLwcRd5k16BQAhCHcogKkJTTUVOqA&t=2024-07-10T04%3A48%3A37.893Z' },
+            onPress: navigateToSuspension
+        },
     ];
 
     const Slideshow = () => {
@@ -248,7 +262,10 @@ export default function homeScreen() {
                 </View>
                 {carModels.length > 0 && (
                     <TouchableOpacity key={carModels[0].id} onPress={navigateToClassicService} style={styles.classicService}>
-                        <Image source={require('../assets/classicserviceDark.png')} style={styles.classicServiceImg} />
+                        <Image
+                        style={styles.classicServiceImg}
+                        source={{ uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/classicserviceDark.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvY2xhc3NpY3NlcnZpY2VEYXJrLnBuZyIsImlhdCI6MTcyMDU4NzAyOSwiZXhwIjoxODQ2NzMxMDI5fQ.55OQEYI7_tuIRDX__sjXgBcV7ywJAGe2rt4m44zEKMI&t=2024-07-10T04%3A50%3A29.958Z' }} 
+                        />
                         <View style={styles.textOverlay}>
                             <View style={styles.priceTag}>
                                 {carPrices.length > 0 ? (

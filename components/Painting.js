@@ -99,9 +99,9 @@ export default function Painting() {
           </View>
           {/* <Slideshow/> */}
           <Image
-                  style={styles.imgMain}
-                  source={require('../assets/paint.png')} 
-                  />
+            style={styles.imgMain}
+            source={{ uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/paint.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvcGFpbnQucG5nIiwiaWF0IjoxNzIwNTg2ODk5LCJleHAiOjE4NDY3MzA4OTl9.ATdRM5TPvPEKfMMlFWHTlEv2f2QHTRsczG3flIf4lAQ&t=2024-07-10T04%3A48%3A19.749Z' }} 
+          />
             {/* <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} /> */}
               <View>
                 <View style={styles.classicService}>

@@ -16,7 +16,6 @@ import userProfile from './components/userProfile';
 import editProfile from './components/editProfile';
 import Servicehistory from './components/Servicehistory';
 import summerService from './components/summerService';
-import winterService from './components/winterService';
 import monsoonService from './components/monsoonService';
 import Emergency from './components/Emergency';
 import otherServices from './components/otherServices';
@@ -70,7 +69,6 @@ function MyStackNavigator() {
         <Stack.Screen name="classicService" component={classicService}/>
         <Stack.Screen name="summerService" component={summerService}/>
         <Stack.Screen name="monsoonService" component={monsoonService}/>
-        <Stack.Screen name="winterService" component={winterService}/>
         <Stack.Screen name="userCompleteDetails" component={userCompleteDetails}/>
         <Stack.Screen name="bookingConfirmation" component={bookingConfirmation}/>
         <Stack.Screen name="Bookingmap" component={Bookingmap}/>

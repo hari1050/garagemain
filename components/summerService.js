@@ -53,7 +53,7 @@ export default function summerService() {
                   />
               </TouchableOpacity>
           </View>
-            <Image source={require('../assets/summerService.png')} style={styles.classicServiceImg} />
+            {/* <Image source={require('../assets/summerService.png')} style={styles.classicServiceImg} /> */}
               <View>
                 <View style={styles.classicService}>
                 <Text style={styles.selectDate}>Select Service Date</Text>

@@ -35,14 +35,14 @@ export default function splashScreen() {
   return (
     <View style={styles.container}>
       <Image
-        style={styles.svgImage}
-        source={require('../assets/logo.png')} 
-      />
+      style={styles.svgImage}
+      source={{ uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/512x512.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvNTEyeDUxMi5wbmciLCJpYXQiOjE3MjA1ODkzNjAsImV4cCI6MTg0NjczMzM2MH0.AxIY-WiaOXRG3ILVfQo1XU8whdOg2ACwEuN6Psy29cw&t=2024-07-10T05%3A29%3A20.184Z' }} 
+    />
       <Text style={styles.title}>Crafted Vehicle Solutions</Text>
-      <Image
+      {/* <Image
         style={styles.image}
         source={require('../assets/splashScreen-hero.png')} // Replace with the path to your car image
-      />
+      /> */}
       <TouchableOpacity style={styles.frame10} onPress={handleSplash}>
         <Text style={styles.buttonText}>Get started</Text>
       </TouchableOpacity>
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   svgImage: {
       width: '80%', // 80% of window width
-      height: '20%', // 10% of window height
+      height: '40%', // 10% of window height
       resizeMode: 'contain',
   },
   buttonText: {
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    top: '10%'
+    top: '40%'
   },
 });
 

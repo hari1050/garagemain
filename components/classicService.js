@@ -117,21 +117,21 @@ export default function classicService() {
       };
 
 
-      const images = [
-        require('../assets/coolant-top-up.png'),
-        require('../assets/wiper-fluid.png'),
-        require('../assets/rear-lightck.png'),
-        require('../assets/spark-plug.png'),
-        require('../assets/frontlight-ck.png'),
-        require('../assets/brake-fluid.png'),
-        require('../assets/brakepad.png'),
-        require('../assets/foamwash.png'),
-        require('../assets/engineoil.png'),
-        require('../assets/newegoil.png'),
-        require('../assets/eg-oildrained.png'),
-        require('../assets/water-mist.png'),
-        require('../assets/underbodyInspected.png'),
-    ];
+    const images = [
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/coolant_top_up.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvY29vbGFudF90b3BfdXAucG5nIiwiaWF0IjoxNzIwNTg3NzA0LCJleHAiOjE4NDY3MzE3MDR9.SILE4z-v5X4KT6m02QxPPNoaQ5xSKpofmPmWjF_h5yU&t=2024-07-10T05%3A01%3A43.949Z' },
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/wiper_fluid.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2Uvd2lwZXJfZmx1aWQucG5nIiwiaWF0IjoxNzIwNTg3ODIwLCJleHAiOjE4NDY3MzE4MjB9.CDZ0RnubFOZD6tEJ_P4XDtsfsRBfPK90OyxdIfxO_YA&t=2024-07-10T05%3A03%3A40.849Z' },
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/rear_lightck.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvcmVhcl9saWdodGNrLnBuZyIsImlhdCI6MTcyMDU4Nzk2MywiZXhwIjoxODQ2NzMxOTYzfQ.ZicGHl69AcK_tXCoCxDJsNz21b5VIoHvGuFR71fGBKk&t=2024-07-10T05%3A06%3A03.357Z' },
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/spark_plug.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2Uvc3BhcmtfcGx1Zy5wbmciLCJpYXQiOjE3MjA1ODgwNzQsImV4cCI6MTg0NjczMjA3NH0.k-wfkbS-N2Dd_0GHwn_QSk-5BdNI-bchm4Tuuf67jw4&t=2024-07-10T05%3A07%3A54.154Z' },
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/frontlight_ck.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvZnJvbnRsaWdodF9jay5wbmciLCJpYXQiOjE3MjA1ODgxNDYsImV4cCI6MTg0NjczMjE0Nn0.2_gWMFAYKNbhZp1s30Ma72a7yAJId6u_cWbDZVaCaUQ&t=2024-07-10T05%3A09%3A05.937Z' },
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/brake_fluid.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvYnJha2VfZmx1aWQucG5nIiwiaWF0IjoxNzIwNTg4MjAxLCJleHAiOjE4NDY3MzIyMDF9.eCZwB92A9HDk_-lcglcaB_mzXSx9-lTd0UCnBXAGC_k&t=2024-07-10T05%3A10%3A01.895Z' },
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/brakepad.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvYnJha2VwYWQucG5nIiwiaWF0IjoxNzIwNTg4MjUzLCJleHAiOjE4NDY3MzIyNTN9.Zmvcj_dhrQ9YF2Yji9Ojpx1FtHgCiAVRaDnUo4W6Zmw&t=2024-07-10T05%3A10%3A53.459Z' },
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/foamwash.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvZm9hbXdhc2gucG5nIiwiaWF0IjoxNzIwNTg4Mjk4LCJleHAiOjE4NDY3MzIyOTh9.8aRf3TXpuNNjfqtZBWfqqMbn6-1-GjWbzAmq6DkmlLU&t=2024-07-10T05%3A11%3A38.358Z' },
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/engineoil.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvZW5naW5lb2lsLnBuZyIsImlhdCI6MTcyMDU4ODM0MywiZXhwIjoxODQ2NzMyMzQzfQ.zKTFsB64Gwb_Hgm8PbhvgfObtFkg0-BpPlLiGGIKPNg&t=2024-07-10T05%3A12%3A23.761Z' },
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/newegoil.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvbmV3ZWdvaWwucG5nIiwiaWF0IjoxNzIwNTg4NDAzLCJleHAiOjE4NDY3MzI0MDN9.72jlZUrhz3oAPZeAL61Lp1ra0ztCUSy5twzslbnxKqk&t=2024-07-10T05%3A13%3A23.163Z' },
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/eg_oildrained.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvZWdfb2lsZHJhaW5lZC5wbmciLCJpYXQiOjE3MjA1ODg0NDIsImV4cCI6MTg0NjczMjQ0Mn0.fPBxW0h7FdLsxh73fqvDmZZUSWGUrfaOv9SVWOrCih0&t=2024-07-10T05%3A14%3A02.697Z' },
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/water_mist.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2Uvd2F0ZXJfbWlzdC5wbmciLCJpYXQiOjE3MjA1ODg0OTksImV4cCI6MTg0NjczMjQ5OX0.y-MFcmZbhcKIEPwRGk74X3vL0f4ebplKzbea6sVrKr8&t=2024-07-10T05%3A14%3A59.166Z' },
+      { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/underbodyInspected.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvdW5kZXJib2R5SW5zcGVjdGVkLnBuZyIsImlhdCI6MTcyMDU4ODUyOSwiZXhwIjoxODQ2NzMyNTI5fQ.o2OyBqS82NUtHbR-KlODodxW8oA0_8P-SONAjumupfQ&t=2024-07-10T05%3A15%3A30.366Z' },
+  ];
 
     const Slideshow = () => {
         const [currentIndex, setCurrentIndex] = useState(0);
