@@ -47,7 +47,7 @@ export default function bookingConfirmation() {
 
         <ScrollView style={styles.container}>
         <View style={styles.messagecontainer}>
-        <Text style={styles.headerText}>Thank you for choosing SureFix</Text>
+        <Text style={styles.headerText}>Thank you for choosing Classic Car Care</Text>
         <Image
             style={styles.profile}
             source={require('../assets/success.png')} 
