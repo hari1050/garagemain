@@ -21,10 +21,6 @@
       "buildNumber": "2"  // Incremented build number for iOS
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/512x512.png",
-        "backgroundColor": "#ffffff"
-      },
       "package": "com.unitx.Garageapp",
       "versionCode": 2  // Incremented version code for Android
     },
