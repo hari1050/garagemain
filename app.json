@@ -4,10 +4,10 @@
     "slug": "Garageapp",
     "version": "2.0.0",
     "orientation": "portrait",
-    "icon": "./assets/512x512.png",
+    "icon": "./assets/1024x1024.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/512x512.png",
+      "image": "./assets/1024x1024.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,6 +21,10 @@
       "buildNumber": "2"  // Incremented build number for iOS
     },
     "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/432x432.png",
+        "backgroundColor": "#ffffff"
+      },
       "package": "com.unitx.Garageapp",
       "versionCode": 2  // Incremented version code for Android
     },
