@@ -12,7 +12,7 @@ export default function Bookingmap() {
   const navigation = useNavigation();
   const route = useRoute();
   const [selectedOption, setSelectedOption] = useState(null);
-  const { name, phonenumber, serviceDate, carModels, servicetype, carPurchaseDate, registrationNumber, carPrices, selectedCarIndex = [] } = route.params;
+  const { name, phonenumber, serviceDate, carModels, servicetype, registrationNumber, carPrices, selectedCarIndex = [] } = route.params;
   const [pickupoption, setpickupoption] = useState('');
   const [selectedId, setSelectedId] = useState();
   const [modalVisible, setModalVisible] = useState(false);

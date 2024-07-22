@@ -14,10 +14,8 @@ export default function userCompleteDetails() {
     const { name,phonenumber,serviceDate, carModels, servicetype, carPrices, selectedCarIndex = []} = route.params;
     const [showDatePicker, setShowDatePicker] = useState(false); 
     const [showDobPicker, setShowDobPicker] = useState(false);
-    const [showCarPurchaseDatePicker, setShowCarPurchaseDatePicker] = useState(false);
     const [registrationNumber, setRegistrationNumber] = useState('');
     const [address, setAddress] = useState('');
-    const [carPurchaseDate, setCarPurchaseDate] = useState(new Date());
     const [dob,setDob] = useState(new Date());
 
     useEffect(() => {
@@ -29,10 +27,6 @@ export default function userCompleteDetails() {
                   const userData = JSON.parse(userDataString);
                   setRegistrationNumber(userData.car_reg_no || ''); // Populate registration number
                   setAddress(userData.address || ''); // Populate address
-                  const carPurchaseTime = new Date(userData.car_purchase_time);
-                  if (!isNaN(carPurchaseTime.getTime())) {
-                    setCarPurchaseDate(carPurchaseTime);
-                  }
                   const userDob = new Date(userData.dob);
                   if (!isNaN(userDob.getTime())) {
                     setDob(userDob);
@@ -60,7 +54,6 @@ export default function userCompleteDetails() {
             address: address,
             user_dob: dob,
             car_reg_no: registrationNumber,
-            Car_purchase_time: carPurchaseDate
           }
         )
         .eq('phonenumber', phonenumber);
@@ -81,7 +74,6 @@ export default function userCompleteDetails() {
             address: address || existingUserData.address, // Update address if provided, otherwise keep existing
             dob: dob || existingUserData.dob, // Update dob if provided, otherwise keep existing
             car_reg_no: registrationNumber || existingUserData.car_reg_no, // Update car_reg_no if provided, otherwise keep existing
-            car_purchase_time: carPurchaseDate || existingUserData.car_purchase_time // Update car_purchase_time if provided, otherwise keep existing
         };
         // Store updated userData in AsyncStorage
         await AsyncStorage.setItem('userData', JSON.stringify(updatedUserData));
@@ -92,7 +84,6 @@ export default function userCompleteDetails() {
           serviceDate:serviceDate,
           carModels:carModels,
           servicetype: servicetype,
-          carPurchaseDate: carPurchaseDate,
           registrationNumber: registrationNumber,
           carPrices: carPrices,
           selectedCarIndex: selectedCarIndex,
@@ -103,19 +94,14 @@ export default function userCompleteDetails() {
       }
     }
 
-    const handleDateChange = (event, selectedDate, field) => {
+    const handleDateChange = (event, selectedDate) => {
       console.log('Selected Date:', selectedDate);
       // Create a new Date object with the same year, month, and day from selectedDate,
       // and set the time to 12 PM (noon)
       const currentDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 12, 0, 0);
       
-      if (field === 'dob') {
         setShowDobPicker(false); // Close the date picker first
         setDob(currentDate);
-      } else if (field === 'carPurchaseDate') {
-        setShowCarPurchaseDatePicker(false); // Close the date picker first
-        setCarPurchaseDate(currentDate);
-      }
     };
     
   
@@ -163,23 +149,6 @@ export default function userCompleteDetails() {
           </View>
 
           <View style={styles.inputFieldContainer}>
-          <Text style={styles.inputLabel}>Car Purchase Month and Year</Text>
-                    <TouchableOpacity style={styles.calendar} onPress={() => setShowCarPurchaseDatePicker(true)}>
-                        <Text style={styles.input}>{carPurchaseDate.toDateString()}</Text>
-                        <Calendar></Calendar>
-                    </TouchableOpacity>
-                        {showCarPurchaseDatePicker && (
-                        <DateTimePicker
-                        testID="dateTimePicker"
-                        value={carPurchaseDate}
-                        mode="date"
-                        display="default"
-                        onChange={(event, selectedDate) => handleDateChange(event, selectedDate, 'carPurchaseDate')}
-                        />
-                        )}
-          </View>
-
-          <View style={styles.inputFieldContainer}>
             <Text style={styles.inputLabel}>Date of Birth</Text>
                     <TouchableOpacity style={styles.calendar} onPress={() => setShowDobPicker(true)}>
                         <Text style={styles.input}>{dob.toDateString()}</Text>
@@ -191,7 +160,7 @@ export default function userCompleteDetails() {
                         value={dob}
                         mode="date"
                         display="default"
-                        onChange={(event, selectedDate) => handleDateChange(event, selectedDate, 'dob')}
+                        onChange={(event, selectedDate) => handleDateChange(event, selectedDate)}
                         />
                         )}
           </View>
