@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/512x512.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.unitx.Garageapp",
