@@ -12,7 +12,7 @@ export default function mobileAuth() {
     const [otpNumber, setOtpNumber] = useState('');
     const route = useRoute();
     const { phonenumber, OTP } = route.params;
-    const [timer, setTimer] = useState(120);
+    const [timer, setTimer] = useState(30);
     const [canResend, setCanResend] = useState(false);
     const [showErrorPopup, setShowErrorPopup] = useState(false);
 
@@ -99,7 +99,7 @@ export default function mobileAuth() {
     const handleResend = () => {
         let OTP = generateOTP();
         sendOTP(phonenumber, OTP);
-        setTimer(120);
+        setTimer(30);
         setCanResend(false);
     };
 
@@ -123,7 +123,7 @@ export default function mobileAuth() {
                     keyboardType="phone-pad"
                 />
                 <TouchableOpacity onPress={canResend ? handleResend : null} disabled={!canResend}>
-                    <Text style={[styles.subHeaderText, styles.resendLink]}>
+                    <Text style={[styles.subHeaderText, styles.resendLink, !canResend && styles.disabledresendLink]}>
                         {canResend ? "Didn't Receive OTP? Resend" : `Resend OTP in ${timer} seconds`}
                     </Text>
                 </TouchableOpacity>
@@ -231,6 +231,11 @@ const styles = StyleSheet.create({
     resendLink: {
         fontFamily: 'Satoshi-Medium',
         color: '#732753', // Specify the color for the link
+        textDecorationLine: 'underline', // Underline the link
+    },
+    disabledresendLink: {
+        fontFamily: 'Satoshi-Medium',
+        color: '#b993a9', // Specify the color for the link
         textDecorationLine: 'underline', // Underline the link
     },
     errorPopup: {

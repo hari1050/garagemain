@@ -288,5 +288,6 @@ export default function Painting() {
     },
     bottomTextContainer: {
         marginTop:10,
+        marginBottom: 120,
     }
 });

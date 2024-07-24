@@ -285,5 +285,6 @@ export default function Suspension() {
     },
     bottomTextContainer: {
         marginTop:10,
+        marginBottom: 120,
     }
 });

@@ -33,24 +33,33 @@ export default function splashScreen() {
     };
 
   return (
-    <View style={styles.container}>
-      <Image
-      style={styles.svgImage}
-      source={{ uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/512x512.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvNTEyeDUxMi5wbmciLCJpYXQiOjE3MjA1ODkzNjAsImV4cCI6MTg0NjczMzM2MH0.AxIY-WiaOXRG3ILVfQo1XU8whdOg2ACwEuN6Psy29cw&t=2024-07-10T05%3A29%3A20.184Z' }} 
-    />
-      <Text style={styles.title}>Crafted Vehicle Solutions</Text>
-      {/* <Image
-        style={styles.image}
-        source={require('../assets/splashScreen-hero.png')} // Replace with the path to your car image
-      /> */}
-      <TouchableOpacity style={styles.frame10} onPress={handleSplash}>
-        <Text style={styles.buttonText}>Get started</Text>
-      </TouchableOpacity>
+    <View style={styles.viewContainer}>
+      <View style={styles.container}>
+        <Image
+        style={styles.svgImage}
+        source={{ uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/512x512.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvNTEyeDUxMi5wbmciLCJpYXQiOjE3MjA1ODkzNjAsImV4cCI6MTg0NjczMzM2MH0.AxIY-WiaOXRG3ILVfQo1XU8whdOg2ACwEuN6Psy29cw&t=2024-07-10T05%3A29%3A20.184Z' }} 
+      />
+        <Text style={styles.title}>Crafted Vehicle Solutions</Text>
+        {/* <Image
+          style={styles.image}
+          source={require('../assets/splashScreen-hero.png')} // Replace with the path to your car image
+        /> */}
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.frame10} onPress={handleSplash}>
+            <Text style={styles.buttonText}>Get started</Text>
+          </TouchableOpacity>
+        </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  viewContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    position: 'relative',
+  },
   container: {
       flex: 1,
       alignItems: 'center',
@@ -82,7 +91,7 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     backgroundColor: '#2C152A', // Specify your color
     height: 54,
-    width: '90%',
+    width: '94%',
     elevation: 4, // Android shadow
     shadowColor: '#000', // iOS shadows
     shadowOffset: { width: 0, height: 4 }, // iOS shadows
@@ -95,7 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    top: '40%'
+    bottom: '10%',
   },
 });
 

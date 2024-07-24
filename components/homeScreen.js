@@ -46,7 +46,6 @@ export default function homeScreen() {
                     const userDataString = await AsyncStorage.getItem('userData');
                     if (userDataString !== null) {
                         const userData = JSON.parse(userDataString);
-                        console.log(userData.name)
                         setName(userData.name);
                         setCarModels(userData.carModels);
                         setPhoneNumber(userData.phonenumber);
@@ -66,31 +65,50 @@ export default function homeScreen() {
         const fetchPrices = async () => {
             setIsLoading(true); // Start loading
             try {
-                console.log("sup")
                 const carModelIds = carModels.map(model => model.id);
-                const { data, error } = await supabase
-                    .from('Car_Model_Joined')
-                    .select('Service_cost')
-                    .in('Id', carModelIds);
-
-                if (error) {
-                    throw error;
+    
+                // Map car model IDs to prices, defaulting to 5500 for null IDs
+                const prices = carModelIds.map(id => ({
+                    Id: id,
+                    Service_cost: id === null ? "5,500.00" : null
+                }));
+    
+                const validCarModelIds = carModelIds.filter(id => id !== null);
+    
+                if (validCarModelIds.length > 0) {
+                    const { data, error } = await supabase
+                        .from('Car_Model_Joined')
+                        .select('Id, Service_cost')
+                        .in('Id', validCarModelIds);
+    
+                    if (error) {
+                        throw error;
+                    }
+    
+                    // Update prices with fetched data
+                    data.forEach(item => {
+                        const price = prices.find(price => price.Id === item.Id);
+                        if (price) {
+                            price.Service_cost = item.Service_cost;
+                        }
+                    });
                 }
-                setCarPrices(data || []);
+    
+                setCarPrices(prices);
                 setPricesFetched(true);
             } catch (error) {
-                console.error('Error fetching prices:', error.message);
+                console.error('Error fetching prices, defaulting to 5500:', error.message);
+                // If there's an error, default all prices to 5500
+                setCarPrices(carModels.map(model => ({ Id: model.id, Service_cost: 5500 })));
             }
-            setTimeout(() => {
-                setIsLoading(false); // End loading
-            }, 100);
             setIsLoading(false); // End loading
         };
-
+    
         if (userDataLoaded) {
             fetchPrices();
         }
-    }, [userDataLoaded, carModels, setSelectedCarIndex]); // Fetch prices when carModels change
+    }, [userDataLoaded, carModels, setSelectedCarIndex]);
+    
 
     const navigateToClassicService = () => {
         navigation.navigate('classicService', { carPrices: carPrices, servicetype: "Classicservice", selectedCarIndex: selectedCarIndex });
@@ -255,7 +273,7 @@ export default function homeScreen() {
                         onValueChange={(itemValue, itemIndex) =>
                             handleChangeCar(itemValue)
                         }>
-                        {carModels.map((car, index) => (
+                        {carModels.length > 0 && carModels.map((car, index) => (
                             <Picker.Item style={styles.dropdownpicker} label={car.name} value={index} key={index} />
                         ))}
                     </Picker>
@@ -268,12 +286,12 @@ export default function homeScreen() {
                         />
                         <View style={styles.textOverlay}>
                             <View style={styles.priceTag}>
-                                {carPrices.length > 0 ? (
+                                {carModels[selectedCarIndex].id != null ? (
                                     <Text style={styles.priceText}>
                                         Rs. {carPrices[selectedCarIndex].Service_cost}
                                     </Text>
                                 ) : (
-                                    <Text style={styles.priceText}>N/A</Text>
+                                    <Text style={styles.priceText}>Starts from Rs. 4,000</Text>
                                 )}
                             </View>
                             <View style={styles.bottomTextContainer}>

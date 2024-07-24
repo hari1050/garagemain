@@ -71,6 +71,12 @@ export default function mobileAuth() {
           We’ll text you a code to verify your phone
         </Text>
         
+        <View style={styles.codeContainer}>
+        <TextInput
+          style={styles.countryCode}
+          value="+91"
+          editable={false} // Makes the input non-editable
+        />
         <TextInput
           style={styles.input}
           onChangeText={handlePhoneChange}
@@ -79,6 +85,7 @@ export default function mobileAuth() {
           placeholder="Enter your phone number"
           keyboardType="phone-pad"
         />
+        </View>
         <View id='recaptcha'/>
         {/* <View style={styles.termsContainer}>
           <CheckBox
@@ -130,9 +137,27 @@ export default function mobileAuth() {
       marginTop: 10,
       textAlign: 'left',
     },
+    codeContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 30,
+    },
+    countryCode: {
+      fontFamily: 'Satoshi-Medium',
+      fontSize: 16,
+      color: 'grey',
+      padding: 10,
+      borderWidth: 1,
+      borderColor: '#ddd',
+      borderRadius: 5,
+      marginRight: 10, // Space between "+91" and the phone number input
+      lineHeight: 30,
+      height: 50,
+      backgroundColor: '#f0f0f0', // Optional: background color to indicate it's non-editable
+    },
     input: {
       fontFamily: 'Satoshi-Medium',
-      marginTop: 30,
+      flex : 1,
       padding: 10,
       borderWidth: 1,
       borderColor: '#ddd',

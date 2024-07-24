@@ -15,7 +15,7 @@ export default function Carmodelentry() {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const handleBack = () => {
-    navigation.navigate('Nameentry');
+    navigation.navigate('Nameentry' , {name:name, phonenumber:phonenumber});
   };
 
   const navigateHome = async () => {
@@ -33,7 +33,7 @@ export default function Carmodelentry() {
           {
             phonenumber: phonenumber,
             fullname: name,
-            carModels: carModels.filter(x => x.name !== ''),
+            carmodels: carModels.filter(x => x.name !== ''),
           },
         ]);
         if (error) {
@@ -108,7 +108,7 @@ export default function Carmodelentry() {
         <Text style={styles.headerText}>Let us know which cars you rev up everyday</Text>
 
         <Text style={styles.subHeaderText}>
-          Please select your car models
+          Please type in your car model and select it from the dropdown
         </Text>
 
         {carModels.map((carModel, index) => (
@@ -213,11 +213,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     elevation: 4,
-    maxHeight: 300,
+    maxHeight: 137,
     position: 'absolute',
     top: 50,
     width: '100%',
-    zIndex: 1,
+    zIndex: 10,
+    marginTop : 8,
   },
   suggestion: {
     fontFamily: 'Satoshi-Medium',

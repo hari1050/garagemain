@@ -134,6 +134,9 @@ export default function userCompleteDetails() {
                 keyboardType="name-phone-pad"
             />
           </View>
+          {registrationNumber === '' && (
+              <Text style={styles.errorText}>Please enter the vehicle registration number</Text>
+          )}
 
           <View style={styles.inputFieldContainer}>
             <Text style={styles.inputLabel}>
@@ -146,6 +149,9 @@ export default function userCompleteDetails() {
                 placeholder="Address"
                 keyboardType="name-phone-pad"
             />
+            {address === '' && (
+              <Text style={styles.errorText}>Please select your address</Text>
+            )}
           </View>
 
           <View style={styles.inputFieldContainer}>
@@ -274,6 +280,10 @@ export default function userCompleteDetails() {
       justifyContent: 'center',
       alignItems: 'center',
       bottom: '5%'
-
-    }
+    },
+    errorText: {
+      color: 'red',
+      marginTop: 5,
+      fontFamily: 'Satoshi-Medium',
+    },
 });

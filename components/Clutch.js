@@ -285,5 +285,6 @@ export default function Clutch() {
     },
     bottomTextContainer: {
         marginTop:10,
+        marginBottom: 120,
     }
 });

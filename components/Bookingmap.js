@@ -31,7 +31,6 @@ export default function Bookingmap() {
           fullname: name,
           carmodel: [carModels[selectedCarIndex]],
           price: [carPrices[selectedCarIndex]],
-          car_purchase_time: carPurchaseDate,
           car_reg_no: registrationNumber,
           vehiclePickUpType: selectedId === '1' ? 'Free Pick Up' : 'Self Drive In',
           Is_Seasonal_service_added: isSeasonalServiceAdded

@@ -93,7 +93,12 @@ export default function Servicehistory() {
         </View>
         <Text style={styles.headerText1}>Your Bookings</Text>
         <View style={styles.carddiv}>
-          {bookings.map((booking, index) => {
+        {bookings.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>So empty, start booking the best care for your car now!</Text>
+          </View>
+        ) : (
+          bookings.map((booking, index) => {
             const serviceCost = booking.price && booking.price[0] ? booking.price[0].Service_cost : 'N/A';
             return (
               <View key={index} style={styles.card}>
@@ -121,7 +126,8 @@ export default function Servicehistory() {
                 </TouchableOpacity>
               </View>
             );
-          })}
+          })
+          )}
         </View>
       </ScrollView>
       <Modal
@@ -353,5 +359,12 @@ const styles = StyleSheet.create({
     color: '#CB142B',
     fontFamily: 'Satoshi-Medium',
     fontSize: 16,
-  }
+  },
+  emptyText: {
+    textAlign: 'center',
+    fontFamily: 'Satoshi-Medium',
+    color: 'grey',
+    fontSize: 18,
+    marginVertical: 20,
+  },
 });
