@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Calendar, CaretLeft, Trash } from 'phosphor-react-native';
+import Customloadingicon from './Customloadingicon';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import supabase from '../supabaseConfig';
@@ -22,9 +23,12 @@ export default function EditProfile() {
   const [carModels, setCarModels] = useState([]); // Initialize as an empty array
   const [suggestions, setSuggestions] = useState([]); // Initialize as an empty array
   const [activeIndex, setActiveIndex] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Track if data is currently being loaded
+
 
   useEffect(() => {
     const loadUserData = async () => {
+      setIsLoading(true); // Start loading
       try {
         const userDataString = await AsyncStorage.getItem('userData');
         if (userDataString !== null) {
@@ -47,6 +51,7 @@ export default function EditProfile() {
       } catch (error) {
         console.error('Error loading user data from AsyncStorage:', error);
       }
+      setIsLoading(false); // End loading
     };
     loadUserData();
   }, []);
@@ -158,6 +163,10 @@ export default function EditProfile() {
       setCarPurchaseDate(currentDate);
     }
   };
+
+  if (isLoading) {
+    return <Customloadingicon />;
+}
 
   const isSaveButtonDisabled = carModels.slice(1).some(carModel => carModel.name === '');
 

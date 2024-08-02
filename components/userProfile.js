@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, BackHandler } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import Customloadingicon from './Customloadingicon';
+import { useFocusEffect ,useIsFocused} from '@react-navigation/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,26 +11,36 @@ export default function userProfile() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const {name, phonenumber} = route.params;
+    const isFocused = useIsFocused();
+    const [name, setName] = useState('');
+    const [phonenumber, setPhoneNumber] = useState('');
+    const [isLoading, setIsLoading] = useState(true); // Track if data is currently being loaded
 
-    useFocusEffect(
-      React.useCallback(() => {
-        const onBackPress = () => {
-          navigation.navigate('homeScreen');
-          return true; // Prevent default back button behavior
-        };
-  
-        BackHandler.addEventListener('hardwareBackPress', onBackPress);
-  
-        return () => {
-          BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-        };
-      }, [navigation, name])
-   );
 
-    const navigateToHome = () => {
-        navigation.navigate('homeScreen');
+   useEffect(() => {
+    if (isFocused) {
+        const initializeUserData = async () => {
+            setIsLoading(true); // Start loading
+            try {
+                const userDataString = await AsyncStorage.getItem('userData');
+                if (userDataString !== null) {
+                    const userData = JSON.parse(userDataString);
+                    setName(userData.name);
+                    setPhoneNumber(userData.phonenumber);
+                }
+            } catch (error) {
+                console.log("Error retrieving user data from AsyncStorage:", error);
+            }
+            setIsLoading(false); // End loading
+        };
+
+        initializeUserData();
     }
+}, [isFocused]); // Add userDataLoaded as a dependency
+
+    // const navigateToHome = () => {
+    //     navigation.navigate('homeScreen');
+    // }
 
     const navigateToEditProfile = () => {
         navigation.navigate('editProfile');
@@ -59,14 +70,18 @@ export default function userProfile() {
     }
     }
 
+    if (isLoading) {
+      return <Customloadingicon />;
+  }
+
 
     return (
       <View style={styles.viewContainer}>
 
       <ScrollView style={styles.container}>
-         <TouchableOpacity style={styles.caretLeft} onPress={navigateToHome}>
+         {/* <TouchableOpacity style={styles.caretLeft} onPress={navigateToHome}>
           <CaretLeft></CaretLeft>
-         </TouchableOpacity>
+         </TouchableOpacity> */}
         <View style={styles.header}>
             <Text style={styles.headerText}>Hi {name}</Text>
             <TouchableOpacity style={styles.secondaryButton} onPress={navigateToEditProfile}>
@@ -127,6 +142,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: '#732753',
     textAlign: 'left',
+    paddingBottom: 20
   },
   buttonText: {
     fontFamily: 'Satoshi-Medium',

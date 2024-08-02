@@ -7,10 +7,10 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 export default function Emergency(){
     const navigation = useNavigation();
     const route = useRoute();
-    const { name, carModels } = route.params;
-    const navigateToHome = () => {
-        navigation.navigate('homeScreen',{name: name, carModels: carModels});
-    }
+    
+    // const navigateToHome = () => {
+    //     navigation.navigate('homeScreen',{name: name, carModels: carModels});
+    // }
     const batteryPhoneNo = '+919890135566';
     const handleCallButton = () => {
         Linking.openURL(`tel:${batteryPhoneNo}`);
@@ -19,9 +19,9 @@ export default function Emergency(){
     return(
         <View style={styles.viewContainer}>
             <ScrollView>
-                <TouchableOpacity style={styles.caretLeft} onPress={navigateToHome}>
+                {/* <TouchableOpacity style={styles.caretLeft} onPress={navigateToHome}>
                     <CaretLeft></CaretLeft>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity onPress={handleCallButton}>
                     <View style={styles.individualTopic}>
                         <BatteryWarningVertical size={32} weight="fill"></BatteryWarningVertical>

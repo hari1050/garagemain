@@ -114,21 +114,9 @@ export default function homeScreen() {
         navigation.navigate('classicService', { carPrices: carPrices, servicetype: "Classicservice", selectedCarIndex: selectedCarIndex });
     };
 
-    const navigateToSummerService = () => {
-        navigation.navigate('summerService', { name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype: "Summerservice" });
-    }
-
-    const navigateToOtherService = () => {
-        navigation.navigate('otherServices', { carPrices: carPrices, servicetype: "Classicservice", selectedCarIndex: selectedCarIndex });
-    }
-
-    const navigateToMonsoonService = () => {
-        navigation.navigate('monsoonService', { name: name, carModels: carModels, carPrices: carPrices, phonenumber: phonenumber, servicetype: "Monsoonservice" });
-    }
-
-    const navigateToProfile = () => {
-        navigation.navigate('userProfile', { name: name, phonenumber: phonenumber });
-    };
+    // const navigateToProfile = () => {
+    //     navigation.navigate('userProfile', { name: name, phonenumber: phonenumber });
+    // };
 
     const navigateToEmergency = async () => {
         navigation.navigate('Emergency', { name: name, carModels: carModels, phonenumber: phonenumber });
@@ -256,15 +244,15 @@ export default function homeScreen() {
 
     return (
         <View style={styles.viewContainer}>
-            <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 120 }}>
+            <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 60 }}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Hi {name}</Text>
-                    <TouchableOpacity onPress={navigateToProfile}>
+                    {/* <TouchableOpacity onPress={navigateToProfile}>
                         <Image
                             style={styles.profile}
                             source={require('../assets/profile.png')}
                         />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
 
                 <View style={styles.dropdownContainer}>
@@ -305,11 +293,7 @@ export default function homeScreen() {
                     <Slideshow />
                 </View>
             </ScrollView>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.customButton} onPress={navigateToEmergency}>
-                    <Text style={styles.buttonText}>Emergency Car Services</Text>
-                </TouchableOpacity>
-            </View>
+
         </View>
     );
 };
