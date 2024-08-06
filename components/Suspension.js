@@ -95,11 +95,11 @@ export default function Suspension() {
               </TouchableOpacity>
           </View>
           {/* <Slideshow/> */}
-          <Image
+          {/* <Image
             style={styles.imgMain}
             source={{ uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/suspension.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2Uvc3VzcGVuc2lvbi5wbmciLCJpYXQiOjE3MjA1ODY5MTcsImV4cCI6MTg0NjczMDkxN30.EuizHbJDm90zb_YLwcRd5k16BQAhCHcogKkJTTUVOqA&t=2024-07-10T04%3A48%3A37.893Zhttps://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/clth.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvY2x0aC5wbmciLCJpYXQiOjE3MjA1ODY2MzUsImV4cCI6MTg0NjczMDYzNX0.BFWzDSMjG5GmCQgyEnVAW6fjXLsWjKCIdnUVw19ZxNE&t=2024-07-10T04%3A43%3A55.742Z' }} 
-          />
-            {/* <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} /> */}
+          /> */}
+            <Image source={require('../assets/Suspenision work.jpg')} style={styles.imgMain} />
               <View>
                 <View style={styles.classicService}>
                 <Text style={styles.selectDate}>Select Service Date</Text>
@@ -117,6 +117,12 @@ export default function Suspension() {
                     minimumDate={today}
                 />
                     )}
+                    <View style={styles.bottomTextContainer}>
+                      <Text style={styles.serviceText}>Suspension Work</Text>
+                      <Text style={styles.serviceDescription}>
+                        Suspension trouble or noise, get it replaced at fantastic rates book a free inspection now.
+                      </Text>
+                  </View>
                   <View style={styles.priceTag}>
                       <Text style={styles.priceText}>
                       Free Inspection
@@ -201,7 +207,7 @@ export default function Suspension() {
         paddingHorizontal: 20,
         paddingVertical: 8,
         borderRadius: 20,
-        marginTop: 26,
+        // marginTop: 26,
       },
     priceText: {
       fontFamily: 'Satoshi-Medium',
@@ -223,7 +229,7 @@ export default function Suspension() {
         color: '#000',
         opacity: 0.8,
         textAlign: 'left',
-        marginBottom: 120,
+        // marginBottom: 120,
     },
     selectDate: {
       fontFamily: 'Satoshi-Medium',
@@ -285,6 +291,6 @@ export default function Suspension() {
     },
     bottomTextContainer: {
         marginTop:10,
-        marginBottom: 120,
+        marginBottom: 10,
     }
 });

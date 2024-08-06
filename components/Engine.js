@@ -95,11 +95,11 @@ export default function Engine() {
               </TouchableOpacity>
           </View>
           {/* <Slideshow/> */}
-          <Image
+          {/* <Image
             style={styles.imgMain}
             source={{ uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/engine.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvZW5naW5lLnBuZyIsImlhdCI6MTcyMDU4Njg1NSwiZXhwIjoxODQ2NzMwODU1fQ.zW4U1SUy0Sde4T_AhRcWIzK0q7ljxtSvFnloy70ChXE&t=2024-07-10T04%3A47%3A35.394Z' }} 
-          />
-            {/* <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} /> */}
+          /> */}
+            <Image source={require('../assets/Engine work.jpg')} style={styles.imgMain} />
               <View>
                 <View style={styles.classicService}>
                 <Text style={styles.selectDate}>Select Service Date</Text>
@@ -117,6 +117,12 @@ export default function Engine() {
                     minimumDate={today}
                 />
                     )}
+                    <View style={styles.bottomTextContainer}>
+                      <Text style={styles.serviceText}>Engine Work</Text>
+                      <Text style={styles.serviceDescription}>
+                        150+ engines repaired and restored. Book a free inspection session with our experts.
+                      </Text>
+                  </View>
                   <View style={styles.priceTag}>
                       <Text style={styles.priceText}>
                       Free engine inspection
@@ -201,7 +207,7 @@ export default function Engine() {
         paddingHorizontal: 20,
         paddingVertical: 8,
         borderRadius: 20,
-        marginTop: 26,
+        // marginTop: 26,
       },
     priceText: {
       fontFamily: 'Satoshi-Medium',
@@ -223,7 +229,7 @@ export default function Engine() {
         color: '#000',
         opacity: 0.8,
         textAlign: 'left',
-        marginBottom: 120,
+        // marginBottom: 120,
     },
     selectDate: {
       fontFamily: 'Satoshi-Medium',
@@ -285,6 +291,6 @@ export default function Engine() {
     },
     bottomTextContainer: {
         marginTop:10,
-        marginBottom: 120,
+        marginBottom: 10,
     }
 });

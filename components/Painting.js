@@ -98,11 +98,11 @@ export default function Painting() {
               </TouchableOpacity>
           </View>
           {/* <Slideshow/> */}
-          <Image
+          {/* <Image
             style={styles.imgMain}
             source={{ uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/paint.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvcGFpbnQucG5nIiwiaWF0IjoxNzIwNTg2ODk5LCJleHAiOjE4NDY3MzA4OTl9.ATdRM5TPvPEKfMMlFWHTlEv2f2QHTRsczG3flIf4lAQ&t=2024-07-10T04%3A48%3A19.749Z' }} 
-          />
-            {/* <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} /> */}
+          /> */}
+            <Image source={require('../assets/Painting.jpg')} style={styles.imgMain} />
               <View>
                 <View style={styles.classicService}>
                 <Text style={styles.selectDate}>Select Service Date</Text>
@@ -120,6 +120,12 @@ export default function Painting() {
                     minimumDate={today}
                 />
                     )}
+                    <View style={styles.bottomTextContainer}>
+                      <Text style={styles.serviceText}>Denting and painting</Text>
+                      <Text style={styles.serviceDescription}>
+                        200+ cars painted. Best rates, quality products and quick service on denting and painting. book a free inspection and estimate visit now.
+                      </Text>
+                  </View>
                   <View style={styles.priceTag}>
                       <Text style={styles.priceText}>
                       From Rs. {totalPrice === null ? 'N/A': totalPrice} only per panel
@@ -204,7 +210,7 @@ export default function Painting() {
         paddingHorizontal: 20,
         paddingVertical: 8,
         borderRadius: 20,
-        marginTop: 26,
+        // marginTop: 26,
       },
     priceText: {
       fontFamily: 'Satoshi-Medium',
@@ -226,7 +232,7 @@ export default function Painting() {
         color: '#000',
         opacity: 0.8,
         textAlign: 'left',
-        marginBottom: 120,
+        // marginBottom: 120,
     },
     selectDate: {
       fontFamily: 'Satoshi-Medium',
@@ -288,6 +294,6 @@ export default function Painting() {
     },
     bottomTextContainer: {
         marginTop:10,
-        marginBottom: 120,
+        marginBottom: 10,
     }
 });

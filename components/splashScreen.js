@@ -35,15 +35,15 @@ export default function splashScreen() {
   return (
     <View style={styles.viewContainer}>
       <View style={styles.container}>
-        <Image
+        {/* <Image
         style={styles.svgImage}
         source={{ uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/512x512.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvNTEyeDUxMi5wbmciLCJpYXQiOjE3MjA1ODkzNjAsImV4cCI6MTg0NjczMzM2MH0.AxIY-WiaOXRG3ILVfQo1XU8whdOg2ACwEuN6Psy29cw&t=2024-07-10T05%3A29%3A20.184Z' }} 
-      />
-        <Text style={styles.title}>Crafted Vehicle Solutions</Text>
-        {/* <Image
+      /> */}
+        <Image
           style={styles.image}
-          source={require('../assets/splashScreen-hero.png')} // Replace with the path to your car image
-        /> */}
+          source={require('../assets/512x512.png')} // Replace with the path to your car image
+        />
+        <Text style={styles.title}>Crafted Vehicle Solutions</Text>
         </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.frame10} onPress={handleSplash}>
