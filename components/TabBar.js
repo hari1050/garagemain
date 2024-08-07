@@ -32,7 +32,6 @@ const TabBar = () => {
     fontFamily: 'Satoshi-Bold',
     fontSize: 16,
     color: currentIndex === index ? (index === 1 ? 'red' : '#472144') : 'grey',
-    marginTop: 4,
   });
 
   const getIcon = (index) => {
