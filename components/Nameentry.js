@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, BackHandler,ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
-import supabase from '../supabaseConfig';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
+// import supabase from '../supabaseConfig';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Nameentry() {
@@ -12,19 +13,39 @@ export default function Nameentry() {
     const route = useRoute();
     const {phonenumber} = route.params;
     const [name, setName] = useState('');
+    const [backPressCount, setBackPressCount] = useState(0);
+
+    useFocusEffect(
+      React.useCallback(() => {
+          const onBackPress = () => {
+              setBackPressCount(prevCount => prevCount + 1);
+              if (backPressCount >= 2) {
+                  BackHandler.exitApp();
+              }
+              return true; // Prevent default back button behavior
+          };
+
+          BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+          return () => {
+              BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+          };
+      }, [backPressCount]) // Include backPressCount in the dependency array
+  );
 
     const handleBack = () => {
           navigation.navigate('phoneNoAuth');
     };
     
-    const navigateHome = async () => {
+    const navigateModelentry = async () => {
+      if(name.length != 0){
         navigation.navigate('Carmodelentry', {name:name, phonenumber:phonenumber});
-        
+      }
     }
 
     return (
-        
-      <View style={styles.container}>
+      <View style={styles.viewContainer}>
+      <ScrollView style={styles.container}>
         <TouchableOpacity style={styles.caretLeft} onPress={handleBack}>
             <CaretLeft/>
         </TouchableOpacity>
@@ -41,18 +62,22 @@ export default function Nameentry() {
           placeholder="Name"
           keyboardType="name-phone-pad"
         />
-        
+        </ScrollView>
         <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.customButton, (name.length != 0 ) ? {} : styles.disabledButton]} onPress={navigateHome}>
+            <TouchableOpacity style={[styles.customButton, (name.length != 0 ) ? {} : styles.disabledButton]} onPress={navigateModelentry}>
               <Text style={styles.buttonText}>Continue</Text>
             </TouchableOpacity>
         </View>
-        
       </View>
     );
   };
   
   const styles = StyleSheet.create({
+    viewContainer: {
+      flex: 1,
+      backgroundColor: '#fff',
+      position: 'relative',
+    },
     container: {
       flex: 1,
       padding: 20,
@@ -115,6 +140,7 @@ export default function Nameentry() {
       fontSize: 18,
     },
     customButton: {
+      alignSelf:'center',
       backgroundColor: '#2C152A', // Specify your color
       height: 54,
       width: '94%',
@@ -126,15 +152,14 @@ export default function Nameentry() {
       borderRadius: 8,
       paddingLeft: 24,
       paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 16,
       display: 'flex', // This is the default display style for React Native components, so it can be omitted
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts.
+      bottom: '5%',
     },
     disabledButton: {
+      alignSelf:'center',
       backgroundColor: '#646464', // Specify your color
       height: 54,
       width: '94%',
@@ -146,13 +171,11 @@ export default function Nameentry() {
       borderRadius: 8,
       paddingLeft: 24,
       paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 16,
       display: 'flex', // This is the default display style for React Native components, so it can be omitted
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      position: 'relative', // Generally, positioning works similarly to CSS, but its usage is less common in React Native layouts
+      bottom: '5%'
     },
     resendLink: {
       color: '#732753', // Specify the color for the link

@@ -10,8 +10,8 @@ const TabStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false , animation: 'slide_from_right' }}>
       <Stack.Screen name="homeScreen" component={homeScreen} />
-      <Stack.Screen name="userProfile" component={userProfile} />
       <Stack.Screen name="Emergency" component={Emergency} />
+      <Stack.Screen name="userProfile" component={userProfile} />
     </Stack.Navigator>
   );
 };

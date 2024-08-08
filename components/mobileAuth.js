@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import CheckBox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
@@ -35,11 +36,14 @@ export default function mobileAuth() {
     }
 
     const handlePhone = () => {
-      if (phonenumber.length === 10) {
+      if (phonenumber.length === 10 && agreeToTerms) {
         OTP = generateOTP();
         console.log(OTP);
         sendOTP(phonenumber,OTP);
         navigation.navigate('otpverifyScreen', { phonenumber: phonenumber, OTP: OTP });
+      }
+      else if(!agreeToTerms){
+        alert('Please agree to the terms of use and privacy notice.');
       }
     };
 
@@ -50,8 +54,11 @@ export default function mobileAuth() {
       if (numericValue.length <= 10) {
           setPhoneNumber(numericValue || ''); // Ensure it's never null
       }
-  };
+    };
   
+    const handleValueChange = (newValue) => {
+      setAgreeToTerms(newValue); // Updates state based on checkbox value
+    };
 
     const handleContinue = () => {
       if (agreeToTerms) {
@@ -61,6 +68,10 @@ export default function mobileAuth() {
         // Handle the case where terms are not agreed to
         alert('Please agree to the terms of use and privacy notice.');
       }
+    };
+
+    const navigateToTermsPage = () => {
+      navigation.navigate('Terms'); // Replace 'TermsPage' with your actual route name
     };
   
     return (
@@ -87,19 +98,23 @@ export default function mobileAuth() {
         />
         </View>
         <View id='recaptcha'/>
-        {/* <View style={styles.termsContainer}>
+        <View style={styles.termsContainer}>
           <CheckBox
             value={agreeToTerms}
-            onValueChange={setAgreeToTerms}
+            onValueChange={handleValueChange} // Call handleValueChange on checkbox value change
             style={styles.checkbox}
           />
           <Text style={styles.termsText}>
-            By selecting “I Agree”, I have reviewed and agree to the Terms of Use and acknowledge the Privacy Notice. I am at least 18 years of age
+              By checking this box, I confirm that I have read and accept the{' '}
+            <Text style={styles.link} onPress={navigateToTermsPage}>
+              Terms of Use and Privacy Policy
+            </Text>{' '}
+            I also verify that I am 18 years or older.
           </Text>
-        </View> */}
+        </View>
         </ScrollView>
         <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.customButton, phonenumber.length === 10 ? {} : styles.disabledButton]} onPress={handlePhone}>
+            <TouchableOpacity style={[styles.customButton, (phonenumber.length === 10 && agreeToTerms)? {} : styles.disabledButton]} onPress={handlePhone}>
               <Text style={styles.buttonText}>Continue</Text>
             </TouchableOpacity>
           </View>
@@ -166,14 +181,20 @@ export default function mobileAuth() {
     termsContainer: {
       flexDirection: 'row',
       marginTop: 30,
-      alignItems: 'center',
+      alignItems: 'flex-start',
     },
     checkbox: {
       marginRight: 10,
+      marginTop: 5
     },
     termsText: {
       flex: 1,
       fontSize: 14,
+      fontFamily: 'Satoshi-Medium',
+    },
+    link: {
+      color: '#1E90FF', // Blue color for the links
+      fontFamily: 'Satoshi-Bold',
     },
     button: {
       backgroundColor: '#800080', // Purple color

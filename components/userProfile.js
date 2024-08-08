@@ -55,7 +55,7 @@ export default function userProfile() {
     }
 
     const navigateToTerms = () => {
-      navigation.navigate('Terms',{name: name});
+      navigation.navigate('Terms');
     }
 
     const navigatelogout = async () => {

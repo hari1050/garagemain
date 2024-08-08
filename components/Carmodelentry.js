@@ -44,7 +44,7 @@ export default function Carmodelentry() {
       } catch (error) {
         console.error('Error saving user data to AsyncStorage:', error);
       }
-      navigation.navigate('homeScreen');
+      navigation.navigate('homeTabs', { screen: 'homeScreen' });
     }
   };
 
@@ -276,6 +276,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   disabledButton: {
-    backgroundColor: '#A9A9A9',
+    backgroundColor: '#646464',
   },
 });
