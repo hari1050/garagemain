@@ -47,7 +47,9 @@ export default function userCompleteDetails() {
     }
 
     const navigateToConfirmation = async () => {
-      try {
+      if(address.length !== 0 && registrationNumber.length !== 0)
+      {
+        try {
         // Save user details in "user_profiles" table
         const { data: usertableData, error: userError } = await supabase.from('user_profiles').update(
           {
@@ -89,8 +91,9 @@ export default function userCompleteDetails() {
           selectedCarIndex: selectedCarIndex,
         });
         
-      } catch (error) {
-        console.error('Error saving details:', error.message);
+        } catch (error) {
+          console.error('Error saving details:', error.message);
+        }
       }
     }
 

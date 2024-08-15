@@ -81,7 +81,7 @@ export default function Suspension() {
     return (
         <View style={styles.viewContainer}>
 
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 60 }}>
            <TouchableOpacity style={styles.caretLeft} onPress={navigatetoHome}>
             <CaretLeft></CaretLeft>
            </TouchableOpacity>
@@ -99,7 +99,7 @@ export default function Suspension() {
             style={styles.imgMain}
             source={{ uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/suspension.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2Uvc3VzcGVuc2lvbi5wbmciLCJpYXQiOjE3MjA1ODY5MTcsImV4cCI6MTg0NjczMDkxN30.EuizHbJDm90zb_YLwcRd5k16BQAhCHcogKkJTTUVOqA&t=2024-07-10T04%3A48%3A37.893Zhttps://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/clth.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvY2x0aC5wbmciLCJpYXQiOjE3MjA1ODY2MzUsImV4cCI6MTg0NjczMDYzNX0.BFWzDSMjG5GmCQgyEnVAW6fjXLsWjKCIdnUVw19ZxNE&t=2024-07-10T04%3A43%3A55.742Z' }} 
           /> */}
-            <Image source={require('../assets/Suspenision work.jpg')} style={styles.imgMain} />
+            <Image source={require('../assets/Suspension work.jpg')} style={styles.imgMain} />
               <View>
                 <View style={styles.classicService}>
                 <Text style={styles.selectDate}>Select Service Date</Text>

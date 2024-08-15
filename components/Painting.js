@@ -84,7 +84,7 @@ export default function Painting() {
     return (
         <View style={styles.viewContainer}>
 
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 60 }}>
            <TouchableOpacity style={styles.caretLeft} onPress={navigatetoHome}>
             <CaretLeft></CaretLeft>
            </TouchableOpacity>
@@ -121,9 +121,9 @@ export default function Painting() {
                 />
                     )}
                     <View style={styles.bottomTextContainer}>
-                      <Text style={styles.serviceText}>Denting and painting</Text>
+                      <Text style={styles.serviceText}>Painting and Dent fix</Text>
                       <Text style={styles.serviceDescription}>
-                        200+ cars painted. Best rates, quality products and quick service on denting and painting. book a free inspection and estimate visit now.
+                        200+ cars painted. Best rates, quality products and quick service on denting and painting. Book a free inspection and estimate visit now.
                       </Text>
                   </View>
                   <View style={styles.priceTag}>

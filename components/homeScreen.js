@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image, BackHandler, FlatList } from 'react-native';
+import {Animated, ImageBackground, Dimensions, ScrollView, View, Text, StyleSheet, TouchableOpacity, Image, BackHandler, FlatList } from 'react-native';
 import Customloadingicon from './Customloadingicon'; // Import your custom loading indicator component
+import {LinearGradient} from "expo-linear-gradient"
+import Pagination from './Pagination';
 import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,6 +21,7 @@ export default function homeScreen() {
     const [userDataLoaded, setUserDataLoaded] = useState(false); // Track if user data is loaded
     const [isLoading, setIsLoading] = useState(true); // Track if data is currently being loaded
     const [selectedCarIndex, setSelectedCarIndex] = useState(0);
+    const screenWidth = Dimensions.get('window').width;
 
     useFocusEffect(
         React.useCallback(() => {
@@ -151,22 +154,30 @@ export default function homeScreen() {
     const images = [
         {
             // image: { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/clth.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvY2x0aC5wbmciLCJpYXQiOjE3MjA1ODY2MzUsImV4cCI6MTg0NjczMDYzNX0.BFWzDSMjG5GmCQgyEnVAW6fjXLsWjKCIdnUVw19ZxNE&t=2024-07-10T04%3A43%3A55.742Z' },
-            image: require ('../assets/clth.png'),
+            image: require ('../assets/clutch work.jpg'),
+            title: "Clutch Work",
+            description: "Book a free consultation for replacing clutch and get huge discounts on quotes",
             onPress: navigateToClutch
         },
         {
             // image: { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/engine.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvZW5naW5lLnBuZyIsImlhdCI6MTcyMDU4Njg1NSwiZXhwIjoxODQ2NzMwODU1fQ.zW4U1SUy0Sde4T_AhRcWIzK0q7ljxtSvFnloy70ChXE&t=2024-07-10T04%3A47%3A35.394Z' },
-            image: require ('../assets/engine.png'),
+            image: require ('../assets/Engine work.jpg'),
+            title: "Engine work",
+            description: "150+ engines repaired and restored. Book a free inspection session with our experts.",
             onPress: navigateToEngine
         },
         {
             //image: { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/paint.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvcGFpbnQucG5nIiwiaWF0IjoxNzIwNTg2ODk5LCJleHAiOjE4NDY3MzA4OTl9.ATdRM5TPvPEKfMMlFWHTlEv2f2QHTRsczG3flIf4lAQ&t=2024-07-10T04%3A48%3A19.749Z' },
-            image: require ('../assets/paint.png'),
+            image: require ('../assets/Painting.jpg'),
+            title: "Painting and Dent fix",
+            description: "200+ cars painted. Best rates, quality products and quick service on denting and painting. Book a free inspection and estimate visit now.",
             onPress: navigateToPainting
         },
         {
             //image: { uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/suspension.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2Uvc3VzcGVuc2lvbi5wbmciLCJpYXQiOjE3MjA1ODY5MTcsImV4cCI6MTg0NjczMDkxN30.EuizHbJDm90zb_YLwcRd5k16BQAhCHcogKkJTTUVOqA&t=2024-07-10T04%3A48%3A37.893Z' },
-            image: require ('../assets/suspension.png'),
+            image: require ('../assets/Suspension work.jpg'),
+            title: "Suspension Work",
+            description: "Suspension trouble or noise, get it replaced at fantastic rates book a free inspection now.",
             onPress: navigateToSuspension
         },
     ];
@@ -176,6 +187,8 @@ export default function homeScreen() {
         const flatListRef = useRef(null);
         const scrollIntervalRef = useRef(null);
         const isUserScrollingRef = useRef(false);
+        const scrollX = useRef(new Animated.Value(0)).current;
+
     
         const startAutoScroll = () => {
             scrollIntervalRef.current = setInterval(() => {
@@ -201,8 +214,8 @@ export default function homeScreen() {
         }, []);
 
         const getItemLayout = (data, index) => ({
-            length: 345, // width of each image in pixels
-            offset: 345 * index,
+            length: screenWidth*0.5, // width of each image in pixels
+            offset: screenWidth * index,
             index,
         });
     
@@ -212,15 +225,35 @@ export default function homeScreen() {
                 flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
             });
         };
+        const handleOnScroll = event => {
+            Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: {
+                      x: scrollX,
+                    },
+                  },
+                },
+              ],
+              {
+                useNativeDriver: false,
+              },
+            )(event);
+          };
     
         return (
+            <View>
             <FlatList
                 ref={flatListRef}
                 data={images}
                 horizontal
+                style= {{width: '100%'}}
                 pagingEnabled
                 scrollEnabled
-                getItemLayout={getItemLayout}
+                snapToAlignment="start"
+                showsHorizontalScrollIndicator={false}
+                onScroll={handleOnScroll}
                 onScrollToIndexFailed={handleScrollToIndexFailed}
                 onTouchStart={() => {
                     isUserScrollingRef.current = true;
@@ -236,11 +269,24 @@ export default function homeScreen() {
                 }}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity onPress={item.onPress} key={index}>
-                        <Image source={item.image} style={styles.summerServiceImg} />
+                        <ImageBackground source={item.image} imageStyle={{ borderRadius: 12 }} style={{ width: screenWidth*0.9, height: 240}}>
+                            <LinearGradient 
+                                colors={["#00000000", "#000000"]} 
+                                style={{height : "100%", width : "100%", borderRadius: 12}}>
+                            </LinearGradient>
+                        </ImageBackground>
+                        <View style={styles.textOverlay}>
+                        <View style={styles.bottomTextContainer}>
+                            <Text style={styles.serviceText}>{item.title}</Text>
+                            <Text style={styles.serviceDescription}>{item.description}</Text>
+                        </View>
+                        </View>
                     </TouchableOpacity>
                 )}
                 keyExtractor={(_, index) => index.toString()}
             />
+            <Pagination data={images} scrollX={scrollX} index={currentIndex} />
+            </View>
         );
     };
     
@@ -272,11 +318,17 @@ export default function homeScreen() {
                 </View>
                 {carModels.length > 0 && (
                     <TouchableOpacity key={carModels[0].id} onPress={navigateToClassicService} style={styles.classicService}>
-                        <Image
+                        <ImageBackground
                         style={styles.classicServiceImg}
-                        source={require('../assets/classicserviceDark.png')}
+                        imageStyle={{ borderRadius: 12 }}
+                        source={require('../assets/classicservice.jpg')}
                         // source={{ uri: 'https://ccvfzxopmskzeegxucms.supabase.co/storage/v1/object/sign/imgForGarage/classicserviceDark.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWdGb3JHYXJhZ2UvY2xhc3NpY3NlcnZpY2VEYXJrLnBuZyIsImlhdCI6MTcyMDU4NzAyOSwiZXhwIjoxODQ2NzMxMDI5fQ.55OQEYI7_tuIRDX__sjXgBcV7ywJAGe2rt4m44zEKMI&t=2024-07-10T04%3A50%3A29.958Z' }} 
-                        />
+                        >
+                            <LinearGradient 
+                                colors={["#00000000", "#000000"]} 
+                                style={{height : "100%", width : "100%",borderRadius: 12}}>
+                            </LinearGradient>
+                        </ImageBackground>
                         <View style={styles.textOverlay}>
                             <View style={styles.priceTag}>
                                 {carModels[selectedCarIndex].id != null ? (
@@ -337,11 +389,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 396,
     },
-    summerServiceImg: {
-        borderRadius: 12,
-        width: 345,
-        height: 240,
-    },
     textOverlay: {
         position: 'absolute',
         top: 0,
@@ -356,7 +403,7 @@ const styles = StyleSheet.create({
         bottom: 10,
         left: 10,
         right: 10,
-        padding: 20
+        padding: 10
     },
     priceTag: {
         alignSelf: 'flex-start',

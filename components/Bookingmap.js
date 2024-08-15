@@ -136,7 +136,7 @@ export default function Bookingmap() {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <View style={styles.modalContainer}>
+        <ScrollView style={styles.modalContainer} contentContainerStyle = {{justifyContent: 'center', alignItems: 'center'}}>
           <View style={styles.modalView}>
             <LottieView
               source={rainAnimation}
@@ -168,7 +168,7 @@ export default function Bookingmap() {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </ScrollView>
       </Modal>
     </View>
   );
@@ -259,8 +259,6 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalView: {

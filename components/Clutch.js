@@ -81,7 +81,7 @@ export default function Clutch() {
     return (
         <View style={styles.viewContainer}>
 
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 60 }}>
            <TouchableOpacity style={styles.caretLeft} onPress={navigatetoHome}>
             <CaretLeft></CaretLeft>
            </TouchableOpacity>
@@ -120,7 +120,7 @@ export default function Clutch() {
                   <View style={styles.bottomTextContainer}>
                       <Text style={styles.serviceText}>Clutch Work</Text>
                       <Text style={styles.serviceDescription}>
-                        Book a free consultation for replacing clutch and get huge discounts on quotes
+                        Book a free consultation for replacing clutch and get huge discounts on quotes.
                       </Text>
                   </View>
                   <View style={styles.priceTag}>

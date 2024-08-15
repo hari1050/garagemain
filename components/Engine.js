@@ -81,7 +81,7 @@ export default function Engine() {
     return (
         <View style={styles.viewContainer}>
 
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container}contentContainerStyle={{ paddingBottom: 60 }}>
            <TouchableOpacity style={styles.caretLeft} onPress={navigatetoHome}>
             <CaretLeft></CaretLeft>
            </TouchableOpacity>

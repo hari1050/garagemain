@@ -83,14 +83,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 15,
     elevation: 10,
-    height: 60,
-    paddingHorizontal: 10,
+    height: "9%",
   },
   button: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 10,
+    marginLeft: -10
   },
   iconContainer: {
     alignItems: 'center',

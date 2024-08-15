@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal, FlatList } from 'react-native';
+import { Animated, Dimensions, ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal, FlatList } from 'react-native';
+import Pagination from './Pagination';
 import { useNavigation, useRoute } from '@react-navigation/native';
 // import { Dropdown } from "react-native-material-dropdown";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -27,6 +28,8 @@ export default function classicService() {
     const [totalPrice, setTotalPrice] = useState(carPrices.length > 0 ? carPrices[selectedCarIndex].Service_cost : 0);
     const summerServiceCost = 1500.00;
     const [countOFslots, setCountOFslots] = useState(0);
+    const screenWidth = Dimensions.get('window').width;
+
 
     // useEffect(()=> {
     //   getCountOfSlot();
@@ -138,6 +141,7 @@ export default function classicService() {
         const flatListRef = useRef(null);
         const scrollIntervalRef = useRef(null);
         const isUserScrollingRef = useRef(false);
+        const scrollX = useRef(new Animated.Value(0)).current;
     
         const startAutoScroll = () => {
             scrollIntervalRef.current = setInterval(() => {
@@ -161,14 +165,43 @@ export default function classicService() {
             startAutoScroll();
             return () => stopAutoScroll();
         }, []);
+
+        const handleScrollToIndexFailed = (info) => {
+          const wait = new Promise((resolve) => setTimeout(resolve, 500));
+          wait.then(() => {
+              flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
+          });
+        };
+
+        const handleOnScroll = event => {
+          Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    x: scrollX,
+                  },
+                },
+              },
+            ],
+            {
+              useNativeDriver: false,
+            },
+          )(event);
+        };
     
         return (
+          <View>
             <FlatList
                 ref={flatListRef}
                 data={images}
                 horizontal
                 pagingEnabled
+                style= {{width: '100%'}}
                 scrollEnabled
+                snapToAlignment="center"
+                onScroll={handleOnScroll}
+                onScrollToIndexFailed={handleScrollToIndexFailed}
                 onTouchStart={() => {
                     isUserScrollingRef.current = true;
                     stopAutoScroll();
@@ -183,11 +216,12 @@ export default function classicService() {
                 }}
                 renderItem={({ item }) => (
                     <View>
-                        <Image source={item} style={styles.classicServiceImg} />
+                        <Image source={item} style={{borderRadius: 12, height: screenWidth, width: screenWidth*0.8,}} />
                     </View>
                 )}
                 keyExtractor={(_, index) => index.toString()}
             />
+            </View>
         );
     };
       
