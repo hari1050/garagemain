@@ -54,7 +54,6 @@ export default function mobileAuth() {
           navigation.navigate('phoneNoAuth');
     }
     const handleOtp = async () => {
-        if (otpNumber.length === 4) {
             if (otpNumber === OTP) {
                 try {
                     // Check if the phone number exists in the user_profiles table
@@ -82,7 +81,7 @@ export default function mobileAuth() {
                         // Store user data in AsyncStorage
                         await AsyncStorage.setItem('userData', JSON.stringify(userData));
                         // Navigate to the next screen
-                        navigation.navigate('homeScreen');
+                        navigation.navigate('homeTabs', { screen: 'homeScreen' });
                     }
                 } catch (error) {
                     console.error('Error:', error.message);
@@ -93,7 +92,6 @@ export default function mobileAuth() {
                     setShowErrorPopup(false);
                 }, 3000);
             }
-        }
     };
 
     const handleResend = () => {
