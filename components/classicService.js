@@ -27,14 +27,8 @@ export default function classicService() {
     const [summerServiceAdded, setSummerServiceAdded] = useState(false);
     const [totalPrice, setTotalPrice] = useState(carPrices.length > 0 ? carPrices[selectedCarIndex].Service_cost : 0);
     const summerServiceCost = 1500.00;
-    const [countOFslots, setCountOFslots] = useState(0);
     const screenWidth = Dimensions.get('window').width;
 
-
-    // useEffect(()=> {
-    //   getCountOfSlot();
-      
-    // },[]);
 
     useEffect(() => {
       const initializeUserData = async () => {
@@ -68,31 +62,13 @@ export default function classicService() {
       }
     }
 
-    // const getCountOfSlot = async() => {
-    //   try {
-    //     const { data: datesWith50OrMoreOrders, error } = await supabase
-    //       .from('service_date_numbers')
-    //       .select('service_date')
-    //       .gte('order_count', 1);
-    
-    //     if (error) {
-    //       throw error;
-    //     }
-    //     console.log(datesWith50OrMoreOrders)
-    //     return datesWith50OrMoreOrders;
-    //   } catch (error) {
-    //     console.error('Error fetching dates:', error.message);
-    //     return [];
-    //   }
-    // }
-
 
     const navigatetoHome = () => {
         navigation.navigate('homeScreen', { selectedCarIndex: selectedCarIndex});
     }
-    const navigateToProfile = () => {
-      navigation.navigate('userProfile', { name: name, phonenumber: phonenumber });
-    }
+    // const navigateToProfile = () => {
+    //   navigation.navigate('userProfile', { name: name, phonenumber: phonenumber });
+    // }
 
     const handleBookService = () => {
         carPrices[selectedCarIndex].Service_cost = totalPrice;
@@ -235,18 +211,33 @@ export default function classicService() {
            </TouchableOpacity>
           <View style={styles.header}>
               <Text style={styles.headerText}>Hi {name}</Text>
-              <TouchableOpacity onPress={navigateToProfile}>
+              {/* <TouchableOpacity onPress={navigateToProfile}>
                   <Image
                   style={styles.profile}
                   source={require('../assets/profile.png')} 
                   />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
           </View>
           <Slideshow/>
             {/* <Image source={require('../assets/classicService.png')} style={styles.classicServiceImg} /> */}
               <View>
                 <View style={styles.classicService}>
-                <Text style={styles.selectDate}>Select Service Date</Text>
+                  {/* <TouchableOpacity 
+                    style={[styles.summerService, summerServiceAdded && { backgroundColor: 'green' }]} 
+                    onPress={handleSummerService}
+                  >
+                    <Text style={[{ color: summerServiceAdded ? 'white' : 'black', fontFamily: 'Satoshi-Medium', }]}>
+                      {summerServiceAdded ? 'Summer Service Added' : 'Add Summer Service worth Rs.1500'}
+                    </Text>
+                  </TouchableOpacity> */}
+                  <Text style={styles.priceheader}>All of the above for just</Text>
+                  <View style={styles.priceTag}>
+                      <Text style={styles.priceText}>
+                      Rs. {totalPrice === null ? 'N/A': totalPrice}
+                      {/* Rs. {carPrices.length > 0 ? carPrices[0].Service_cost : 'N/A'} */}
+                      </Text>
+                  </View>
+                  <Text style={styles.selectDate}>Select Service Date</Text>
                 <TouchableOpacity style={styles.calendar} onPress={() => setShowDatePicker(true)}>
                     <Text style={styles.input}>{serviceDate.toDateString()}</Text>
                     <Calendar></Calendar>
@@ -261,30 +252,16 @@ export default function classicService() {
                     minimumDate={today}
                 />
                     )}
-                  {/* <TouchableOpacity 
-                    style={[styles.summerService, summerServiceAdded && { backgroundColor: 'green' }]} 
-                    onPress={handleSummerService}
-                  >
-                    <Text style={[{ color: summerServiceAdded ? 'white' : 'black', fontFamily: 'Satoshi-Medium', }]}>
-                      {summerServiceAdded ? 'Summer Service Added' : 'Add Summer Service worth Rs.1500'}
-                    </Text>
-                  </TouchableOpacity> */}
-                  <View style={styles.priceTag}>
-                      <Text style={styles.priceText}>
-                      Rs. {totalPrice === null ? 'N/A': totalPrice}
-                      {/* Rs. {carPrices.length > 0 ? carPrices[0].Service_cost : 'N/A'} */}
-                      </Text>
-                  </View>
                   <View style={styles.bottomTextContainer}>
                       <Text style={styles.serviceText}>Classic Service</Text>
                       <Text style={styles.serviceDescription}>
-                        {'\u2022'} Genuine oil and engine air filter replacement{'\n'}
-                        {'\u2022'} Brake assembly opened and cleaned completely{'\n'}
+                        {'\u2022'} Genuine oil and engine oil filter replacement{'\n'}
+                        {'\u2022'} Brake calipers opened, cleaned and lubricated completely{'\n'}
                         {'\u2022'} Up to 200 ml of brake oil, coolant, and steering oil (if equipped) topped up{'\n'}
                         {'\u2022'} Bolts of critical components checked and tightened{'\n'}
-                        {'\u2022'} Identification and communication of parts requiring change due to wear and tear{'\n'}
+                        {'\u2022'} Identification of parts requiring change due to wear and tear{'\n'}
                         {'\u2022'} Washing and interior cleaning of the car (engine bay not washed for critical electronics){'\n'}
-                        {'\u2022'} Optional engine oil replacement at an additional cost (customer may buy oil separately){'\n'}
+                        {'\u2022'} Optional engine oil replacement at an additional cost (customer may buy oil separately based on their preference){'\n'}
                         {'\u2022'} Lubrication of window channels, greasing of door hinges, and seat rails{'\n'}
                         {'\u2022'} Testing of all lights and bulbs for functionality{'\n'}
                         {'\u2022'} Checking battery health{'\n'}
@@ -369,7 +346,7 @@ export default function classicService() {
         paddingHorizontal: 20,
         paddingVertical: 8,
         borderRadius: 20,
-        marginTop: 26,
+        marginBottom: 10,
       },
     priceText: {
       fontFamily: 'Satoshi-Medium',
@@ -399,6 +376,16 @@ export default function classicService() {
       marginLeft: 12,
       marginBottom:8,
       fontSize: 16,
+      color: '#000',
+      opacity: 0.8,
+      textAlign: 'left',
+    },
+    priceheader: {
+      fontFamily: 'Satoshi-Bold',
+      marginTop: 8,
+      marginLeft: 3,
+      marginBottom:8,
+      fontSize: 17,
       color: '#000',
       opacity: 0.8,
       textAlign: 'left',

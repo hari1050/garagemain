@@ -8,6 +8,7 @@ import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
+import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 
 export default function homeScreen() {
     const isFocused = useIsFocused();
@@ -386,8 +387,8 @@ const styles = StyleSheet.create({
     },
     classicServiceImg: {
         borderRadius: 12,
-        width: '100%',
-        height: 396,
+        width: responsiveWidth(87.5),
+        height: responsiveHeight(50),
     },
     textOverlay: {
         position: 'absolute',

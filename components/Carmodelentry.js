@@ -105,11 +105,7 @@ export default function Carmodelentry() {
           <CaretLeft />
         </TouchableOpacity>
 
-        <Text style={styles.headerText}>Let us know which cars you rev up everyday</Text>
-
-        <Text style={styles.subHeaderText}>
-          Please type in your car model and select it from the dropdown
-        </Text>
+        <Text style={styles.headerText}>Please type in your car model and select it from the dropdown</Text>
 
         {carModels.map((carModel, index) => (
           <View key={index} style={styles.carModelContainer}>
@@ -183,6 +179,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: '#732753',
     textAlign: 'left',
+    marginBottom:'10%'
   },
   subHeaderText: {
     fontFamily: 'Satoshi-Medium',

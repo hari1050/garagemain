@@ -6,7 +6,9 @@ import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RadioGroup from 'react-native-radio-buttons-group';
 import LottieView from 'lottie-react-native';
+import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import rainAnimation from '../assets/rainAnimation.json'; // Make sure to adjust the path to your rain.json file
+import winterAnimation from '../assets/winterAnimation.json'; // Make sure to adjust the path to your rain.json file
 
 export default function Bookingmap() {
   const navigation = useNavigation();
@@ -17,12 +19,14 @@ export default function Bookingmap() {
   const [selectedId, setSelectedId] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [isSeasonalServiceAdded, setSeasonalservice] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [animation, setAnimation] = useState(null);
+  const [modalText, setModalText] = useState('');
+  const [serviceDescription, setServiceDescription] = useState([]);
 
   const navigateToConfirmation = async () => {
     try {
       // Save order details in "service_orders_table" table
-      console.log(carModels);
-      console.log([carModels[0]]);
       const { data: orderData, error: orderError } = await supabase.from('service_orders_table').insert([
         {
           servicetype: servicetype,
@@ -54,7 +58,6 @@ export default function Bookingmap() {
     } catch (error) {
       console.error('Error saving details:', error.message);
     }
-    console.log(isSeasonalServiceAdded)
   }
 
   const navigateTousercompletedetails = () => {
@@ -62,6 +65,7 @@ export default function Bookingmap() {
   }
 
   const handleConfirmBooking = () => {
+    console.log(serviceDescription)
     // Open the modal when the confirm booking button is pressed
     setModalVisible(true);
   };
@@ -72,8 +76,8 @@ export default function Bookingmap() {
     var formattedNumber = increasedPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     carPrices[selectedCarIndex]["Service_cost"] = formattedNumber;
     console.log(carPrices[selectedCarIndex]);
-  
-    setSeasonalservice(true);
+    setModalVisible(false);
+    navigateToConfirmation();
   };
 
   const handleCancelFromModal = () => {
@@ -82,12 +86,35 @@ export default function Bookingmap() {
   }
 
 
+  // useEffect(() => {
+  //   if (isSeasonalServiceAdded) {
+
+  //   }
+  // }, [isSeasonalServiceAdded]);
+
   useEffect(() => {
-    if (isSeasonalServiceAdded) {
-      setModalVisible(false);
-      navigateToConfirmation();
-    }
-  }, [isSeasonalServiceAdded]);
+    // Fetch the modal data from Supabase
+    const fetchModalData = async () => {
+        const { data, error } = await supabase
+            .from('feature_flags')
+            .select('*')
+            .eq('id', 1) // Assuming you're fetching a specific row, adjust the query as needed
+
+        if (error) {
+            console.error(error);
+        } else {
+            if (data.length > 0) {
+                const modalData = data[0];
+                setIsVisible(modalData.is_visible);
+                setAnimation(modalData.animation);
+                setModalText(modalData.modal_text);
+                setServiceDescription(modalData.service_description); // Assuming this is a JSON string
+            }
+        }
+    };
+
+    fetchModalData();
+  }, []);
 
   const radioButtons = useMemo(() => ([
     {
@@ -136,10 +163,11 @@ export default function Bookingmap() {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-        <ScrollView style={styles.modalContainer} contentContainerStyle = {{justifyContent: 'center', alignItems: 'center'}}>
+        {isVisible && (
+          <ScrollView style={styles.modalContainer} contentContainerStyle = {{justifyContent: 'center', alignItems: 'center', marginTop: '3%'}}>
           <View style={styles.modalView}>
             <LottieView
-              source={rainAnimation}
+              source={animation === 'rain' ? rainAnimation : winterAnimation}
               autoPlay
               loop
               style={styles.animation}
@@ -147,17 +175,11 @@ export default function Bookingmap() {
             <TouchableOpacity style={styles.closeIcon} onPress={() => setModalVisible(false)}>
               <Text style={styles.closeText}>X</Text>
             </TouchableOpacity>
-            <Text style={styles.modalText}>Get your car monsoon-ready for just Rs. 1500! Ready to splash into this rainy service upgrade?</Text>
+            <Text style={styles.modalText}>{modalText}</Text>
             <Text style={styles.serviceDescription}>
-            {'\u2022'} Free, anti-fog window treatment and CCC branded umbrella. {'\n'}
-            {'\u2022'} Classic service is done{'\n'}
-            {'\u2022'} Wipers are replaced{'\n'}
-            {'\u2022'} Defogger and AC unit is checked and inspected for effectiveness{'\n'}
-            {'\u2022'} Tyres are checked for thread wear {'\n'}
-            {'\u2022'} Joints are greased with water resistant grease. {'\n'}
-            {'\u2022'} Additional wiper washer fluid is provided. {'\n'}
-            {'\u2022'} Anti Rat treatment on demand {'\n'}
-            {'\u2022'} Underbody coating using rubber based paint for anti rust and chipping protection.{'\n'} 
+            {serviceDescription.map((item, index) => (
+              <Text key={index}>{`\u2022 ${item}\n`}</Text>
+            ))} 
             </Text>
             <View style={styles.modalButtons}>
               <TouchableOpacity style={styles.modalButton} onPress={handleCancelFromModal}>
@@ -168,7 +190,8 @@ export default function Bookingmap() {
               </TouchableOpacity>
             </View>
           </View>
-        </ScrollView>
+        </ScrollView> 
+        )}
       </Modal>
     </View>
   );
@@ -214,15 +237,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
   },
-  serviceDescription: {
-    marginTop: 8,
-    fontFamily: 'Satoshi-Medium',
-    marginBottom:8,
-    fontSize: 15,
-    color: '#000',
-    opacity: 0.8,
-    textAlign: 'left',
-},
   customButton: {
     alignSelf: 'center',
     backgroundColor: '#2C152A',
@@ -260,56 +274,65 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  modalView: {
-    width: 300,
+},
+modalView: {
+    width: responsiveWidth(80),  // Adjust the width based on screen width
     backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 20,
+    borderRadius: responsiveWidth(2),  // Adjust border radius
+    padding: responsiveWidth(5),  // Adjust padding
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: responsiveHeight(1) },
     shadowOpacity: 0.25,
-    shadowRadius: 4,
+    shadowRadius: responsiveWidth(2),
     elevation: 5,
-  },
-  closeIcon: {
+},
+closeIcon: {
     position: 'absolute',
-    top: 10,
-    right: 10,
-  },
-  closeText: {
-    fontSize: 18,
+    top: responsiveHeight(1.5),  // Adjust position
+    right: responsiveWidth(4),   // Adjust position
+},
+closeText: {
+    fontSize: responsiveFontSize(2.5),  // Adjust font size
     color: '#000',
-  },
-  modalText: {
-    marginBottom: 20,
+},
+modalText: {
+    marginBottom: responsiveHeight(2),
     textAlign: 'center',
     fontFamily: 'Satoshi-Medium',
-    fontSize: 16,
-  },
-  modalButtons: {
+    fontSize: responsiveFontSize(2.1),
+},
+serviceDescription: {
+    marginTop: responsiveHeight(1),
+    fontFamily: 'Satoshi-Medium',
+    marginBottom: responsiveHeight(1),
+    fontSize: responsiveFontSize(1.9),
+    color: '#000',
+    opacity: 0.8,
+    textAlign: 'left',
+},
+modalButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-  },
-  modalButton: {
+},
+modalButton: {
     flex: 1,
     alignItems: 'center',
-    padding: 10,
-  },
-  modalButtonText: {
+    padding: responsiveWidth(2),
+},
+modalButtonText: {
     color: '#CB142B',
     fontFamily: 'Satoshi-Medium',
-    fontSize: 16,
-  },
-  modalButtonTextSave: {
+    fontSize: responsiveFontSize(2),
+},
+modalButtonTextSave: {
     color: '#0000ff',
     fontFamily: 'Satoshi-Medium',
-    fontSize: 16,
-  },
-  animation: {
-    width: 200,
-    height: 200,
-  },
+    fontSize: responsiveFontSize(2),
+},
+animation: {
+    width: responsiveWidth(40),  // Adjust animation size
+    height: responsiveHeight(25), // Adjust animation size
+},
 });

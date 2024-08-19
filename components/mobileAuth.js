@@ -77,7 +77,7 @@ export default function mobileAuth() {
     return (
       <View style={styles.viewContainer}>
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 120, paddingTop: 20 }}>
-        <Text style={styles.headerText}>We need your phone number</Text>
+        <Text style={styles.headerText}>Please enter your phone number</Text>
         <Text style={styles.subHeaderText}>
           We’ll text you a code to verify your phone
         </Text>

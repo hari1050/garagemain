@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ScrollView, View, Text, StyleSheet, TouchableOpacity, BackHandler, Modal } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -15,9 +15,14 @@ export default function Servicehistory() {
 
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       const onBackPress = () => {
-        navigation.navigate('userProfile', { name, phonenumber });
+        // Check if the previous screen was 'bookingConfirmation'
+        if (route.params?.previousScreen === 'bookingConfirmation') {
+          navigation.navigate('homeScreen');
+        } else {
+          navigation.goBack(); // Navigate to the previous screen
+        }
         return true; // Prevent default back button behavior
       };
 
@@ -26,7 +31,7 @@ export default function Servicehistory() {
       return () => {
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
       };
-    }, [navigation, name])
+    }, [navigation, route.params?.previousScreen])
   );
 
   const fetchBookings = async () => {

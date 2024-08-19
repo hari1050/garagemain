@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, BackHandler, Linking } from 'react-native';
+import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -38,7 +39,7 @@ export default function bookingConfirmation() {
   }
 
   const navigateToProfile = () => {
-        navigation.navigate('Servicehistory',{name:name , phonenumber:phonenumber});
+        navigation.navigate('Servicehistory',{name:name , phonenumber:phonenumber, previousScreen: 'bookingConfirmation'});
   }
 
 
@@ -65,6 +66,7 @@ export default function bookingConfirmation() {
               <TouchableOpacity style={styles.customButton} onPress={navigateToProfile}>
                 <Text style={styles.buttonText}>View Booking Details</Text>
               </TouchableOpacity>
+              <View style={styles.buttonSpacing} />
               <TouchableOpacity style={styles.secondaryButton} onPress={navigateToHome}>
                 <Text style={styles.secondaryButtonText}>Back to Home</Text>
               </TouchableOpacity>
@@ -76,91 +78,77 @@ export default function bookingConfirmation() {
   
   const styles = StyleSheet.create({
     viewContainer: {
-      flexGrow: 1,
-      backgroundColor: '#fff',
+        flexGrow: 1,
+        backgroundColor: '#fff',
     },
     container: {
-      padding: 10,
-      paddingTop: 60,
-      backgroundColor: '#fff',
+        padding: responsiveWidth(2.5),
+        paddingTop: responsiveHeight(7.5),
+        backgroundColor: '#fff',
     },
     messagecontainer: {
-      paddingBottom: 60
+        paddingBottom: responsiveHeight(7.5),
     },
     buttoncontainer: {
-      paddingTop: '5%',
-      paddingBottom: 70
-    },
-    header: {
-        paddingBottom:10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        paddingBottom: responsiveHeight(8.75),
     },
     headerText: {
-      fontFamily: 'Satoshi-Bold',
-        fontSize: 18,
+        fontFamily: 'Satoshi-Bold',
+        fontSize: responsiveFontSize(2.4),
         color: '#333',
         textAlign: 'center',
-      },
+    },
     profile: {
-        alignSelf:'center',
-        marginTop:30,
-        marginBottom:48,
-        width: 300,
-        height: 230,
+        alignSelf: 'center',
+        marginTop: responsiveHeight(3.75),
+        marginBottom: responsiveHeight(6),
+        width: responsiveWidth(75),
+        height: responsiveHeight(28.75),
     },
     buttonText: {
-      fontFamily: 'Satoshi-Medium',
-      color: '#fff',
-      fontSize: 18,
+        fontFamily: 'Satoshi-Medium',
+        color: '#fff',
+        fontSize: responsiveFontSize(2.4),
     },
     secondaryButtonText: {
-      fontFamily: 'Satoshi-Medium',
-        color:'#2C152A',
-        fontSize: 18,
+        fontFamily: 'Satoshi-Medium',
+        color: '#2C152A',
+        fontSize: responsiveFontSize(2.4),
     },
     customButton: {
-      alignSelf:'center',
-      backgroundColor: '#2C152A', 
-      height: 54,
-      width: '94%',
-      elevation: 8, 
-      shadowColor: '#000', 
-      shadowOffset: { width: 0, height: 4 }, 
-      shadowOpacity: 0.5, 
-      shadowRadius: 10, 
-      borderRadius: 8,
-      paddingLeft: 24,
-      paddingRight: 24,
-      // paddingTop: 16,
-      // paddingBottom: 12,
-      display: 'flex', 
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      bottom: '15%', 
-      right: 0,
-    },
-    secondaryButton: {
-        alignSelf:'center',
-        borderWidth:1,
-        borderColor:'#2C152A',
-        backgroundColor: '#fff', 
-        borderColor:'#2C152A',
-        height: 54,
-        width: '94%',
-        borderRadius: 8,
-        paddingLeft: 24,
-        paddingRight: 24,
-        display: 'flex', 
+        alignSelf: 'center',
+        backgroundColor: '#2C152A',
+        height: responsiveHeight(6.75),
+        width: responsiveWidth(94),
+        elevation: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+        borderRadius: responsiveWidth(2),
+        paddingLeft: responsiveWidth(6),
+        paddingRight: responsiveWidth(6),
+        display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        bottom: '10%', 
-        right: 0,
-      },
-      buttonSpacing: {
-        height: 20, // Adjust the height as needed for the desired space between buttons
+    },
+    secondaryButton: {
+        alignSelf: 'center',
+        borderWidth: 1,
+        borderColor: '#2C152A',
+        backgroundColor: '#fff',
+        height: responsiveHeight(6.75),
+        width: responsiveWidth(94),
+        borderRadius: responsiveWidth(2),
+        paddingLeft: responsiveWidth(6),
+        paddingRight: responsiveWidth(6),
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonSpacing: {
+        height: responsiveHeight(2.5),
     },
 });

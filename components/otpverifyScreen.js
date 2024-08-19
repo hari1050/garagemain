@@ -107,9 +107,9 @@ export default function mobileAuth() {
                 <TouchableOpacity style={styles.caretLeft} onPress={navigateToMobileAuth}>
                     <CaretLeft />
                 </TouchableOpacity>
-                <Text style={styles.headerText}>What's the code</Text>
+                <Text style={styles.headerText}>Please enter the OTP</Text>
                 <Text style={styles.subHeaderText}>
-                    4 digit code has been sent to {phonenumber}
+                    A 4 digit code has been sent to {phonenumber}
                 </Text>
                 
                 <TextInput

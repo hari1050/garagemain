@@ -27,10 +27,10 @@ export default function userCompleteDetails() {
                   const userData = JSON.parse(userDataString);
                   setRegistrationNumber(userData.car_reg_no || ''); // Populate registration number
                   setAddress(userData.address || ''); // Populate address
-                  const userDob = new Date(userData.dob);
-                  if (!isNaN(userDob.getTime())) {
-                    setDob(userDob);
-                  }
+                  // const userDob = new Date(userData.dob);
+                  // if (!isNaN(userDob.getTime())) {
+                  //   setDob(userDob);
+                  // }
                   
               }
           } catch (error) {
@@ -54,7 +54,6 @@ export default function userCompleteDetails() {
         const { data: usertableData, error: userError } = await supabase.from('user_profiles').update(
           {
             address: address,
-            user_dob: dob,
             car_reg_no: registrationNumber,
           }
         )
@@ -74,7 +73,6 @@ export default function userCompleteDetails() {
         const updatedUserData = {
             ...existingUserData, // Keep existing data
             address: address || existingUserData.address, // Update address if provided, otherwise keep existing
-            dob: dob || existingUserData.dob, // Update dob if provided, otherwise keep existing
             car_reg_no: registrationNumber || existingUserData.car_reg_no, // Update car_reg_no if provided, otherwise keep existing
         };
         // Store updated userData in AsyncStorage
@@ -97,15 +95,15 @@ export default function userCompleteDetails() {
       }
     }
 
-    const handleDateChange = (event, selectedDate) => {
-      console.log('Selected Date:', selectedDate);
-      // Create a new Date object with the same year, month, and day from selectedDate,
-      // and set the time to 12 PM (noon)
-      const currentDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 12, 0, 0);
+    // const handleDateChange = (event, selectedDate) => {
+    //   console.log('Selected Date:', selectedDate);
+    //   // Create a new Date object with the same year, month, and day from selectedDate,
+    //   // and set the time to 12 PM (noon)
+    //   const currentDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 12, 0, 0);
       
-        setShowDobPicker(false); // Close the date picker first
-        setDob(currentDate);
-    };
+    //     setShowDobPicker(false); // Close the date picker first
+    //     setDob(currentDate);
+    // };
     
   
 
@@ -155,23 +153,6 @@ export default function userCompleteDetails() {
             {address === '' && (
               <Text style={styles.errorText}>Please select your address</Text>
             )}
-          </View>
-
-          <View style={styles.inputFieldContainer}>
-            <Text style={styles.inputLabel}>Date of Birth</Text>
-                    <TouchableOpacity style={styles.calendar} onPress={() => setShowDobPicker(true)}>
-                        <Text style={styles.input}>{dob.toDateString()}</Text>
-                        <Calendar></Calendar>
-                    </TouchableOpacity>
-                        {showDobPicker && (
-                        <DateTimePicker
-                        testID="dateTimePicker"
-                        value={dob}
-                        mode="date"
-                        display="default"
-                        onChange={(event, selectedDate) => handleDateChange(event, selectedDate)}
-                        />
-                        )}
           </View>
             
         </ScrollView>

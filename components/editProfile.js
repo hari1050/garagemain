@@ -41,10 +41,10 @@ export default function EditProfile() {
           if (!isNaN(carPurchaseTime.getTime())) {
             setCarPurchaseDate(carPurchaseTime);
           }
-          const userDob = new Date(userData.dob);
-          if (!isNaN(userDob.getTime())) {
-            setDob(userDob);
-          }
+          // const userDob = new Date(userData.dob);
+          // if (!isNaN(userDob.getTime())) {
+          //   setDob(userDob);
+          // }
           setCarModels(userData.carModels || []);
           setCarModelname(userData.carModels ? userData.carModels[0].name : '');
         }
@@ -115,7 +115,7 @@ export default function EditProfile() {
           fullname: name,
           carmodels: carModels,
           address: address,
-          user_dob: dob,
+          // user_dob: dob,
           car_reg_no: registrationNumber,
           Car_purchase_time: carPurchaseDate,
         })
@@ -136,7 +136,7 @@ export default function EditProfile() {
         name: name || existingUserData.name,
         carModels: carModels || existingUserData.carModels,
         address: address || existingUserData.address,
-        dob: dob || existingUserData.dob,
+        // dob: dob || existingUserData.dob,
         car_reg_no: registrationNumber || existingUserData.car_reg_no,
         car_purchase_time: carPurchaseDate || existingUserData.car_purchase_time,
       };
@@ -155,10 +155,11 @@ export default function EditProfile() {
 
   const handleDateChange = (event, selectedDate, field) => {
     const currentDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate(), 12, 0, 0);
-    if (field === 'dob') {
-      setShowDobPicker(false);
-      setDob(currentDate);
-    } else if (field === 'carPurchaseDate') {
+    // if (field === 'dob') {
+    //   setShowDobPicker(false);
+    //   setDob(currentDate);
+    // } 
+    if (field === 'carPurchaseDate') {
       setShowCarPurchaseDatePicker(false);
       setCarPurchaseDate(currentDate);
     }
@@ -264,7 +265,7 @@ export default function EditProfile() {
           )}
         </View>
 
-        <View style={styles.inputFieldContainer}>
+        {/* <View style={styles.inputFieldContainer}>
           <Text style={styles.inputLabel}>Date of Birth</Text>
           <TouchableOpacity style={styles.calendar} onPress={() => setShowDobPicker(true)}>
             <Text style={styles.input}>{dob.toDateString()}</Text>
@@ -279,7 +280,7 @@ export default function EditProfile() {
               onChange={(event, selectedDate) => handleDateChange(event, selectedDate, 'dob')}
             />
           )}
-        </View>
+        </View> */}
       </ScrollView>
       <View>
         <TouchableOpacity style={[styles.customButton, isSaveButtonDisabled && styles.disabledButton]} onPress={navigateToConfirmation} disabled={isSaveButtonDisabled}>
