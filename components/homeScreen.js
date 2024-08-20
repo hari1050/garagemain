@@ -9,6 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
+import { Linking } from 'react-native';
+import { WhatsappLogo } from 'phosphor-react-native';
 
 export default function homeScreen() {
     const isFocused = useIsFocused();
@@ -347,10 +349,20 @@ export default function homeScreen() {
                         </View>
                     </TouchableOpacity>
                 )}
+
                 <View style={styles.classicService}>
                     <Slideshow />
                 </View>
             </ScrollView>
+                <TouchableOpacity 
+                    style={styles.whatsappButton} 
+                    onPress={() => {
+                    Linking.openURL(`whatsapp://send?phone=+9890135566`);  // Replace x with the actual phone number
+                    }}
+                >
+                <WhatsappLogo size={32} weight="fill"></WhatsappLogo>
+                
+                </TouchableOpacity>
 
         </View>
     );
@@ -473,5 +485,19 @@ const styles = StyleSheet.create({
     dropdownpicker: {
         fontFamily: 'Satoshi-Medium',
         fontSize: 16,
-    }
+    },
+    whatsappButton: {
+        zIndex:1,
+        position: 'absolute',
+        bottom: 20, 
+        right: 30,
+        backgroundColor: '#25D366', 
+        borderRadius: 50,
+        padding: 15,
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 1.2,
+        shadowRadius: 4,
+    },
 });
