@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Animated, Dimensions, ScrollView, View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Modal, FlatList } from 'react-native';
 import Pagination from './Pagination';
 import { useNavigation, useRoute } from '@react-navigation/native';
-// import { Dropdown } from "react-native-material-dropdown";
+import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Calendar, CaretRight, CaretLeft, PlusCircle } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
@@ -173,10 +173,11 @@ export default function classicService() {
                 data={images}
                 horizontal
                 pagingEnabled
-                style= {{width: '100%'}}
+                style= {{width: responsiveWidth(87.5), height: responsiveHeight(55)}}
                 scrollEnabled
                 snapToAlignment="center"
                 onScroll={handleOnScroll}
+                showsHorizontalScrollIndicator={false}
                 onScrollToIndexFailed={handleScrollToIndexFailed}
                 onTouchStart={() => {
                     isUserScrollingRef.current = true;
@@ -192,11 +193,12 @@ export default function classicService() {
                 }}
                 renderItem={({ item }) => (
                     <View>
-                        <Image source={item} style={{borderRadius: 12, height: screenWidth, width: screenWidth*0.8,}} />
+                        <Image source={item} style={{borderRadius: 12, width: responsiveWidth(87.5), height: responsiveHeight(55)}} />
                     </View>
                 )}
                 keyExtractor={(_, index) => index.toString()}
             />
+            <Pagination data={images} scrollX={scrollX} index={currentIndex} />
             </View>
         );
     };

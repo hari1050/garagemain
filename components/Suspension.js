@@ -48,9 +48,6 @@ export default function Suspension() {
     const navigatetoHome = () => {
         navigation.navigate('homeScreen', { selectedCarIndex: selectedCarIndex});
     }
-    const navigateToProfile = () => {
-      navigation.navigate('userProfile', { name: name, phonenumber: phonenumber });
-    }
 
     const handleBookService = () => {
         if(carPrices[selectedCarIndex].Service_cost === undefined) {
@@ -87,12 +84,6 @@ export default function Suspension() {
            </TouchableOpacity>
           <View style={styles.header}>
               <Text style={styles.headerText}>Hi {name}</Text>
-              <TouchableOpacity onPress={navigateToProfile}>
-                  <Image
-                  style={styles.profile}
-                  source={require('../assets/profile.png')} 
-                  />
-              </TouchableOpacity>
           </View>
           {/* <Slideshow/> */}
           {/* <Image

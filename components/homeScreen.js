@@ -251,7 +251,7 @@ export default function homeScreen() {
                 ref={flatListRef}
                 data={images}
                 horizontal
-                style= {{width: '100%'}}
+                style= {{width: responsiveWidth(87.5), height: responsiveHeight(35)}}
                 pagingEnabled
                 scrollEnabled
                 snapToAlignment="start"
@@ -272,7 +272,7 @@ export default function homeScreen() {
                 }}
                 renderItem={({ item, index }) => (
                     <TouchableOpacity onPress={item.onPress} key={index}>
-                        <ImageBackground source={item.image} imageStyle={{ borderRadius: 12 }} style={{ width: screenWidth*0.9, height: 240}}>
+                        <ImageBackground source={item.image} imageStyle={{ borderRadius: 12 }} style={{ width: responsiveWidth(87.5), height: responsiveHeight(35)}}>
                             <LinearGradient 
                                 colors={["#00000000", "#000000"]} 
                                 style={{height : "100%", width : "100%", borderRadius: 12}}>
@@ -357,7 +357,7 @@ export default function homeScreen() {
                 <TouchableOpacity 
                     style={styles.whatsappButton} 
                     onPress={() => {
-                    Linking.openURL(`whatsapp://send?phone=+9890135566`);  // Replace x with the actual phone number
+                    Linking.openURL(`whatsapp://send?phone=+919890135566&text=Hi Classic Car Care!`);
                     }}
                 >
                 <WhatsappLogo size={32} weight="fill"></WhatsappLogo>

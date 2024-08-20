@@ -1,9 +1,10 @@
-import {StyleSheet, Animated, View, Dimensions} from 'react-native';
+import { StyleSheet, Animated, View } from 'react-native';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 import React from 'react';
 
-const {width} = Dimensions.get('screen');
+const Pagination = ({ data, scrollX, index }) => {
+  const width = responsiveWidth(87.5); // 100% of the screen width
 
-const Pagination = ({data, scrollX, index}) => {
   return (
     <View style={styles.container}>
       {data.map((_, idx) => {
@@ -11,7 +12,7 @@ const Pagination = ({data, scrollX, index}) => {
 
         const dotWidth = scrollX.interpolate({
           inputRange,
-          outputRange: [12, 30, 12],
+          outputRange: [responsiveWidth(3), responsiveWidth(7.5), responsiveWidth(3)], // You can adjust these percentages
           extrapolate: 'clamp',
         });
 
@@ -32,8 +33,7 @@ const Pagination = ({data, scrollX, index}) => {
             key={idx.toString()}
             style={[
               styles.dot,
-              {width: dotWidth, backgroundColor},
-              // idx === index && styles.dotActive,
+              { width: dotWidth, backgroundColor, opacity:0.5 },
             ]}
           />
         );
@@ -54,13 +54,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 6,
-    marginHorizontal: 3,
+    height: responsiveWidth(1.5), // Adjusted for responsive sizing
+    borderRadius: responsiveWidth(1.5), // Adjusted for responsive sizing
+    marginHorizontal: responsiveWidth(0.75), // Adjusted for responsive sizing
     backgroundColor: '#ccc',
-  },
-  dotActive: {
-    backgroundColor: '#000',
   },
 });

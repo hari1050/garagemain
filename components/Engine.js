@@ -48,9 +48,9 @@ export default function Engine() {
     const navigatetoHome = () => {
         navigation.navigate('homeScreen', { selectedCarIndex: selectedCarIndex});
     }
-    const navigateToProfile = () => {
-      navigation.navigate('userProfile', { name: name, phonenumber: phonenumber });
-    }
+    // const navigateToProfile = () => {
+    //   navigation.navigate('userProfile', { name: name, phonenumber: phonenumber });
+    // }
 
     const handleBookService = () => {
         if(carPrices[selectedCarIndex].Service_cost === undefined) {
@@ -87,12 +87,6 @@ export default function Engine() {
            </TouchableOpacity>
           <View style={styles.header}>
               <Text style={styles.headerText}>Hi {name}</Text>
-              <TouchableOpacity onPress={navigateToProfile}>
-                  <Image
-                  style={styles.profile}
-                  source={require('../assets/profile.png')} 
-                  />
-              </TouchableOpacity>
           </View>
           {/* <Slideshow/> */}
           {/* <Image

@@ -4,6 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
+import Customloadingicon from './Customloadingicon'; // Import your custom loading indicator component
 
 export default function Servicehistory() {
   const navigation = useNavigation();
@@ -12,6 +13,8 @@ export default function Servicehistory() {
   const [bookings, setBookings] = useState([]);
   const [bookingid, setBookingId] = useState('')
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Track if data is currently being loaded
+  const [iscancelEnabled, setIsCancelEnabled] = useState(true);
 
 
   useFocusEffect(
@@ -36,21 +39,42 @@ export default function Servicehistory() {
 
   const fetchBookings = async () => {
     try {
-      const { data, error } = await supabase
+      const { data: bookingsData, error: bookingsError } = await supabase
         .from('service_orders_table')
         .select('*')
         .eq('phonenumber', phonenumber)
         .eq('IsServiceCancelled', false);
 
-      if (error) {
-        console.error('Error fetching bookings:', error.message);
+      if (bookingsError) {
+        console.error('Error fetching bookings:', bookingsError.message);
         return;
       }
 
-      setBookings(data || []);
-    } catch (error) {
-      console.error('Error fetching bookings:', error.message);
-    }
+      const reversedBookingsData = bookingsData ? [...bookingsData].reverse() : [];
+
+      const { data: featureFlagsData, error: featureFlagsError } = await supabase
+            .from('feature_flags')
+            .select('is_visible')
+            .eq('id', 2);
+
+        if (featureFlagsError) {
+            console.error('Error fetching feature flags:', featureFlagsError.message);
+            return;
+        }
+
+        setBookings(reversedBookingsData || []);
+        if (featureFlagsData && featureFlagsData.length > 0) {
+          // Get the `is_visible` value from the first row
+          const isVisible = featureFlagsData[0].is_visible;
+          setIsCancelEnabled(isVisible); // Set state with the `is_visible` value
+        } else {
+          console.warn('No feature flags data found for id 2');
+          setIsCancelEnabled(false); // Default value or handle as needed
+        }
+      } catch (error) {
+        console.error('Error fetching bookings:', error.message);
+      }
+    setIsLoading(false); // Start loading
   };
 
   useEffect(() => {
@@ -86,6 +110,10 @@ export default function Servicehistory() {
   const handleNoFromModal = () => {
     setModalVisible(false);
   };
+
+  if (isLoading) {
+    return <Customloadingicon />;
+}
 
   return (
     <View style={styles.viewContainer}>
@@ -126,9 +154,10 @@ export default function Servicehistory() {
                     ) : ('')}
                   </Text>
                 </View>
-                <TouchableOpacity style={styles.secondaryButton} onPress={()=> opencancelmodal(booking.id)}>
+                {iscancelEnabled && (<TouchableOpacity style={styles.secondaryButton} onPress={()=> opencancelmodal(booking.id)}>
                   <Text style={styles.buttonText}>Cancel Booking</Text>
                 </TouchableOpacity>
+                )}
               </View>
             );
           })

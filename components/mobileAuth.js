@@ -3,43 +3,17 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-nativ
 import CheckBox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
-import axios from 'axios';
+import { sendOTPToPhoneNumber } from '../otpConfig';
 
 export default function mobileAuth() {
 
     const navigation = useNavigation();
     const [phonenumber, setPhoneNumber] = useState('');
     const [agreeToTerms, setAgreeToTerms] = useState(false);
-    let OTP = 1;
 
-    const sendOTP = async (phoneNumber, otp) => {
-      const username = 'DG35-classiccar';
-      const password = 'digimile';
-      const type = '0';
-      const dlr = '1';
-      const source = 'CLSCAR';
-      const message = `Dear Customer, Your OTP for login on CLASSIC CAR CARE app is ${otp} and do not share it with anyone. Thank you.`;
-      const entityid = '1701171828107767374';
-      const tempid = '1707171932098937701';
-    
-      const url = `https://rslri.connectbind.com:8443/bulksms/bulksms?username=${username}&password=${password}&type=${type}&dlr=${dlr}&destination=${phoneNumber}&source=${source}&message=${encodeURIComponent(message)}&entityid=${entityid}&tempid=${tempid}`;
-      try {
-        const response = await axios.get(url);
-        console.log('SMS Sent', response.data);
-      } catch (error) {
-        console.error('Error sending SMS', error);
-      }
-    };
-
-    const generateOTP = () => {
-        return Math.floor(1000*Math.random()*9000).toString().slice(0,4);
-    }
-
-    const handlePhone = () => {
+    const handlePhone = async () => {
       if (phonenumber.length === 10 && agreeToTerms) {
-        OTP = generateOTP();
-        console.log(OTP);
-        sendOTP(phonenumber,OTP);
+        const OTP = await sendOTPToPhoneNumber(phonenumber);
         navigation.navigate('otpverifyScreen', { phonenumber: phonenumber, OTP: OTP });
       }
       else if(!agreeToTerms){
@@ -58,16 +32,6 @@ export default function mobileAuth() {
   
     const handleValueChange = (newValue) => {
       setAgreeToTerms(newValue); // Updates state based on checkbox value
-    };
-
-    const handleContinue = () => {
-      if (agreeToTerms) {
-        // Handle the continue action, e.g., navigate to the next screen or make an API call
-        console.log('Phone number:', phonenumber);
-      } else {
-        // Handle the case where terms are not agreed to
-        alert('Please agree to the terms of use and privacy notice.');
-      }
     };
 
     const navigateToTermsPage = () => {

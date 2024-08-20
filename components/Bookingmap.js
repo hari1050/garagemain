@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import RadioGroup from 'react-native-radio-buttons-group';
 import LottieView from 'lottie-react-native';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
+import Customloadingicon from './Customloadingicon'; // Import your custom loading indicator component
 import rainAnimation from '../assets/rainAnimation.json'; // Make sure to adjust the path to your rain.json file
 import winterAnimation from '../assets/winterAnimation.json'; // Make sure to adjust the path to your rain.json file
 
@@ -23,6 +24,7 @@ export default function Bookingmap() {
   const [animation, setAnimation] = useState(null);
   const [modalText, setModalText] = useState('');
   const [serviceDescription, setServiceDescription] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // Track if data is currently being loaded
 
   const navigateToConfirmation = async () => {
     try {
@@ -77,11 +79,13 @@ export default function Bookingmap() {
     carPrices[selectedCarIndex]["Service_cost"] = formattedNumber;
     console.log(carPrices[selectedCarIndex]);
     setModalVisible(false);
+    setIsLoading(true);
     navigateToConfirmation();
   };
 
   const handleCancelFromModal = () => {
     setModalVisible(false);
+    setIsLoading(true);
     navigateToConfirmation();
   }
 
@@ -128,6 +132,11 @@ export default function Bookingmap() {
       value: 'Drive In'
     }
   ]), []);
+
+
+  if (isLoading) {
+    return <Customloadingicon />;
+  }
 
   return (
     <View style={styles.viewContainer}>

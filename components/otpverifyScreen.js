@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, CommonActions } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
-import axios from 'axios'; // Import axios for sending the OTP
+import { sendOTPToPhoneNumber } from '../otpConfig';
 import supabase from '../supabaseConfig'; // Import Supabase client
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -11,7 +11,8 @@ export default function mobileAuth() {
     const navigation = useNavigation();
     const [otpNumber, setOtpNumber] = useState('');
     const route = useRoute();
-    const { phonenumber, OTP } = route.params;
+    const { phonenumber } = route.params;
+    const [OTP, setOTP] = useState(route.params.OTP);
     const [timer, setTimer] = useState(30);
     const [canResend, setCanResend] = useState(false);
     const [showErrorPopup, setShowErrorPopup] = useState(false);
@@ -26,29 +27,6 @@ export default function mobileAuth() {
             setCanResend(true);
         }
     }, [timer]);
-
-    const sendOTP = async (phoneNumber, otp) => {
-        const username = 'DG35-classiccar';
-        const password = 'digimile';
-        const type = '0';
-        const dlr = '1';
-        const source = 'CLSCAR';
-        const message = `Dear Customer, Your OTP for login on CLASSIC CAR CARE app is ${otp} and do not share it with anyone. Thank you.`;
-        const entityid = '1701171828107767374';
-        const tempid = '1707171932098937701';
-      
-        const url = `https://rslri.connectbind.com:8443/bulksms/bulksms?username=${username}&password=${password}&type=${type}&dlr=${dlr}&destination=${phoneNumber}&source=${source}&message=${encodeURIComponent(message)}&entityid=${entityid}&tempid=${tempid}`;
-        try {
-            const response = await axios.get(url);
-            console.log('SMS Sent', response.data);
-        } catch (error) {
-            console.error('Error sending SMS', error);
-        }
-    };
-
-    const generateOTP = () => {
-        return Math.floor(1000 + Math.random() * 9000).toString().slice(0, 4);
-    }
 
     const navigateToMobileAuth = () =>{
           navigation.navigate('phoneNoAuth');
@@ -81,7 +59,12 @@ export default function mobileAuth() {
                         // Store user data in AsyncStorage
                         await AsyncStorage.setItem('userData', JSON.stringify(userData));
                         // Navigate to the next screen
-                        navigation.navigate('homeTabs', { screen: 'homeScreen' });
+                        navigation.dispatch(
+                            CommonActions.reset({
+                              index: 0,
+                              routes: [{ name: 'homeTabs' }],
+                            })
+                        );                    
                     }
                 } catch (error) {
                     console.error('Error:', error.message);
@@ -94,9 +77,9 @@ export default function mobileAuth() {
             }
     };
 
-    const handleResend = () => {
-        let OTP = generateOTP();
-        sendOTP(phonenumber, OTP);
+    const handleResend = async () => {
+        const newOTP = await sendOTPToPhoneNumber(phonenumber);
+        setOTP(newOTP);
         setTimer(30);
         setCanResend(false);
     };

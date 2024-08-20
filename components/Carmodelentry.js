@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Text, TextInput, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, CommonActions } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
 import { Trash } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
@@ -44,7 +44,12 @@ export default function Carmodelentry() {
       } catch (error) {
         console.error('Error saving user data to AsyncStorage:', error);
       }
-      navigation.navigate('homeTabs', { screen: 'homeScreen' });
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: 'homeTabs' }],
+        })
+      );
     }
   };
 
