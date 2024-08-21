@@ -48,7 +48,7 @@ const AboutUs = () => {
                 {"\n"}
                 Vasai West - 401201
                 {"\n"}
-                Contact: +91 9503602824
+                Contact: 9503602824
             </Text>
         </ScrollView>
         </View>
