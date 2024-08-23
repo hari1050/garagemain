@@ -32,6 +32,7 @@ export default function mobileAuth() {
           navigation.navigate('phoneNoAuth');
     }
     const handleOtp = async () => {
+        if(otpNumber.length === 4){
             if (otpNumber === OTP) {
                 try {
                     // Check if the phone number exists in the user_profiles table
@@ -75,6 +76,7 @@ export default function mobileAuth() {
                     setShowErrorPopup(false);
                 }, 3000);
             }
+        }
     };
 
     const handleResend = async () => {
