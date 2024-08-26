@@ -11,7 +11,7 @@ export default function mobileAuth() {
     const navigation = useNavigation();
     const [otpNumber, setOtpNumber] = useState('');
     const route = useRoute();
-    const { phonenumber } = route.params;
+    const { phonenumber, isTesting } = route.params;
     const [OTP, setOTP] = useState(route.params.OTP);
     const [timer, setTimer] = useState(30);
     const [canResend, setCanResend] = useState(false);
@@ -33,7 +33,10 @@ export default function mobileAuth() {
     }
     const handleOtp = async () => {
         if(otpNumber.length === 4){
-            if (otpNumber === OTP) {
+            if(isTesting && otpNumber === OTP.toString() ){
+                navigation.navigate('Nameentry', { phonenumber });
+            }
+            else if (otpNumber === OTP) {
                 try {
                     // Check if the phone number exists in the user_profiles table
                     const { data, error } = await supabase

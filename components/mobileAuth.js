@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import CheckBox from 'expo-checkbox';
 import { useNavigation } from '@react-navigation/native';
+import supabase from '../supabaseConfig';
 import { ScrollView } from 'react-native-gesture-handler';
 import { sendOTPToPhoneNumber } from '../otpConfig';
 
@@ -10,9 +11,38 @@ export default function mobileAuth() {
     const navigation = useNavigation();
     const [phonenumber, setPhoneNumber] = useState('');
     const [agreeToTerms, setAgreeToTerms] = useState(false);
+    const [isTesting, setIsTesting] = useState(false);
+    const [testingPhNo, setTestingPhNo] = useState();
+    const [testingOtp, setTestingOtp] = useState();
+
+    useEffect(() => {
+      // Fetch the modal data from Supabase
+      const fetchModalData = async () => {
+          const { data, error } = await supabase
+              .from('feature_flags')
+              .select('*')
+              .eq('id', 3) // Assuming you're fetching a specific row, adjust the query as needed
+  
+          if (error) {
+              console.error(error);
+          } else {
+              if (data.length > 0) {
+                  const modalData = data[0];
+                  setIsTesting(modalData.is_visible);
+                  setTestingPhNo(modalData.t_ph_no);
+                  setTestingOtp(modalData.t_otp)
+              }
+          }
+      };
+  
+      fetchModalData();
+    }, []);
 
     const handlePhone = async () => {
-      if (phonenumber.length === 10 && agreeToTerms) {
+      if(isTesting && phonenumber === testingPhNo.toString()){
+        navigation.navigate('otpverifyScreen', { phonenumber: phonenumber, OTP: testingOtp, isTesting: isTesting});
+      }
+      else if (phonenumber.length === 10 && agreeToTerms) {
         const OTP = await sendOTPToPhoneNumber(phonenumber);
         navigation.navigate('otpverifyScreen', { phonenumber: phonenumber, OTP: OTP });
       }
