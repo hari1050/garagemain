@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.unitx.Garageapp",
+      "package": "com.ClassicCarCare",
       "versionCode": 5  // Incremented version code for Android
     },
     "web": {
