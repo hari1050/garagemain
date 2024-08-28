@@ -2,7 +2,7 @@
   "expo": {
     "name": "Classic Car Care",
     "slug": "Garageapp",
-    "version": "6.0.0",
+    "version": "5.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -18,15 +18,15 @@
     "platforms": ["ios", "android"],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "6.0.0"  // Incremented build number for iOS
+      "buildNumber": "5.0.0"  // Incremented build number for iOS
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ClassicCarCare",
-      "versionCode": 6  // Incremented version code for Android
+      "package": "com.unitx.Garageapp",
+      "versionCode": 5  // Incremented version code for Android
     },
     "web": {
       "favicon": "./assets/favicon.png"
