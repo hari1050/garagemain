@@ -344,7 +344,7 @@ export default function homeScreen() {
                             </View>
                             <View style={styles.bottomTextContainer}>
                                 <Text style={styles.serviceText}>Classic Service</Text>
-                                <Text style={styles.serviceDescription}>A package that makes you car ready for road trips, 6+ months of daily use or ready for any occasion with regular maintenance.</Text>
+                                <Text style={styles.serviceDescription}>A package that makes your car ready for road trips, 6+ months of daily use or ready for any occasion with regular maintenance.</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
