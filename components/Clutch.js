@@ -24,7 +24,7 @@ export default function Clutch() {
     });
     const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
     const [summerServiceAdded, setSummerServiceAdded] = useState(false);
-    const [totalPrice, setTotalPrice] = useState("5590");
+    const [totalPrice, setTotalPrice] = useState("5,590");
 
 
     useEffect(() => {

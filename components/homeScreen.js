@@ -117,7 +117,7 @@ export default function homeScreen() {
     
 
     const navigateToClassicService = () => {
-        navigation.navigate('classicService', { carPrices: carPrices, servicetype: "Classicservice", selectedCarIndex: selectedCarIndex });
+        navigation.navigate('classicService', { carPrices: carPrices, servicetype: "Classic Service", selectedCarIndex: selectedCarIndex });
     };
 
     // const navigateToProfile = () => {

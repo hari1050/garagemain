@@ -23,7 +23,7 @@ export default function Suspension() {
       return currentDate;
     });
     const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
-    const [totalPrice, setTotalPrice] = useState("0.00");
+    const [totalPrice, setTotalPrice] = useState("5,000");
 
 
     useEffect(() => {

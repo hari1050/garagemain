@@ -136,9 +136,15 @@ export default function Servicehistory() {
             return (
               <View key={index} style={styles.card}>
                 <View style={styles.row}>
-                  <View style={styles.priceTag}>
-                    <Text style={styles.priceText}>Rs. {serviceCost}</Text>
-                  </View>
+                <View style={styles.priceTag}>
+                  {booking.servicetype === "Engine Service" ? (
+                    <Text style={styles.priceText}>From Rs. 5,000</Text>
+                  ) : booking.servicetype === "Painting Service" ? (
+                    <Text style={styles.priceText}>From Rs. 2,399</Text>  // "grand" interpreted as Rs. 4,55,000
+                  ) : (
+                    <Text style={styles.priceText}>~Rs. {serviceCost}</Text>
+                  )}
+                </View>
                   <View style={[styles.column, styles.dateContainer]}>
                     <Text style={styles.valuest}>{booking.servicedate}</Text>
                   </View>

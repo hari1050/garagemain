@@ -24,7 +24,7 @@ export default function Engine() {
     });
     const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
     const [summerServiceAdded, setSummerServiceAdded] = useState(false);
-    const [totalPrice, setTotalPrice] = useState("0.00");
+    const [totalPrice, setTotalPrice] = useState("5,000");
 
     useEffect(() => {
       const initializeUserData = async () => {

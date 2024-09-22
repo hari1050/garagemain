@@ -24,7 +24,7 @@ export default function Painting() {
     });
     const [showDatePicker, setShowDatePicker] = useState(false); // State to control date picker visibility
     const [summerServiceAdded, setSummerServiceAdded] = useState(false);
-    const [totalPrice, setTotalPrice] = useState("2399");
+    const [totalPrice, setTotalPrice] = useState("2,399");
     const summerServiceCost = 1500.00;
     const [countOFslots, setCountOFslots] = useState(0);
 
