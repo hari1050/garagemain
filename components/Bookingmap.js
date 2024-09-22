@@ -19,7 +19,7 @@ export default function Bookingmap() {
   const [pickupoption, setpickupoption] = useState('');
   const [selectedId, setSelectedId] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  const [isSeasonalServiceAdded, setSeasonalservice] = useState(null);
+  const [isSeasonalServiceAdded, setSeasonalservice] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [animation, setAnimation] = useState(null);
   const [modalText, setModalText] = useState('');
@@ -47,9 +47,6 @@ export default function Bookingmap() {
         console.error('Error saving order details:', orderError.message);
         return;
       }
-
-      console.log('Order details saved successfully:', orderData);
-
       // Navigate to the booking confirmation screen
       navigation.navigate('bookingConfirmation', {
         name: name,
@@ -67,7 +64,6 @@ export default function Bookingmap() {
   }
 
   const handleConfirmBooking = () => {
-    console.log(serviceDescription)
     // Open the modal when the confirm booking button is pressed
     setModalVisible(true);
   };
@@ -77,10 +73,9 @@ export default function Bookingmap() {
     var increasedPrice = parseFloat(carPrices[selectedCarIndex]["Service_cost"].replace(/,/g, '')) + 1500;
     var formattedNumber = increasedPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     carPrices[selectedCarIndex]["Service_cost"] = formattedNumber;
-    console.log(carPrices[selectedCarIndex]);
+    setSeasonalservice(true);
     setModalVisible(false);
     setIsLoading(true);
-    navigateToConfirmation();
   };
 
   const handleCancelFromModal = () => {
@@ -90,11 +85,11 @@ export default function Bookingmap() {
   }
 
 
-  // useEffect(() => {
-  //   if (isSeasonalServiceAdded) {
-
-  //   }
-  // }, [isSeasonalServiceAdded]);
+  useEffect(() => {
+    if (isSeasonalServiceAdded) {
+      navigateToConfirmation();
+    }
+  }, [isSeasonalServiceAdded]);
 
   useEffect(() => {
     // Fetch the modal data from Supabase
