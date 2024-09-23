@@ -160,9 +160,13 @@ export default function Servicehistory() {
                     ) : ('')}
                   </Text>
                 </View>
-                {iscancelEnabled && (<TouchableOpacity style={styles.secondaryButton} onPress={()=> opencancelmodal(booking.id)}>
-                  <Text style={styles.buttonText}>Cancel Booking</Text>
-                </TouchableOpacity>
+                {booking.IsCompleted ? (
+                  <Text style={styles.completedText}>Service Completed</Text>
+                ) : (
+                  iscancelEnabled && (<TouchableOpacity style={styles.secondaryButton} onPress={()=> opencancelmodal(booking.id)}>
+                    <Text style={styles.buttonText}>Cancel Booking</Text>
+                  </TouchableOpacity>
+                  )
                 )}
               </View>
             );
@@ -231,10 +235,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: '#732753',
     textAlign: 'left',
-  },
-  buttonText: {
-    color: '#2C152A',
-    fontSize: 18,
   },
   carModel: {
     paddingTop: 8,
@@ -345,7 +345,13 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: 'Satoshi-Medium',
     color: '#fff',
-    fontSize: 14,
+    fontSize: 15,
+  },
+  completedText: {
+    alignSelf: 'center',
+    fontFamily: 'Satoshi-Bold',
+    color: 'darkgreen',
+    fontSize: 19,
   },
   modalContainer: {
     flex: 1,

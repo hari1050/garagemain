@@ -65,7 +65,12 @@ export default function Bookingmap() {
 
   const handleConfirmBooking = () => {
     // Open the modal when the confirm booking button is pressed
-    setModalVisible(true);
+    if(isVisible){
+      setModalVisible(true);
+    }
+    else{
+      navigateToConfirmation();
+    }
   };
 
   const handleSaveFromModal = () => {
