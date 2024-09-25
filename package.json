@@ -35,6 +35,7 @@
     "react-dom": "^18.2.0",
     "react-native": "^0.74.4",
     "react-native-element-dropdown": "^2.10.1",
+    "react-native-flash-message": "^0.4.2",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-maps": "1.14.0",

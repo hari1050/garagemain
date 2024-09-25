@@ -6,6 +6,7 @@ import { sendOTPToPhoneNumber } from '../otpConfig';
 import supabase from '../supabaseConfig'; // Import Supabase client
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
+import { showMessage } from 'react-native-flash-message';
 
 export default function mobileAuth() {
     const navigation = useNavigation();
@@ -39,16 +40,26 @@ export default function mobileAuth() {
             else if (otpNumber === OTP) {
                 try {
                     // Check if the phone number exists in the user_profiles table
-                    const { data, error } = await supabase
+                    const { data:maindata, error } = await supabase
                         .from('user_profiles')
                         .select('*') // Fetch required columns
                         .eq('phonenumber', phonenumber)
-                        .single();
+                        .order('id', { ascending: false }) // Order by id in descending order
+                        .limit(1)
 
                     if (error) {
-                        navigation.navigate('Nameentry', { phonenumber });
-                    } else {
+                        showMessage({
+                            message: 'Something went wrong!',
+                            type: 'danger',
+                            backgroundColor: 'darkred', // Red for error
+                            color: '#fff',
+                            titleStyle: { fontFamily: 'Satoshi-Medium', fontSize: 16 },
+                          });
+                        console.log(error)
+                    } 
+                    else if(maindata && maindata.length > 0){
                         // Phone number exists, store user details in AsyncStorage
+                        const data = maindata[0]
                         const userData = {
                             id: data.id,
                             name: data.fullname,
@@ -69,6 +80,10 @@ export default function mobileAuth() {
                               routes: [{ name: 'homeTabs' }],
                             })
                         );                    
+                    }
+                    else{
+                        console.log("No matching details found")
+                        navigation.navigate('Nameentry', { phonenumber });
                     }
                 } catch (error) {
                     console.error('Error:', error.message);

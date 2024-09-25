@@ -3,6 +3,7 @@ import { StatusBar, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import MyStackNavigator from './MyStackNavigator';
 import {useFonts} from 'expo-font';
+import FlashMessage from 'react-native-flash-message';
 
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
       <SafeAreaView style={{ flex: 1 }}>
         <NavigationContainer>
           <MyStackNavigator/>
+          <FlashMessage position="top" />
         </NavigationContainer>
       </SafeAreaView>
     </>
