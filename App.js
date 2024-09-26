@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import MyStackNavigator from './MyStackNavigator';
 import {useFonts} from 'expo-font';
 import FlashMessage from 'react-native-flash-message';
+import AppUpdatePrompt from './AppUpdatePrompt'; // Adjust the path based on your file structure
 
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
     <>
     <StatusBar backgroundColor="#fff" barStyle="dark-content" />
       <SafeAreaView style={{ flex: 1 }}>
+      <AppUpdatePrompt/>
         <NavigationContainer>
           <MyStackNavigator/>
           <FlashMessage position="top" />
