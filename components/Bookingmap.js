@@ -10,6 +10,7 @@ import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-nat
 import Customloadingicon from './Customloadingicon'; // Import your custom loading indicator component
 import rainAnimation from '../assets/rainAnimation.json'; // Make sure to adjust the path to your rain.json file
 import winterAnimation from '../assets/winterAnimation.json'; // Make sure to adjust the path to your rain.json file
+import { showMessage } from 'react-native-flash-message';
 
 export default function Bookingmap() {
   const navigation = useNavigation();
@@ -45,6 +46,15 @@ export default function Bookingmap() {
 
       if (orderError) {
         console.error('Error saving order details:', orderError.message);
+        showMessage({
+          message: 'Something went wrong!',
+          type: 'danger',
+          backgroundColor: 'darkred', // Red for error
+          color: '#fff',
+          titleStyle: { fontFamily: 'Satoshi-Medium', fontSize: 16 },
+        });
+        setIsLoading(false);
+        setSeasonalservice(false);
         return;
       }
       // Navigate to the booking confirmation screen
@@ -56,6 +66,7 @@ export default function Bookingmap() {
 
     } catch (error) {
       console.error('Error saving details:', error.message);
+      setIsLoading(false);
     }
   }
 
@@ -78,9 +89,9 @@ export default function Bookingmap() {
     var increasedPrice = parseFloat(carPrices[selectedCarIndex]["Service_cost"].replace(/,/g, '')) + 1500;
     var formattedNumber = increasedPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     carPrices[selectedCarIndex]["Service_cost"] = formattedNumber;
+    setIsLoading(true);
     setSeasonalservice(true);
     setModalVisible(false);
-    setIsLoading(true);
   };
 
   const handleCancelFromModal = () => {
@@ -105,7 +116,15 @@ export default function Bookingmap() {
             .eq('id', 1) // Assuming you're fetching a specific row, adjust the query as needed
 
         if (error) {
+          showMessage({
+            message: 'Something went wrong!',
+            type: 'danger',
+            backgroundColor: 'darkred', // Red for error
+            color: '#fff',
+            titleStyle: { fontFamily: 'Satoshi-Medium', fontSize: 16 },
+          });
             console.error(error);
+            return;
         } else {
             if (data.length > 0) {
                 const modalData = data[0];
@@ -162,7 +181,7 @@ export default function Bookingmap() {
       </ScrollView>
       <View>
         <TouchableOpacity style={[styles.customButton, !selectedId && styles.disabledButton]} disabled={!selectedId} onPress={handleConfirmBooking}>
-          <Text style={styles.buttonText}>Confirm Booking</Text>
+          <Text style={styles.buttonText}>Book now, Pay later!</Text>
         </TouchableOpacity>
       </View>
 

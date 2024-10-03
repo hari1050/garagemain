@@ -5,6 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Calendar, CaretLeft } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { showMessage } from 'react-native-flash-message';
 
 
 export default function userCompleteDetails() {
@@ -60,6 +61,13 @@ export default function userCompleteDetails() {
         .eq('phonenumber', phonenumber);
     
         if (userError) {
+          showMessage({
+            message: 'Something went wrong!',
+            type: 'danger',
+            backgroundColor: 'darkred', // Red for error
+            color: '#fff',
+            titleStyle: { fontFamily: 'Satoshi-Medium', fontSize: 16 },
+          });
           console.error('Error saving user details:', userError.message);
           return;
         }

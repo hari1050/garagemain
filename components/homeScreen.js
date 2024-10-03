@@ -11,6 +11,7 @@ import { Picker } from '@react-native-picker/picker';
 import { responsiveHeight, responsiveWidth, responsiveFontSize } from 'react-native-responsive-dimensions';
 import { Linking } from 'react-native';
 import { WhatsappLogo } from 'phosphor-react-native';
+import { showMessage } from 'react-native-flash-message';
 
 export default function homeScreen() {
     const isFocused = useIsFocused();
@@ -76,7 +77,7 @@ export default function homeScreen() {
                 // Map car model IDs to prices, defaulting to 5500 for null IDs
                 const prices = carModelIds.map(id => ({
                     Id: id,
-                    Service_cost: id === null ? "5,500.00" : null
+                    Service_cost: id === null ? "4,000.00" : null
                 }));
     
                 const validCarModelIds = carModelIds.filter(id => id !== null);
@@ -88,6 +89,13 @@ export default function homeScreen() {
                         .in('Id', validCarModelIds);
     
                     if (error) {
+                        showMessage({
+                            message: 'Something went wrong!',
+                            type: 'danger',
+                            backgroundColor: 'darkred', // Red for error
+                            color: '#fff',
+                            titleStyle: { fontFamily: 'Satoshi-Medium', fontSize: 16 },
+                          });
                         throw error;
                     }
     
@@ -103,9 +111,9 @@ export default function homeScreen() {
                 setCarPrices(prices);
                 setPricesFetched(true);
             } catch (error) {
-                console.error('Error fetching prices, defaulting to 5500:', error.message);
-                // If there's an error, default all prices to 5500
-                setCarPrices(carModels.map(model => ({ Id: model.id, Service_cost: 5500 })));
+                console.error('Error fetching prices, defaulting to 4000:', error.message);
+                // If there's an error, default all prices to 4000
+                setCarPrices(carModels.map(model => ({ Id: model.id, Service_cost: "4,000.00" })));
             }
             setIsLoading(false); // End loading
         };

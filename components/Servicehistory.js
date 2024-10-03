@@ -5,6 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { CaretLeft } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
 import Customloadingicon from './Customloadingicon'; // Import your custom loading indicator component
+import { showMessage } from 'react-native-flash-message';
 
 export default function Servicehistory() {
   const navigation = useNavigation();
@@ -46,7 +47,15 @@ export default function Servicehistory() {
         .eq('IsServiceCancelled', false);
 
       if (bookingsError) {
+        showMessage({
+          message: 'Something went wrong!',
+          type: 'danger',
+          backgroundColor: 'darkred', // Red for error
+          color: '#fff',
+          titleStyle: { fontFamily: 'Satoshi-Medium', fontSize: 16 },
+        });
         console.error('Error fetching bookings:', bookingsError.message);
+        setIsLoading(false);
         return;
       }
 
@@ -92,8 +101,17 @@ export default function Servicehistory() {
         .from('service_orders_table')
         .update({ IsServiceCancelled: 'true' })
         .eq('id', bookingId);
-
-      if (!error) {
+      if(error){
+        showMessage({
+          message: 'Something went wrong!',
+          type: 'danger',
+          backgroundColor: 'darkred', // Red for error
+          color: '#fff',
+          titleStyle: { fontFamily: 'Satoshi-Medium', fontSize: 16 },
+        });
+        return;
+      }
+      else if (!error) {
         await fetchBookings();
       }
     } catch (ex) {

@@ -6,6 +6,7 @@ import Customloadingicon from './Customloadingicon';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import supabase from '../supabaseConfig';
+import { showMessage } from 'react-native-flash-message';
 
 export default function EditProfile() {
   const navigation = useNavigation();
@@ -69,7 +70,15 @@ export default function EditProfile() {
           .select('Car_Model_Fullname, Id')
           .ilike('Car_Model_Fullname', `%${value}%`);
         if (error) {
+          showMessage({
+            message: 'Something went wrong!',
+            type: 'danger',
+            backgroundColor: 'darkred', // Red for error
+            color: '#fff',
+            titleStyle: { fontFamily: 'Satoshi-Medium', fontSize: 16 },
+          });
           console.error('Error fetching car models:', error.message);
+          return;
         } else {
           setSuggestions(
             data.map((item) => ({
@@ -122,6 +131,13 @@ export default function EditProfile() {
         .eq('phonenumber', phonenumber);
 
       if (userError) {
+        showMessage({
+          message: 'Something went wrong!',
+          type: 'danger',
+          backgroundColor: 'darkred', // Red for error
+          color: '#fff',
+          titleStyle: { fontFamily: 'Satoshi-Medium', fontSize: 16 },
+        });
         console.error('Error saving user details:', userError.message);
         return;
       }

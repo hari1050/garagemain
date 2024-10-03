@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import supabase from '../supabaseConfig';
 import { ScrollView } from 'react-native-gesture-handler';
 import { sendOTPToPhoneNumber } from '../otpConfig';
+import Customloadingicon from './Customloadingicon'; // Import your custom loading indicator component
 
 export default function mobileAuth() {
 
@@ -14,6 +15,7 @@ export default function mobileAuth() {
     const [isTesting, setIsTesting] = useState(false);
     const [testingPhNo, setTestingPhNo] = useState();
     const [testingOtp, setTestingOtp] = useState();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
       // Fetch the modal data from Supabase
@@ -43,8 +45,16 @@ export default function mobileAuth() {
         navigation.navigate('otpverifyScreen', { phonenumber: phonenumber, OTP: testingOtp, isTesting: isTesting});
       }
       else if (phonenumber.length === 10 && agreeToTerms) {
-        const OTP = await sendOTPToPhoneNumber(phonenumber);
-        navigation.navigate('otpverifyScreen', { phonenumber: phonenumber, OTP: OTP });
+        setIsLoading(true);  // Show loading spinner
+        try {
+          const OTP = await sendOTPToPhoneNumber(phonenumber);
+          navigation.navigate('otpverifyScreen', { phonenumber: phonenumber, OTP: OTP });
+          setIsLoading(false);  // Hide loading spinner
+        } catch (error) {
+          setIsLoading(false);  // Hide loading spinner in case of error
+          console.error(error);
+          alert('Error sending OTP. Please try again.');
+        }
       }
       else if(!agreeToTerms){
         alert('Please agree to the terms of use and privacy notice.');
@@ -67,6 +77,10 @@ export default function mobileAuth() {
     const navigateToTermsPage = () => {
       navigation.navigate('Terms'); // Replace 'TermsPage' with your actual route name
     };
+
+    if (isLoading) {
+      return <Customloadingicon />;
+    }
   
     return (
       <View style={styles.viewContainer}>

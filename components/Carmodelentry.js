@@ -5,6 +5,7 @@ import { CaretLeft } from 'phosphor-react-native';
 import { Trash } from 'phosphor-react-native';
 import supabase from '../supabaseConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { showMessage } from 'react-native-flash-message';
 
 export default function Carmodelentry() {
   const navigation = useNavigation();
@@ -21,14 +22,6 @@ export default function Carmodelentry() {
   const navigateHome = async () => {
     if (name.length !== 0 && carModels.every(carModel => carModel.name.trim() !== '')) {
       try {
-        const userData = {
-          name: name,
-          carModels: carModels.filter(x => x.name !== ''),
-          phonenumber: phonenumber,
-        };
-        await AsyncStorage.setItem('userData', JSON.stringify(userData));
-        console.log('User data saved to AsyncStorage:', userData);
-
         const { data, error } = await supabase.from('user_profiles').insert([
           {
             phonenumber: phonenumber,
@@ -37,12 +30,27 @@ export default function Carmodelentry() {
           },
         ]);
         if (error) {
+          showMessage({
+            message: 'Something went wrong!',
+            type: 'danger',
+            backgroundColor: 'darkred', // Red for error
+            color: '#fff',
+            titleStyle: { fontFamily: 'Satoshi-Medium', fontSize: 16 },
+          });
           console.error('Error saving details:', error.message);
+          return;
         } else {
           console.log('Details saved successfully:', data);
+          const userData = {
+            name: name,
+            carModels: carModels.filter(x => x.name !== ''),
+            phonenumber: phonenumber,
+          };
+          await AsyncStorage.setItem('userData', JSON.stringify(userData));
+          console.log('User data saved to AsyncStorage:', userData);  
         }
       } catch (error) {
-        console.error('Error saving user data to AsyncStorage:', error);
+        console.error('Error saving user data:', error);
       }
       navigation.dispatch(
         CommonActions.reset({
@@ -65,7 +73,15 @@ export default function Carmodelentry() {
           .select('Car_Model_Fullname, Id')
           .ilike('Car_Model_Fullname', `%${value}%`);
         if (error) {
+          showMessage({
+            message: 'Something went wrong!',
+            type: 'danger',
+            backgroundColor: 'darkred', // Red for error
+            color: '#fff',
+            titleStyle: { fontFamily: 'Satoshi-Medium', fontSize: 16 },
+          });
           console.error('Error fetching car models:', error.message);
+          return;
         } else {
           setSuggestions(data.map(item => ({
             name: item.Car_Model_Fullname,
